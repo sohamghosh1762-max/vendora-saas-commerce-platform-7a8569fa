@@ -13,6 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
+import { Navbar } from "@/components/marketplace/Navbar";
+import { Footer } from "@/components/marketplace/Footer";
 
 function NotFoundComponent() {
   return (
