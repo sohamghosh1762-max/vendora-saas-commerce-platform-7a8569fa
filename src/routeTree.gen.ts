@@ -35,6 +35,8 @@ import { Route as VendorDashboardRouteImport } from './routes/vendor-dashboard'
 import { Route as VendorPricingRouteImport } from './routes/vendor-pricing'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
+import { Route as SigninSuperAdminRouteImport } from './routes/signin_.super-admin'
+import { Route as SigninVendorRouteImport } from './routes/signin_.vendor'
 import { Route as StoreIdRouteImport } from './routes/store.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -167,6 +169,16 @@ const ProductIdRoute = ProductIdRouteImport.update({
   path: '/product/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SigninSuperAdminRoute = SigninSuperAdminRouteImport.update({
+  id: '/signin_/super-admin',
+  path: '/signin/super-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SigninVendorRoute = SigninVendorRouteImport.update({
+  id: '/signin_/vendor',
+  path: '/signin/vendor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StoreIdRoute = StoreIdRouteImport.update({
   id: '/store/$id',
   path: '/store/$id',
@@ -200,6 +212,8 @@ export interface FileRoutesByFullPath {
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
+  '/signin/super-admin': typeof SigninSuperAdminRoute
+  '/signin/vendor': typeof SigninVendorRoute
   '/store/$id': typeof StoreIdRoute
 }
 export interface FileRoutesByTo {
@@ -229,6 +243,8 @@ export interface FileRoutesByTo {
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
+  '/signin/super-admin': typeof SigninSuperAdminRoute
+  '/signin/vendor': typeof SigninVendorRoute
   '/store/$id': typeof StoreIdRoute
 }
 export interface FileRoutesById {
@@ -259,6 +275,8 @@ export interface FileRoutesById {
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
+  '/signin_/super-admin': typeof SigninSuperAdminRoute
+  '/signin_/vendor': typeof SigninVendorRoute
   '/store/$id': typeof StoreIdRoute
 }
 export interface FileRouteTypes {
@@ -290,6 +308,8 @@ export interface FileRouteTypes {
     | '/vendor-pricing'
     | '/wishlist'
     | '/product/$id'
+    | '/signin/super-admin'
+    | '/signin/vendor'
     | '/store/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -319,6 +339,8 @@ export interface FileRouteTypes {
     | '/vendor-pricing'
     | '/wishlist'
     | '/product/$id'
+    | '/signin/super-admin'
+    | '/signin/vendor'
     | '/store/$id'
   id:
     | '__root__'
@@ -348,6 +370,8 @@ export interface FileRouteTypes {
     | '/vendor-pricing'
     | '/wishlist'
     | '/product/$id'
+    | '/signin_/super-admin'
+    | '/signin_/vendor'
     | '/store/$id'
   fileRoutesById: FileRoutesById
 }
@@ -378,6 +402,8 @@ export interface RootRouteChildren {
   VendorPricingRoute: typeof VendorPricingRoute
   WishlistRoute: typeof WishlistRoute
   ProductIdRoute: typeof ProductIdRoute
+  SigninSuperAdminRoute: typeof SigninSuperAdminRoute
+  SigninVendorRoute: typeof SigninVendorRoute
   StoreIdRoute: typeof StoreIdRoute
 }
 
@@ -565,6 +591,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signin_/super-admin': {
+      id: '/signin_/super-admin'
+      path: '/signin/super-admin'
+      fullPath: '/signin/super-admin'
+      preLoaderRoute: typeof SigninSuperAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin_/vendor': {
+      id: '/signin_/vendor'
+      path: '/signin/vendor'
+      fullPath: '/signin/vendor'
+      preLoaderRoute: typeof SigninVendorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/store/$id': {
       id: '/store/$id'
       path: '/store/$id'
@@ -602,6 +642,8 @@ const rootRouteChildren: RootRouteChildren = {
   VendorPricingRoute: VendorPricingRoute,
   WishlistRoute: WishlistRoute,
   ProductIdRoute: ProductIdRoute,
+  SigninSuperAdminRoute: SigninSuperAdminRoute,
+  SigninVendorRoute: SigninVendorRoute,
   StoreIdRoute: StoreIdRoute,
 }
 export const routeTree = rootRouteImport

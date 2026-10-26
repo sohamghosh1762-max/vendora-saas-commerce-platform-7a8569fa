@@ -27,6 +27,8 @@ describe("App routing", () => {
       "/wishlist",
       "/cart",
       "/signin",
+      "/signin/vendor",
+      "/signin/super-admin",
       "/vendor-dashboard",
     ];
 
