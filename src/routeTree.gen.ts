@@ -10,33 +10,362 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as BecomeAVendorRouteImport } from './routes/become-a-vendor'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as CartRouteImport } from './routes/cart'
+import { Route as ContactUsRouteImport } from './routes/contact-us'
+import { Route as DealsRouteImport } from './routes/deals'
+import { Route as GiftCardsRouteImport } from './routes/gift-cards'
+import { Route as HelpCenterRouteImport } from './routes/help-center'
+import { Route as PressRouteImport } from './routes/press'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as ReturnsRouteImport } from './routes/returns'
+import { Route as SellerResourcesRouteImport } from './routes/seller-resources'
+import { Route as ShippingRouteImport } from './routes/shipping'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as StoresRouteImport } from './routes/stores'
+import { Route as StudentDiscountRouteImport } from './routes/student-discount'
+import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TrackOrderRouteImport } from './routes/track-order'
+import { Route as VendorPricingRouteImport } from './routes/vendor-pricing'
+import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as ProductIdRouteImport } from './routes/product.$id'
+import { Route as StoreIdRouteImport } from './routes/store.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BecomeAVendorRoute = BecomeAVendorRouteImport.update({
+  id: '/become-a-vendor',
+  path: '/become-a-vendor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactUsRoute = ContactUsRouteImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DealsRoute = DealsRouteImport.update({
+  id: '/deals',
+  path: '/deals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GiftCardsRoute = GiftCardsRouteImport.update({
+  id: '/gift-cards',
+  path: '/gift-cards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpCenterRoute = HelpCenterRouteImport.update({
+  id: '/help-center',
+  path: '/help-center',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnsRoute = ReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerResourcesRoute = SellerResourcesRouteImport.update({
+  id: '/seller-resources',
+  path: '/seller-resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingRoute = ShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoresRoute = StoresRouteImport.update({
+  id: '/stores',
+  path: '/stores',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentDiscountRoute = StudentDiscountRouteImport.update({
+  id: '/student-discount',
+  path: '/student-discount',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuccessStoriesRoute = SuccessStoriesRouteImport.update({
+  id: '/success-stories',
+  path: '/success-stories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackOrderRoute = TrackOrderRouteImport.update({
+  id: '/track-order',
+  path: '/track-order',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VendorPricingRoute = VendorPricingRouteImport.update({
+  id: '/vendor-pricing',
+  path: '/vendor-pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WishlistRoute = WishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductIdRoute = ProductIdRouteImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoreIdRoute = StoreIdRouteImport.update({
+  id: '/store/$id',
+  path: '/store/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/become-a-vendor': typeof BecomeAVendorRoute
+  '/blog': typeof BlogRoute
+  '/careers': typeof CareersRoute
+  '/cart': typeof CartRoute
+  '/contact-us': typeof ContactUsRoute
+  '/deals': typeof DealsRoute
+  '/gift-cards': typeof GiftCardsRoute
+  '/help-center': typeof HelpCenterRoute
+  '/press': typeof PressRoute
+  '/pricing': typeof PricingRoute
+  '/returns': typeof ReturnsRoute
+  '/seller-resources': typeof SellerResourcesRoute
+  '/shipping': typeof ShippingRoute
+  '/shop': typeof ShopRoute
+  '/signin': typeof SigninRoute
+  '/stores': typeof StoresRoute
+  '/student-discount': typeof StudentDiscountRoute
+  '/success-stories': typeof SuccessStoriesRoute
+  '/terms': typeof TermsRoute
+  '/track-order': typeof TrackOrderRoute
+  '/vendor-pricing': typeof VendorPricingRoute
+  '/wishlist': typeof WishlistRoute
+  '/product/$id': typeof ProductIdRoute
+  '/store/$id': typeof StoreIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/become-a-vendor': typeof BecomeAVendorRoute
+  '/blog': typeof BlogRoute
+  '/careers': typeof CareersRoute
+  '/cart': typeof CartRoute
+  '/contact-us': typeof ContactUsRoute
+  '/deals': typeof DealsRoute
+  '/gift-cards': typeof GiftCardsRoute
+  '/help-center': typeof HelpCenterRoute
+  '/press': typeof PressRoute
+  '/pricing': typeof PricingRoute
+  '/returns': typeof ReturnsRoute
+  '/seller-resources': typeof SellerResourcesRoute
+  '/shipping': typeof ShippingRoute
+  '/shop': typeof ShopRoute
+  '/signin': typeof SigninRoute
+  '/stores': typeof StoresRoute
+  '/student-discount': typeof StudentDiscountRoute
+  '/success-stories': typeof SuccessStoriesRoute
+  '/terms': typeof TermsRoute
+  '/track-order': typeof TrackOrderRoute
+  '/vendor-pricing': typeof VendorPricingRoute
+  '/wishlist': typeof WishlistRoute
+  '/product/$id': typeof ProductIdRoute
+  '/store/$id': typeof StoreIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/become-a-vendor': typeof BecomeAVendorRoute
+  '/blog': typeof BlogRoute
+  '/careers': typeof CareersRoute
+  '/cart': typeof CartRoute
+  '/contact-us': typeof ContactUsRoute
+  '/deals': typeof DealsRoute
+  '/gift-cards': typeof GiftCardsRoute
+  '/help-center': typeof HelpCenterRoute
+  '/press': typeof PressRoute
+  '/pricing': typeof PricingRoute
+  '/returns': typeof ReturnsRoute
+  '/seller-resources': typeof SellerResourcesRoute
+  '/shipping': typeof ShippingRoute
+  '/shop': typeof ShopRoute
+  '/signin': typeof SigninRoute
+  '/stores': typeof StoresRoute
+  '/student-discount': typeof StudentDiscountRoute
+  '/success-stories': typeof SuccessStoriesRoute
+  '/terms': typeof TermsRoute
+  '/track-order': typeof TrackOrderRoute
+  '/vendor-pricing': typeof VendorPricingRoute
+  '/wishlist': typeof WishlistRoute
+  '/product/$id': typeof ProductIdRoute
+  '/store/$id': typeof StoreIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/become-a-vendor'
+    | '/blog'
+    | '/careers'
+    | '/cart'
+    | '/contact-us'
+    | '/deals'
+    | '/gift-cards'
+    | '/help-center'
+    | '/press'
+    | '/pricing'
+    | '/returns'
+    | '/seller-resources'
+    | '/shipping'
+    | '/shop'
+    | '/signin'
+    | '/stores'
+    | '/student-discount'
+    | '/success-stories'
+    | '/terms'
+    | '/track-order'
+    | '/vendor-pricing'
+    | '/wishlist'
+    | '/product/$id'
+    | '/store/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/become-a-vendor'
+    | '/blog'
+    | '/careers'
+    | '/cart'
+    | '/contact-us'
+    | '/deals'
+    | '/gift-cards'
+    | '/help-center'
+    | '/press'
+    | '/pricing'
+    | '/returns'
+    | '/seller-resources'
+    | '/shipping'
+    | '/shop'
+    | '/signin'
+    | '/stores'
+    | '/student-discount'
+    | '/success-stories'
+    | '/terms'
+    | '/track-order'
+    | '/vendor-pricing'
+    | '/wishlist'
+    | '/product/$id'
+    | '/store/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/become-a-vendor'
+    | '/blog'
+    | '/careers'
+    | '/cart'
+    | '/contact-us'
+    | '/deals'
+    | '/gift-cards'
+    | '/help-center'
+    | '/press'
+    | '/pricing'
+    | '/returns'
+    | '/seller-resources'
+    | '/shipping'
+    | '/shop'
+    | '/signin'
+    | '/stores'
+    | '/student-discount'
+    | '/success-stories'
+    | '/terms'
+    | '/track-order'
+    | '/vendor-pricing'
+    | '/wishlist'
+    | '/product/$id'
+    | '/store/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BecomeAVendorRoute: typeof BecomeAVendorRoute
+  BlogRoute: typeof BlogRoute
+  CareersRoute: typeof CareersRoute
+  CartRoute: typeof CartRoute
+  ContactUsRoute: typeof ContactUsRoute
+  DealsRoute: typeof DealsRoute
+  GiftCardsRoute: typeof GiftCardsRoute
+  HelpCenterRoute: typeof HelpCenterRoute
+  PressRoute: typeof PressRoute
+  PricingRoute: typeof PricingRoute
+  ReturnsRoute: typeof ReturnsRoute
+  SellerResourcesRoute: typeof SellerResourcesRoute
+  ShippingRoute: typeof ShippingRoute
+  ShopRoute: typeof ShopRoute
+  SigninRoute: typeof SigninRoute
+  StoresRoute: typeof StoresRoute
+  StudentDiscountRoute: typeof StudentDiscountRoute
+  SuccessStoriesRoute: typeof SuccessStoriesRoute
+  TermsRoute: typeof TermsRoute
+  TrackOrderRoute: typeof TrackOrderRoute
+  VendorPricingRoute: typeof VendorPricingRoute
+  WishlistRoute: typeof WishlistRoute
+  ProductIdRoute: typeof ProductIdRoute
+  StoreIdRoute: typeof StoreIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +377,211 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/become-a-vendor': {
+      id: '/become-a-vendor'
+      path: '/become-a-vendor'
+      fullPath: '/become-a-vendor'
+      preLoaderRoute: typeof BecomeAVendorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact-us': {
+      id: '/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof ContactUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deals': {
+      id: '/deals'
+      path: '/deals'
+      fullPath: '/deals'
+      preLoaderRoute: typeof DealsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gift-cards': {
+      id: '/gift-cards'
+      path: '/gift-cards'
+      fullPath: '/gift-cards'
+      preLoaderRoute: typeof GiftCardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help-center': {
+      id: '/help-center'
+      path: '/help-center'
+      fullPath: '/help-center'
+      preLoaderRoute: typeof HelpCenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/returns': {
+      id: '/returns'
+      path: '/returns'
+      fullPath: '/returns'
+      preLoaderRoute: typeof ReturnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller-resources': {
+      id: '/seller-resources'
+      path: '/seller-resources'
+      fullPath: '/seller-resources'
+      preLoaderRoute: typeof SellerResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping': {
+      id: '/shipping'
+      path: '/shipping'
+      fullPath: '/shipping'
+      preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stores': {
+      id: '/stores'
+      path: '/stores'
+      fullPath: '/stores'
+      preLoaderRoute: typeof StoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/student-discount': {
+      id: '/student-discount'
+      path: '/student-discount'
+      fullPath: '/student-discount'
+      preLoaderRoute: typeof StudentDiscountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/success-stories': {
+      id: '/success-stories'
+      path: '/success-stories'
+      fullPath: '/success-stories'
+      preLoaderRoute: typeof SuccessStoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track-order': {
+      id: '/track-order'
+      path: '/track-order'
+      fullPath: '/track-order'
+      preLoaderRoute: typeof TrackOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vendor-pricing': {
+      id: '/vendor-pricing'
+      path: '/vendor-pricing'
+      fullPath: '/vendor-pricing'
+      preLoaderRoute: typeof VendorPricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wishlist': {
+      id: '/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof WishlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product/$id': {
+      id: '/product/$id'
+      path: '/product/$id'
+      fullPath: '/product/$id'
+      preLoaderRoute: typeof ProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/store/$id': {
+      id: '/store/$id'
+      path: '/store/$id'
+      fullPath: '/store/$id'
+      preLoaderRoute: typeof StoreIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BecomeAVendorRoute: BecomeAVendorRoute,
+  BlogRoute: BlogRoute,
+  CareersRoute: CareersRoute,
+  CartRoute: CartRoute,
+  ContactUsRoute: ContactUsRoute,
+  DealsRoute: DealsRoute,
+  GiftCardsRoute: GiftCardsRoute,
+  HelpCenterRoute: HelpCenterRoute,
+  PressRoute: PressRoute,
+  PricingRoute: PricingRoute,
+  ReturnsRoute: ReturnsRoute,
+  SellerResourcesRoute: SellerResourcesRoute,
+  ShippingRoute: ShippingRoute,
+  ShopRoute: ShopRoute,
+  SigninRoute: SigninRoute,
+  StoresRoute: StoresRoute,
+  StudentDiscountRoute: StudentDiscountRoute,
+  SuccessStoriesRoute: SuccessStoriesRoute,
+  TermsRoute: TermsRoute,
+  TrackOrderRoute: TrackOrderRoute,
+  VendorPricingRoute: VendorPricingRoute,
+  WishlistRoute: WishlistRoute,
+  ProductIdRoute: ProductIdRoute,
+  StoreIdRoute: StoreIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
