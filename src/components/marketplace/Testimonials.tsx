@@ -12,6 +12,7 @@ const avatarTints = ["bg-cat-beauty", "bg-cat-books", "bg-cat-sports", "bg-cat-f
 
 function TestimonialCard({ index }: { index: number }) {
   const t = testimonials[index];
+  if (!t) return null;
   const photo = avatarImages[index % avatarImages.length];
 
   return (
