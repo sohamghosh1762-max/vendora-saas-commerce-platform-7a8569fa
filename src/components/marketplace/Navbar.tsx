@@ -3,6 +3,7 @@ import { Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
 import { Logo } from "./Logo";
 import { useCart } from "@/lib/cart";
+import { useCinematic } from "@/components/cinematic/cinematic-context";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -16,9 +17,12 @@ const navLinks = [
 
 export function Navbar() {
   const { cartCount, wishlist, hydrated } = useCart();
+  const { isIntroActive, scene } = useCinematic();
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+
+  const isHiddenDuringIntro = isIntroActive && scene !== 4;
 
   const submitSearch = () => {
     const q = query.trim();
@@ -27,23 +31,33 @@ export function Navbar() {
     navigate({ to: "/shop", search: { q } });
   };
 
-  const iconBadge = "absolute -right-1.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9px] font-bold";
+  const iconBadge =
+    "absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9px] font-bold shadow-sm";
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
-        <Logo />
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-md transition-opacity duration-1000",
+        isHiddenDuringIntro ? "opacity-0 pointer-events-none" : "opacity-100",
+      )}
+    >
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        <div className="flex shrink-0 items-center min-w-[210px] sm:min-w-[230px] lg:w-[240px]">
+          <Logo />
+        </div>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label="Main navigation">
           {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
               activeOptions={{ exact: link.to === "/" }}
               className={cn(
-                "rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
-                "text-muted-foreground hover:bg-accent hover:text-foreground",
-                "data-[status=active]:bg-primary-soft data-[status=active]:text-primary-dark data-[status=active]:font-semibold",
+                "relative py-2 text-sm font-medium transition-colors",
+                "text-muted-foreground hover:text-foreground",
+                "data-[status=active]:text-primary data-[status=active]:font-semibold",
+                "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-primary after:opacity-0 after:transition-all",
+                "data-[status=active]:after:opacity-100",
               )}
             >
               {link.label}
@@ -53,7 +67,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2 sm:gap-3">
           <form
-            className="relative hidden w-64 xl:block"
+            className="relative hidden w-48 xl:w-64 lg:block"
             role="search"
             onSubmit={(e) => {
               e.preventDefault();
@@ -67,14 +81,14 @@ export function Navbar() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search for products, brands, or stores..."
               aria-label="Search products and stores"
-              className="w-full rounded-full border bg-muted/60 py-2 pl-10 pr-4 text-sm outline-none transition focus:border-primary focus:bg-background"
+              className="w-full rounded-full border border-border/80 bg-lavender/30 py-2 pl-10 pr-4 text-xs xl:text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20"
             />
           </form>
 
           <Link
             to="/wishlist"
             aria-label={`Wishlist, ${wishlist.length} items`}
-            className="relative grid size-9 place-items-center rounded-full text-foreground transition-colors hover:bg-accent"
+            className="relative grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent hover:text-primary"
           >
             <Heart className="size-5" />
             {hydrated && wishlist.length > 0 && (
@@ -87,11 +101,11 @@ export function Navbar() {
           <Link
             to="/cart"
             aria-label={`Cart, ${cartCount} items`}
-            className="relative grid size-9 place-items-center rounded-full text-foreground transition-colors hover:bg-accent"
+            className="relative grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent hover:text-primary"
           >
             <ShoppingBag className="size-5" />
             {hydrated && cartCount > 0 && (
-              <span className={cn(iconBadge, "bg-destructive text-destructive-foreground")}>
+              <span className={cn(iconBadge, "bg-primary text-primary-foreground")}>
                 {cartCount}
               </span>
             )}
@@ -99,13 +113,13 @@ export function Navbar() {
 
           <Link
             to="/signin"
-            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-dark sm:inline-flex"
+            className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-dark hover:shadow-soft active:scale-[0.98] sm:inline-flex"
           >
             Sign In
           </Link>
 
           <button
-            className="grid size-9 place-items-center rounded-full text-foreground transition-colors hover:bg-accent lg:hidden"
+            className="grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent lg:hidden"
             onClick={() => setMenuOpen((o) => !o)}
             aria-expanded={menuOpen}
             aria-label="Toggle menu"
@@ -116,37 +130,43 @@ export function Navbar() {
       </div>
 
       {menuOpen && (
-        <nav className="border-t bg-background px-4 py-3 lg:hidden" aria-label="Mobile">
-          <div className="relative mb-3 xl:hidden" role="search">
+        <nav className="border-t bg-background px-4 py-4 lg:hidden" aria-label="Mobile navigation">
+          <form
+            className="relative mb-3 block lg:hidden"
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitSearch();
+            }}
+          >
             <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && submitSearch()}
               placeholder="Search for products, brands, or stores..."
               aria-label="Search products and stores"
-              className="w-full rounded-full border bg-muted/60 py-2 pl-10 pr-4 text-sm outline-none focus:border-primary focus:bg-background"
+              className="w-full rounded-full border border-border/80 bg-lavender/30 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20"
             />
-          </div>
-          <ul className="flex flex-col">
+          </form>
+          <ul className="flex flex-col space-y-1">
             {navLinks.map((link) => (
               <li key={link.to}>
                 <Link
                   to={link.to}
                   activeOptions={{ exact: link.to === "/" }}
                   onClick={() => setMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent data-[status=active]:text-primary"
+                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent data-[status=active]:bg-primary-soft data-[status=active]:text-primary-dark data-[status=active]:font-semibold"
                 >
                   {link.label}
                 </Link>
               </li>
             ))}
-            <li className="mt-2">
+            <li className="pt-2 sm:hidden">
               <Link
                 to="/signin"
                 onClick={() => setMenuOpen(false)}
-                className="block rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
+                className="block rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-dark"
               >
                 Sign In
               </Link>

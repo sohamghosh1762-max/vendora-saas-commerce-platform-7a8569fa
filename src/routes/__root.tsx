@@ -13,6 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
+import { VendorAuthProvider } from "@/lib/vendor-context";
+import { CinematicProvider } from "@/components/cinematic/cinematic-context";
 import { Navbar } from "@/components/marketplace/Navbar";
 import { Footer } from "@/components/marketplace/Footer";
 
@@ -138,8 +140,17 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <VendorAuthProvider>
+          <CinematicProvider>
+            <div className="flex min-h-screen flex-col bg-background text-foreground">
+              <Navbar />
+              <main className="flex-1">
+                <Outlet />
+              </main>
+              <Footer />
+            </div>
+          </CinematicProvider>
+        </VendorAuthProvider>
       </CartProvider>
     </QueryClientProvider>
   );

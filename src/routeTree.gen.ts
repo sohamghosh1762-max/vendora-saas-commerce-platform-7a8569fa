@@ -31,6 +31,7 @@ import { Route as StudentDiscountRouteImport } from './routes/student-discount'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrackOrderRouteImport } from './routes/track-order'
+import { Route as VendorDashboardRouteImport } from './routes/vendor-dashboard'
 import { Route as VendorPricingRouteImport } from './routes/vendor-pricing'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
@@ -146,6 +147,11 @@ const TrackOrderRoute = TrackOrderRouteImport.update({
   path: '/track-order',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VendorDashboardRoute = VendorDashboardRouteImport.update({
+  id: '/vendor-dashboard',
+  path: '/vendor-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VendorPricingRoute = VendorPricingRouteImport.update({
   id: '/vendor-pricing',
   path: '/vendor-pricing',
@@ -190,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/success-stories': typeof SuccessStoriesRoute
   '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
+  '/vendor-dashboard': typeof VendorDashboardRoute
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
@@ -218,6 +225,7 @@ export interface FileRoutesByTo {
   '/success-stories': typeof SuccessStoriesRoute
   '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
+  '/vendor-dashboard': typeof VendorDashboardRoute
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/success-stories': typeof SuccessStoriesRoute
   '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
+  '/vendor-dashboard': typeof VendorDashboardRoute
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
   '/product/$id': typeof ProductIdRoute
@@ -277,6 +286,7 @@ export interface FileRouteTypes {
     | '/success-stories'
     | '/terms'
     | '/track-order'
+    | '/vendor-dashboard'
     | '/vendor-pricing'
     | '/wishlist'
     | '/product/$id'
@@ -305,6 +315,7 @@ export interface FileRouteTypes {
     | '/success-stories'
     | '/terms'
     | '/track-order'
+    | '/vendor-dashboard'
     | '/vendor-pricing'
     | '/wishlist'
     | '/product/$id'
@@ -333,6 +344,7 @@ export interface FileRouteTypes {
     | '/success-stories'
     | '/terms'
     | '/track-order'
+    | '/vendor-dashboard'
     | '/vendor-pricing'
     | '/wishlist'
     | '/product/$id'
@@ -362,6 +374,7 @@ export interface RootRouteChildren {
   SuccessStoriesRoute: typeof SuccessStoriesRoute
   TermsRoute: typeof TermsRoute
   TrackOrderRoute: typeof TrackOrderRoute
+  VendorDashboardRoute: typeof VendorDashboardRoute
   VendorPricingRoute: typeof VendorPricingRoute
   WishlistRoute: typeof WishlistRoute
   ProductIdRoute: typeof ProductIdRoute
@@ -524,6 +537,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackOrderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/vendor-dashboard': {
+      id: '/vendor-dashboard'
+      path: '/vendor-dashboard'
+      fullPath: '/vendor-dashboard'
+      preLoaderRoute: typeof VendorDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vendor-pricing': {
       id: '/vendor-pricing'
       path: '/vendor-pricing'
@@ -578,6 +598,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuccessStoriesRoute: SuccessStoriesRoute,
   TermsRoute: TermsRoute,
   TrackOrderRoute: TrackOrderRoute,
+  VendorDashboardRoute: VendorDashboardRoute,
   VendorPricingRoute: VendorPricingRoute,
   WishlistRoute: WishlistRoute,
   ProductIdRoute: ProductIdRoute,

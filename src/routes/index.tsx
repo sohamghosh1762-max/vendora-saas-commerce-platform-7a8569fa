@@ -7,8 +7,9 @@ import { WhyVendora } from "@/components/marketplace/WhyVendora";
 import { TopRatedStores } from "@/components/marketplace/TopRatedStores";
 import { MobileAppSection } from "@/components/marketplace/MobileAppSection";
 import { Testimonials } from "@/components/marketplace/Testimonials";
-import { VendorCTA } from "@/components/marketplace/VendorCTA";
 import { NewsletterBanner } from "@/components/marketplace/NewsletterBanner";
+import { useCinematic } from "@/components/cinematic/cinematic-context";
+import { CinematicIntro } from "@/components/cinematic/CinematicIntro";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -33,9 +34,14 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { isIntroActive, finishIntro, setScene, startIntro } = useCinematic();
+
   return (
     <>
-      <HeroSection />
+      {isIntroActive && (
+        <CinematicIntro onComplete={finishIntro} onSceneChange={setScene} />
+      )}
+      <HeroSection onReplayIntro={startIntro} />
       <CategoryStrip />
       <FeaturedProducts />
       <PromoBanners />
@@ -43,7 +49,6 @@ function Index() {
       <TopRatedStores />
       <MobileAppSection />
       <Testimonials />
-      <VendorCTA />
       <NewsletterBanner />
     </>
   );

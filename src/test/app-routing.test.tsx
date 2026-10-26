@@ -14,4 +14,25 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it("matches all Navbar routes successfully", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const routesToTest = [
+      "/",
+      "/shop",
+      "/stores",
+      "/deals",
+      "/become-a-vendor",
+      "/pricing",
+      "/wishlist",
+      "/cart",
+      "/signin",
+      "/vendor-dashboard",
+    ];
+
+    for (const path of routesToTest) {
+      const matches = router.matchRoutes(path);
+      expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+    }
+  });
 });

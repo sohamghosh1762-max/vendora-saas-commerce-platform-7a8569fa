@@ -81,6 +81,23 @@ export const stores: Store[] = [
   },
 ];
 
-export function getStore(id: string): Store | undefined {
-  return stores.find((s) => s.id === id);
+export function getAllStores(): Store[] {
+  if (typeof window !== "undefined") {
+    try {
+      const customRaw = window.localStorage.getItem("vendora_custom_stores_v1");
+      if (customRaw) {
+        const custom = JSON.parse(customRaw) as Store[];
+        const customIds = new Set(custom.map((c) => c.id));
+        return [...custom, ...stores.filter((s) => !customIds.has(s.id))];
+      }
+    } catch {
+      // Fallback to default
+    }
+  }
+  return stores;
 }
+
+export function getStore(id: string): Store | undefined {
+  return getAllStores().find((s) => s.id === id);
+}
+

@@ -21,7 +21,11 @@ const trustItems = [
 const avatarTints = ["bg-cat-fashion", "bg-cat-electronics", "bg-cat-food"];
 const avatarLetters = ["A", "R", "N"];
 
-export function HeroSection() {
+interface HeroSectionProps {
+  onReplayIntro?: () => void;
+}
+
+export function HeroSection({ onReplayIntro }: HeroSectionProps) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
 
@@ -33,27 +37,57 @@ export function HeroSection() {
 
   return (
     <section className="bg-hero-gradient relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:py-16">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-10 sm:py-12 lg:grid-cols-[1.05fr_0.95fr] lg:py-16">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-background/70 px-4 py-1.5 text-xs font-semibold text-primary-dark backdrop-blur">
-            <Sparkles className="size-3.5" />
-            500+ Independent Stores
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-background/70 px-4 py-1.5 text-xs font-semibold text-primary-dark backdrop-blur">
+              <Sparkles className="size-3.5" />
+              500+ Independent Stores
+            </span>
+            {onReplayIntro && (
+              <button
+                type="button"
+                onClick={onReplayIntro}
+                className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-background/60 px-3 py-1 text-xs font-semibold text-primary-dark backdrop-blur transition-all hover:bg-primary-soft hover:text-primary"
+                title="Watch the cinematic brand introduction"
+              >
+                <Sparkles className="size-3 text-primary" />
+                <span>Replay Intro</span>
+              </button>
+            )}
+          </div>
 
           <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-[3.4rem]">
-            Everything You Love,
-            <span className="block text-primary">All in One Place</span>
+            One Platform.
+            <span className="block">Thousands of Stores.</span>
+            <span className="block text-primary">Endless Possibilities.</span>
           </h1>
 
-          <p className="mt-4 max-w-lg text-base text-muted-foreground">
-            Discover unique products from thousands of stores, support local entrepreneurs, and
-            enjoy a seamless shopping experience.
+          <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">
+            Discover unique products from independent businesses, shop securely, and support local
+            sellers—all through one seamless platform.
           </p>
+
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <Link
+              to="/shop"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all hover:bg-primary-dark hover:shadow-float active:scale-[0.98]"
+            >
+              Shop Now
+              <ArrowRight className="size-4" />
+            </Link>
+            <Link
+              to="/become-a-vendor"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary hover:text-primary active:scale-[0.98]"
+            >
+              Become a Vendor
+            </Link>
+          </div>
 
           <form
             role="search"
             onSubmit={submitSearch}
-            className="mt-7 flex max-w-xl items-center gap-2 rounded-full bg-card p-1.5 pl-5 shadow-card"
+            className="mt-6 flex max-w-xl items-center gap-2 rounded-full bg-card p-1.5 pl-5 shadow-card"
           >
             <Search className="size-5 shrink-0 text-muted-foreground" />
             <input
@@ -108,7 +142,7 @@ export function HeroSection() {
             className="relative z-10 max-h-72 w-auto object-contain drop-shadow-xl sm:max-h-96 lg:max-h-[30rem]"
           />
 
-          <div className="absolute bottom-4 left-0 z-20 w-60 rounded-2xl bg-card p-4 shadow-lift sm:left-4 lg:-left-2">
+          <div className="absolute bottom-4 left-2 z-20 w-60 rounded-2xl bg-card p-4 shadow-lift sm:left-4 lg:-left-2">
             <p className="text-sm font-bold text-foreground">Shop from Independent Businesses</p>
             <div className="mt-3 flex items-center gap-3">
               <div className="flex -space-x-2">
