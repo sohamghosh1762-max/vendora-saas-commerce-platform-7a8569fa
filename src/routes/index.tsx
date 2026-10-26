@@ -1,24 +1,50 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { HeroSection } from "@/components/marketplace/HeroSection";
+import { CategoryStrip } from "@/components/marketplace/CategoryStrip";
+import { FeaturedProducts } from "@/components/marketplace/FeaturedProducts";
+import { PromoBanners } from "@/components/marketplace/PromoBanners";
+import { WhyVendora } from "@/components/marketplace/WhyVendora";
+import { TopRatedStores } from "@/components/marketplace/TopRatedStores";
+import { MobileAppSection } from "@/components/marketplace/MobileAppSection";
+import { Testimonials } from "@/components/marketplace/Testimonials";
+import { VendorCTA } from "@/components/marketplace/VendorCTA";
+import { NewsletterBanner } from "@/components/marketplace/NewsletterBanner";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Vendora — Everything You Love, All in One Place" },
+      {
+        name: "description",
+        content:
+          "Discover unique products from thousands of independent stores. Support local entrepreneurs and enjoy a seamless shopping experience on Vendora.",
+      },
+      { property: "og:title", content: "Vendora — Everything You Love, All in One Place" },
+      {
+        property: "og:description",
+        content:
+          "Discover unique products from thousands of independent stores. Support local entrepreneurs and enjoy a seamless shopping experience on Vendora.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <HeroSection />
+      <CategoryStrip />
+      <FeaturedProducts />
+      <PromoBanners />
+      <WhyVendora />
+      <TopRatedStores />
+      <MobileAppSection />
+      <Testimonials />
+      <VendorCTA />
+      <NewsletterBanner />
+    </>
   );
 }

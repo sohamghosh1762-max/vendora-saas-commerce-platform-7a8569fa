@@ -1,4 +1,5 @@
-import { ArrowRight, Apple, Play, Smartphone } from "lucide-react";
+import { ArrowRight, Apple, Play } from "lucide-react";
+import phonesImg from "@/assets/phones.png";
 
 /**
  * Design placeholder QR pattern. The brief allows a clearly designated
@@ -23,39 +24,37 @@ function QrPlaceholder() {
     <svg viewBox="0 0 21 21" className="size-32" role="img" aria-label="QR code placeholder">
       <rect width="21" height="21" fill="white" />
       {cells.map((on, i) =>
-        on ? <rect key={i} x={i % 21} y={Math.floor(i / 21)} width="1" height="1" fill="#10152F" /> : null,
+        on ? (
+          <rect key={i} x={i % 21} y={Math.floor(i / 21)} width="1" height="1" fill="#10152F" />
+        ) : null,
       )}
     </svg>
   );
 }
 
-function StoreBadge({
+export function StoreBadge({
   icon: Icon,
   top,
   bottom,
-  href,
 }: {
   icon: typeof Apple;
   top: string;
   bottom: string;
-  href: string;
 }) {
   return (
     <a
-      href={href}
+      href="#get-the-app"
       className="inline-flex items-center gap-2.5 rounded-xl bg-foreground px-4 py-2 text-primary-foreground transition-opacity hover:opacity-90"
-      aria-label={bottom}
+      aria-label={`${top} ${bottom}`}
     >
       <Icon className="size-6" />
-      <span className="flex flex-col leading-tight">
+      <span className="flex flex-col leading-tight text-left">
         <span className="text-[9px] uppercase tracking-wide opacity-80">{top}</span>
         <span className="text-sm font-bold">{bottom}</span>
       </span>
     </a>
   );
 }
-
-export { StoreBadge };
 
 export function MobileAppSection() {
   return (
@@ -70,20 +69,13 @@ export function MobileAppSection() {
             Shop your favourite products on the go. Available on iOS and Android.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <StoreBadge icon={Apple} top="Download on the" bottom="App Store" href="#app-store" />
-            <StoreBadge icon={Play} top="Get it on" bottom="Google Play" href="#google-play" />
+            <StoreBadge icon={Apple} top="Download on the" bottom="App Store" />
+            <StoreBadge icon={Play} top="Get it on" bottom="Google Play" />
           </div>
         </div>
 
         <div className="relative mx-auto flex justify-center">
           <div className="absolute left-1/2 top-1/2 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background/40 blur-2xl" />
-          <img
-            src="/phones"
-            alt=""
-            aria-hidden
-            className="hidden"
-          />
-          {/* Phone mockups */}
           <img
             src={phonesImg}
             alt="Vendora shopping app on two phones"
@@ -109,5 +101,3 @@ export function MobileAppSection() {
     </section>
   );
 }
-
-import phonesImg from "@/assets/phones.png";
