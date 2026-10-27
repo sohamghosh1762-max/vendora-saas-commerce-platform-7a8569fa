@@ -75,9 +75,69 @@ export const stores: Store[] = [
     rating: 4.6,
     reviews: 2308,
     productCount: 65,
-    tint: "bg-cat-auto text-cat-auto-fg",
+    tint: "bg-cat-sports text-cat-sports-fg",
     description:
       "Lifestyle and everyday essentials for people on the move — sportswear, gear and daily carry.",
+  },
+  {
+    id: "bookcraft",
+    name: "BookCraft Studios",
+    tagline: "Books & Fine Stationery",
+    category: "books",
+    rating: 4.9,
+    reviews: 1820,
+    productCount: 92,
+    tint: "bg-cat-books text-cat-books-fg",
+    description:
+      "Independent press and artisanal binder creating archival notebooks, journals, and literary editions.",
+  },
+  {
+    id: "wonderland",
+    name: "Wonderland Toys",
+    tagline: "Toys & Creative Play",
+    category: "toys",
+    rating: 4.8,
+    reviews: 1450,
+    productCount: 78,
+    tint: "bg-cat-toys text-cat-toys-fg",
+    description:
+      "Safe, eco-friendly wooden toys, STEM builders, and creative play kits designed to spark young imaginations.",
+  },
+  {
+    id: "artisangourmet",
+    name: "Artisan Gourmet Co.",
+    tagline: "Farm-to-Table Food & Drinks",
+    category: "food",
+    rating: 4.9,
+    reviews: 2940,
+    productCount: 84,
+    tint: "bg-cat-food text-cat-food-fg",
+    description:
+      "Single-origin coffees, organic forest honey, stone-ground nut butters, and small-batch pantry staples.",
+  },
+  {
+    id: "pranaherbal",
+    name: "Prana Herbal Living",
+    tagline: "Holistic Health & Wellness",
+    category: "health",
+    rating: 4.8,
+    reviews: 2130,
+    productCount: 56,
+    tint: "bg-cat-health text-cat-health-fg",
+    description:
+      "Authentic herbal extracts, clean plant proteins, and therapeutic self-care formulated with Ayurvedic principles.",
+  },
+  {
+    id: "gearshift",
+    name: "GearShift Auto Labs",
+    tagline: "Automotive Accessories & Care",
+    category: "automotive",
+    rating: 4.7,
+    reviews: 1670,
+    productCount: 68,
+    tint: "bg-cat-auto text-cat-auto-fg",
+    description:
+      "Precision automotive gadgets, smart dash cameras, emergency roadside tools, and pro-grade detailing supplies.",
   },
 ];
 
