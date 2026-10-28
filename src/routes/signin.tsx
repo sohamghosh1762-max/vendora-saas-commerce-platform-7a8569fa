@@ -98,7 +98,13 @@ export function SignInPage() {
 
           {/* Right Panel — Account Type Selection or Role-Specific Sign In Form (58% width) */}
           <div className="flex flex-1 flex-col justify-center p-8 sm:p-10 lg:p-12">
-            {!role && <AccountTypeSelector onSelectRole={(selectedRole) => navigate({ to: "/signin", search: { role: selectedRole } })} />}
+            {!role && (
+              <AccountTypeSelector
+                onSelectRole={(selectedRole) =>
+                  navigate({ to: "/signin", search: { role: selectedRole } })
+                }
+              />
+            )}
             {role === "vendor" && (
               <VendorSignInForm onBack={() => navigate({ to: "/signin", search: {} })} />
             )}
@@ -133,9 +139,7 @@ export function AccountTypeSelector({
       <h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
         Choose your account type
       </h2>
-      <p className="mt-1.5 text-sm text-muted-foreground">
-        Select how you want to access Vendora.
-      </p>
+      <p className="mt-1.5 text-sm text-muted-foreground">Select how you want to access Vendora.</p>
 
       <div className="mt-8 space-y-4">
         {/* Card 1 — Vendor */}
@@ -285,7 +289,10 @@ export function VendorSignInForm({ onBack }: { onBack: () => void }) {
         <div className="mt-4 rounded-2xl border border-primary/20 bg-primary-soft/40 p-3.5 text-xs text-primary-dark">
           <p className="font-semibold">Signed in as {vendor.fullName}</p>
           <p className="text-muted-foreground">{vendor.email}</p>
-          <Link to="/vendor-dashboard" className="mt-2 inline-block font-bold text-primary underline">
+          <Link
+            to="/vendor-dashboard"
+            className="mt-2 inline-block font-bold text-primary underline"
+          >
             Open Vendor Dashboard →
           </Link>
         </div>
@@ -365,20 +372,54 @@ export function VendorSignInForm({ onBack }: { onBack: () => void }) {
       <div className="mt-5 rounded-2xl border border-border bg-muted/30 p-3.5 text-xs">
         <p className="flex items-center gap-1.5 font-semibold text-foreground">
           <Store className="size-3.5 text-primary" />
-          Demo Merchant Account:
+          Demo Merchant Accounts:
         </p>
-        <p className="mt-1 text-muted-foreground">
-          Email: <code className="font-mono font-bold text-foreground">neha@stylenest.in</code>
-          <br />
-          Pass: <code className="font-mono font-bold text-foreground">vendora123</code>
-        </p>
-        <button
-          type="button"
-          onClick={fillDemoCredentials}
-          className="mt-2 text-[11px] font-bold text-primary underline hover:text-primary-dark"
-        >
-          Auto-fill Demo Vendor Credentials
-        </button>
+        <div className="mt-2 space-y-2">
+          <div className="rounded-xl border border-primary/20 bg-primary-soft/30 p-2.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-foreground">Rohan Mehta (The Urban Nest)</span>
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+                Reference Dashboard
+              </span>
+            </div>
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              Email:{" "}
+              <code className="font-mono font-bold text-foreground">rohan@theurbannest.com</code> •
+              Pass: <code className="font-mono font-bold text-foreground">vendora123</code>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail("rohan@theurbannest.com");
+                setPassword("vendora123");
+                setError(null);
+              }}
+              className="mt-1.5 text-[11px] font-bold text-primary underline hover:text-primary-dark"
+            >
+              Sign in as Rohan Mehta (The Urban Nest)
+            </button>
+          </div>
+
+          <div className="rounded-xl border border-border bg-background/50 p-2.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-foreground">Neha Sharma (StyleNest)</span>
+              <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                Fashion Merchant
+              </span>
+            </div>
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              Email: <code className="font-mono font-bold text-foreground">neha@stylenest.in</code>{" "}
+              • Pass: <code className="font-mono font-bold text-foreground">vendora123</code>
+            </p>
+            <button
+              type="button"
+              onClick={fillDemoCredentials}
+              className="mt-1.5 text-[11px] font-bold text-primary underline hover:text-primary-dark"
+            >
+              Auto-fill Demo Vendor Credentials
+            </button>
+          </div>
+        </div>
       </div>
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
@@ -441,9 +482,7 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
       <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
         Super Admin Sign In
       </h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Sign in to manage the Vendora platform.
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground">Sign in to manage the Vendora platform.</p>
 
       {/* Security Governance Notice */}
       <div className="mt-4 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3.5 text-xs text-amber-900 dark:text-amber-200">
@@ -452,7 +491,9 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
           <div>
             <p className="font-bold">Restricted Administrative Environment</p>
             <p className="mt-0.5 leading-relaxed text-muted-foreground">
-              Super Admin access governs marketplace infrastructure, merchant accounts, and platform finances. Multi-factor verification (MFA) and dedicated IAM server connection are required.
+              Super Admin access governs marketplace infrastructure, merchant accounts, and platform
+              finances. Multi-factor verification (MFA) and dedicated IAM server connection are
+              required.
             </p>
           </div>
         </div>

@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -136,19 +137,28 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const routerState = useRouterState();
+  const pathname = routerState?.location?.pathname || "";
+  const isVendorApp = pathname.startsWith("/vendor-dashboard") || pathname.startsWith("/vendor");
 
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
         <VendorAuthProvider>
           <CinematicProvider>
-            <div className="flex min-h-screen flex-col bg-background text-foreground">
-              <Navbar />
-              <main className="flex-1">
+            {isVendorApp ? (
+              <div className="min-h-screen bg-[#F6F5FC] text-foreground">
                 <Outlet />
-              </main>
-              <Footer />
-            </div>
+              </div>
+            ) : (
+              <div className="flex min-h-screen flex-col bg-background text-foreground">
+                <Navbar />
+                <main className="flex-1">
+                  <Outlet />
+                </main>
+                <Footer />
+              </div>
+            )}
           </CinematicProvider>
         </VendorAuthProvider>
       </CartProvider>

@@ -1,6 +1,7 @@
 import stylenestCover from "@/assets/store-stylenest.jpg";
 import techzoneCover from "@/assets/store-techzone.jpg";
 import homehavenCover from "@/assets/store-homehaven.jpg";
+import urbanNestCover from "@/assets/store-urban-nest.jpg";
 
 export type Store = {
   id: string;
@@ -16,6 +17,19 @@ export type Store = {
 };
 
 export const stores: Store[] = [
+  {
+    id: "the-urban-nest",
+    name: "The Urban Nest",
+    tagline: "Your Storefront",
+    category: "home-living",
+    rating: 4.9,
+    reviews: 320,
+    productCount: 48,
+    tint: "bg-cat-home text-cat-home-fg",
+    cover: urbanNestCover,
+    description:
+      "Curated artisan home decor, ceramics, and lifestyle essentials for modern living.",
+  },
   {
     id: "stylenest",
     name: "StyleNest",
@@ -100,4 +114,3 @@ export function getAllStores(): Store[] {
 export function getStore(id: string): Store | undefined {
   return getAllStores().find((s) => s.id === id);
 }
-

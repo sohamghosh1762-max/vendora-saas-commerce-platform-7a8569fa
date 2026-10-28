@@ -13,8 +13,8 @@ export function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 }
 
-// Initial demo vendor seeded into storage
-const initialDemoVendor: VendorUser = {
+// Initial demo vendors seeded into storage
+export const initialDemoVendor: VendorUser = {
   id: "vendor_stylenest",
   fullName: "Neha Sharma",
   email: "neha@stylenest.in",
@@ -24,6 +24,18 @@ const initialDemoVendor: VendorUser = {
   role: "vendor",
   createdAt: new Date().toISOString(),
   storeId: "stylenest",
+};
+
+export const initialRohanVendor: VendorUser = {
+  id: "vendor_rohan_urban_nest",
+  fullName: "Rohan Mehta",
+  email: "rohan@theurbannest.com",
+  phone: "+91 98200 12345",
+  passwordHash: "", // Will be computed on seed
+  salt: DEFAULT_SALT,
+  role: "vendor",
+  createdAt: new Date().toISOString(),
+  storeId: "the-urban-nest",
 };
 
 const initialDemoOrders: VendorOrder[] = [
@@ -64,10 +76,23 @@ let seeded = false;
 export async function ensureSeeded(): Promise<void> {
   if (seeded || !isBrowser()) return;
   try {
+    const demoHash = await hashPassword("vendora123", DEFAULT_SALT);
+    initialDemoVendor.passwordHash = demoHash;
+    initialRohanVendor.passwordHash = demoHash;
+
     const existing = window.localStorage.getItem(VENDORS_KEY);
     if (!existing) {
-      initialDemoVendor.passwordHash = await hashPassword("vendora123", DEFAULT_SALT);
-      window.localStorage.setItem(VENDORS_KEY, JSON.stringify([initialDemoVendor]));
+      window.localStorage.setItem(
+        VENDORS_KEY,
+        JSON.stringify([initialDemoVendor, initialRohanVendor]),
+      );
+    } else {
+      const parsed = JSON.parse(existing) as VendorUser[];
+      const hasRohan = parsed.some((v) => v.email.toLowerCase() === "rohan@theurbannest.com");
+      if (!hasRohan) {
+        parsed.push(initialRohanVendor);
+        window.localStorage.setItem(VENDORS_KEY, JSON.stringify(parsed));
+      }
     }
 
     const existingOrders = window.localStorage.getItem(ORDERS_KEY);
@@ -81,14 +106,14 @@ export async function ensureSeeded(): Promise<void> {
 }
 
 export function getStoredVendors(): VendorUser[] {
-  if (!isBrowser()) return [initialDemoVendor];
+  if (!isBrowser()) return [initialDemoVendor, initialRohanVendor];
   try {
     const raw = window.localStorage.getItem(VENDORS_KEY);
     if (raw) return JSON.parse(raw) as VendorUser[];
   } catch {
     // Return empty on parse error
   }
-  return [initialDemoVendor];
+  return [initialDemoVendor, initialRohanVendor];
 }
 
 export function saveVendors(vendors: VendorUser[]): void {
@@ -121,7 +146,8 @@ export function saveCustomStores(stores: VendorStore[]): void {
 }
 
 export function getStoredOrders(storeId?: string): VendorOrder[] {
-  if (!isBrowser()) return storeId ? initialDemoOrders.filter((o) => o.storeId === storeId) : initialDemoOrders;
+  if (!isBrowser())
+    return storeId ? initialDemoOrders.filter((o) => o.storeId === storeId) : initialDemoOrders;
   try {
     const raw = window.localStorage.getItem(ORDERS_KEY);
     if (raw) {

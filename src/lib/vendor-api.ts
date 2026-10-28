@@ -120,7 +120,10 @@ export async function registerVendor(
   if (!slug) return { success: false, error: "A valid store slug is required." };
   const slugAvailable = await checkSlugAvailability(slug);
   if (!slugAvailable) {
-    return { success: false, error: `The store slug '${slug}' is already taken. Please pick another.` };
+    return {
+      success: false,
+      error: `The store slug '${slug}' is already taken. Please pick another.`,
+    };
   }
   if (!data.category) return { success: false, error: "Please select a store category." };
   if (!data.description.trim()) return { success: false, error: "Store description is required." };
@@ -242,6 +245,38 @@ export function getVendorStore(storeId: string): VendorStore | null {
   const custom = getCustomStores();
   const foundCustom = custom.find((s) => s.id === storeId);
   if (foundCustom) return foundCustom;
+
+  if (storeId === "the-urban-nest") {
+    const mock = mockStores.find((s) => s.id === "the-urban-nest");
+    return {
+      id: "the-urban-nest",
+      slug: "the-urban-nest",
+      name: "The Urban Nest",
+      tagline: "Your Storefront",
+      category: "home-living",
+      rating: 4.9,
+      reviews: 320,
+      productCount: 48,
+      tint: "bg-cat-home text-cat-home-fg",
+      cover: mock?.cover,
+      description:
+        "Curated artisan home decor, ceramics, and lifestyle essentials for modern living.",
+      ownerId: "vendor_rohan_urban_nest",
+      ownerEmail: "rohan@theurbannest.com",
+      phone: "+91 98200 12345",
+      address: "42 Indiranagar 100ft Road",
+      city: "Bengaluru",
+      state: "Karnataka",
+      postalCode: "560038",
+      businessType: "Private Limited",
+      returnPolicy: "14-Day Easy Returns",
+      shippingMethod: "Vendora Logistics Express",
+      processingTime: "Same Day Dispatch",
+      supportEmail: "hello@theurbannest.com",
+      status: "ACTIVE",
+      createdAt: "2024-01-10T00:00:00.000Z",
+    };
+  }
 
   // If matches an initial mock store (e.g. stylenest for Neha)
   const mock = mockStores.find((s) => s.id === storeId);
