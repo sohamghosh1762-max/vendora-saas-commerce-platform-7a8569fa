@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useState } from "react";
 import { Lock } from "lucide-react";
 import { useVendorAuth } from "@/lib/vendor-context";
 import { VendorSidebar, type SidebarTab } from "@/components/vendor-dashboard/VendorSidebar";
@@ -26,7 +26,37 @@ import {
 } from "@/lib/vendor-dashboard-data";
 import { addVendorProduct, updateVendorStore } from "@/lib/vendor-api";
 
+export const VALID_SIDEBAR_TABS: readonly SidebarTab[] = [
+  "dashboard",
+  "products",
+  "orders",
+  "customers",
+  "analytics",
+  "settings",
+  "marketing",
+  "payouts",
+  "messages",
+  "reviews",
+  "appearance",
+  "integrations",
+] as const;
+
+export function isValidSidebarTab(tab: unknown): tab is SidebarTab {
+  return typeof tab === "string" && (VALID_SIDEBAR_TABS as readonly string[]).includes(tab);
+}
+
+export interface VendorDashboardSearch {
+  tab?: SidebarTab;
+}
+
 export const Route = createFileRoute("/vendor-dashboard")({
+  validateSearch: (search: Record<string, unknown>): VendorDashboardSearch => {
+    const tab = search.tab;
+    if (isValidSidebarTab(tab)) {
+      return { tab };
+    }
+    return {};
+  },
   component: VendorDashboardPage,
   head: () => ({
     meta: [
@@ -44,10 +74,23 @@ export const Route = createFileRoute("/vendor-dashboard")({
 export function VendorDashboardPage() {
   const { isAuthenticated, vendor, store, hydrated, logout, refreshStore } = useVendorAuth();
   const navigate = useNavigate();
+  const search = useSearch({ strict: false }) as VendorDashboardSearch | undefined;
 
-  // Navigation and active views
-  const [activeTab, setActiveTab] = useState<SidebarTab>("dashboard");
+  // Active tab synchronized with URL query parameter (?tab=...)
+  // Defaults to 'dashboard' (Overview) if tab parameter is missing or invalid
+  const rawTab = search?.tab;
+  const activeTab: SidebarTab = isValidSidebarTab(rawTab) ? rawTab : "dashboard";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleTabChange = (tab: SidebarTab) => {
+    if (activeTab === tab && rawTab === tab) {
+      return;
+    }
+    navigate({
+      to: "/vendor-dashboard",
+      search: { tab },
+    });
+  };
 
   // Modals state
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
@@ -180,7 +223,7 @@ export function VendorDashboardPage() {
         <div className="sticky top-0 h-screen">
           <VendorSidebar
             activeTab={activeTab}
-            onSelectTab={setActiveTab}
+            onSelectTab={handleTabChange}
             unreadMessagesCount={5}
             storeName={storeName}
             storeSlug={storeSlug}
@@ -199,7 +242,10 @@ export function VendorDashboardPage() {
           <div className="relative z-10 w-[240px] h-full shadow-2xl">
             <VendorSidebar
               activeTab={activeTab}
-              onSelectTab={setActiveTab}
+              onSelectTab={(tab) => {
+                handleTabChange(tab);
+                setIsMobileMenuOpen(false);
+              }}
               unreadMessagesCount={5}
               storeName={storeName}
               storeSlug={storeSlug}
@@ -244,7 +290,7 @@ export function VendorDashboardPage() {
               completionPercentage={completionPercentage}
               checklistItems={checklistItems}
               onSelectChecklistAction={handleChecklistAction}
-              onNavigateTab={setActiveTab}
+              onNavigateTab={handleTabChange}
               onOpenAddProduct={() => setIsAddProductOpen(true)}
               onOpenStoreSettings={() => setIsStoreSettingsOpen(true)}
               onSelectOrder={(ord) => setSelectedOrder(ord)}
@@ -252,7 +298,7 @@ export function VendorDashboardPage() {
           ) : (
             <VendorNonDashboardView
               activeTab={activeTab}
-              onBackToDashboard={() => setActiveTab("dashboard")}
+              onBackToDashboard={() => handleTabChange("dashboard")}
               onAddProductClick={() => setIsAddProductOpen(true)}
               storeName={storeName}
             />
