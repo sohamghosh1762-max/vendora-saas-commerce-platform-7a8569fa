@@ -17,6 +17,11 @@ import skincareImg from "@/assets/product-skincare.jpg";
 import shoesImg from "@/assets/product-shoes.jpg";
 import sofaImg from "@/assets/promo-sofa.jpg";
 
+export type ProductVariant = {
+  name: string;
+  options: string[];
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -32,12 +37,15 @@ export type Product = {
   reviews: number;
   badge?: string | undefined;
   image: string;
+  images?: string[] | undefined;
   imagePosition?: string | undefined;
   featured?: boolean | undefined;
   description: string;
   inStock?: boolean | undefined;
   stockCount?: number | undefined;
   brand?: string | undefined;
+  specs?: Record<string, string> | undefined;
+  variants?: ProductVariant[] | undefined;
 };
 
 export const products: Product[] = [
@@ -280,7 +288,7 @@ export const products: Product[] = [
     reviews: 430,
     badge: "Convertible",
     image:
-      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
     createdAt: "2026-01-29T04:32:37.895Z",
@@ -320,7 +328,7 @@ export const products: Product[] = [
     reviews: 310,
     badge: "OLED 120Hz",
     image:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 15,
     createdAt: "2026-01-31T16:49:28.421Z",
@@ -564,7 +572,7 @@ export const products: Product[] = [
     reviews: 320,
     badge: "S-Pen Included",
     image:
-      "https://images.unsplash.com/photo-1585792180666-f75a7c3ab27c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 14,
     createdAt: "2026-02-15T18:30:31.579Z",
@@ -645,7 +653,7 @@ export const products: Product[] = [
     reviews: 870,
     badge: "IP67 Rated",
     image:
-      "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
     createdAt: "2026-02-20T19:04:12.632Z",
@@ -685,7 +693,7 @@ export const products: Product[] = [
     reviews: 3120,
     badge: "22% OFF",
     image:
-      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
     createdAt: "2026-02-23T07:21:03.158Z",
@@ -847,7 +855,7 @@ export const products: Product[] = [
     reviews: 620,
     badge: "4K HDR",
     image:
-      "https://images.unsplash.com/photo-1587826080692-f33e21820904?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1588508065123-287b28e013da?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
     createdAt: "2026-03-05T08:28:25.263Z",
@@ -867,7 +875,7 @@ export const products: Product[] = [
     reviews: 1430,
     badge: "38% OFF",
     image:
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1616628188859-7a11abb6fcc9?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
     createdAt: "2026-03-06T14:36:50.526Z",
@@ -969,7 +977,7 @@ export const products: Product[] = [
     reviews: 690,
     badge: "140W Ultra-Fast",
     image:
-      "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
     createdAt: "2026-03-12T21:18:56.842Z",
@@ -1544,7 +1552,7 @@ export const products: Product[] = [
     reviews: 490,
     badge: "Eco-Friendly",
     image:
-      "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
     createdAt: "2026-04-17T01:14:44.211Z",
@@ -1626,7 +1634,7 @@ export const products: Product[] = [
     reviews: 920,
     badge: "Work From Home",
     image:
-      "https://images.unsplash.com/photo-1580481077195-731da03fed62?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1505797149-43b0069ec26b?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 15,
@@ -1807,7 +1815,7 @@ export const products: Product[] = [
     reviews: 1120,
     badge: "Stainless Steel",
     image:
-      "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
     createdAt: "2026-05-03T09:04:12.632Z",
@@ -1871,7 +1879,7 @@ export const products: Product[] = [
     reviews: 1420,
     badge: "Best Seller",
     image:
-      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 68,
@@ -1892,7 +1900,7 @@ export const products: Product[] = [
     reviews: 890,
     badge: "41% OFF",
     image:
-      "https://images.unsplash.com/photo-1608248597359-2e11894a4c6a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 44,
     createdAt: "2026-05-08T09:37:53.684Z",
@@ -1932,7 +1940,7 @@ export const products: Product[] = [
     reviews: 510,
     badge: "42% OFF",
     image:
-      "https://images.unsplash.com/photo-1567928815104-b7980ee5032e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 38,
     createdAt: "2026-05-10T21:54:44.211Z",
@@ -2013,7 +2021,7 @@ export const products: Product[] = [
     reviews: 1840,
     badge: "Derm Choice",
     image:
-      "https://images.unsplash.com/photo-1556228722-d0b5de70b79b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 50,
@@ -2034,7 +2042,7 @@ export const products: Product[] = [
     reviews: 2410,
     badge: "Best Seller",
     image:
-      "https://images.unsplash.com/photo-1608248597359-2e11894a4c6a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 65,
@@ -2055,7 +2063,7 @@ export const products: Product[] = [
     reviews: 780,
     badge: "100H Hydration",
     image:
-      "https://images.unsplash.com/photo-1567928815104-b7980ee5032e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
     createdAt: "2026-05-18T10:45:15.789Z",
@@ -2236,7 +2244,7 @@ export const products: Product[] = [
     reviews: 1480,
     badge: "Cult Classic",
     image:
-      "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
     createdAt: "2026-05-29T18:01:03.158Z",
@@ -2400,7 +2408,7 @@ export const products: Product[] = [
     reviews: 430,
     badge: "37% OFF",
     image:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 33,
     createdAt: "2026-06-08T19:08:25.263Z",
@@ -2503,7 +2511,7 @@ export const products: Product[] = [
     reviews: 1120,
     badge: "Spacious",
     image:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
     createdAt: "2026-06-15T01:50:31.579Z",
@@ -2623,7 +2631,7 @@ export const products: Product[] = [
     reviews: 670,
     badge: "FIBA Approved",
     image:
-      "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
     createdAt: "2026-06-22T14:41:03.158Z",
@@ -2808,7 +2816,7 @@ export const products: Product[] = [
     reviews: 260,
     badge: "36% OFF",
     image:
-      "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1516962215378-7fa2e137ae93?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 18,
     createdAt: "2026-07-03T21:56:50.526Z",
@@ -2871,7 +2879,7 @@ export const products: Product[] = [
     reviews: 890,
     badge: "Tech Essential",
     image:
-      "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
     createdAt: "2026-07-07T16:22:06.316Z",
@@ -2911,7 +2919,7 @@ export const products: Product[] = [
     reviews: 850,
     badge: "Archival",
     image:
-      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
     createdAt: "2026-07-10T04:38:56.842Z",
@@ -2931,7 +2939,7 @@ export const products: Product[] = [
     reviews: 620,
     badge: "Thread-Bound",
     image:
-      "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
     createdAt: "2026-07-11T10:47:22.105Z",
@@ -2951,7 +2959,7 @@ export const products: Product[] = [
     reviews: 980,
     badge: "German Made",
     image:
-      "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
     createdAt: "2026-07-12T16:55:47.368Z",
@@ -2971,7 +2979,7 @@ export const products: Product[] = [
     reviews: 1420,
     badge: "Smooth Ink",
     image:
-      "https://images.unsplash.com/photo-1585336261026-7fcf1899e984?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 60,
     createdAt: "2026-07-13T23:04:12.632Z",
@@ -2991,7 +2999,7 @@ export const products: Product[] = [
     reviews: 490,
     badge: "Artist Grade",
     image:
-      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1525909002-1b05e0c869d8?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
     createdAt: "2026-07-15T05:12:37.895Z",
@@ -3051,7 +3059,7 @@ export const products: Product[] = [
     reviews: 890,
     badge: "Eye Care",
     image:
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1517991104123-1d56a6e81ed9?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
     createdAt: "2026-07-18T23:37:53.684Z",
@@ -3196,7 +3204,7 @@ export const products: Product[] = [
     reviews: 380,
     badge: "37% OFF",
     image:
-      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 26,
     createdAt: "2026-07-27T18:36:50.526Z",
@@ -3399,7 +3407,7 @@ export const products: Product[] = [
     reviews: 820,
     badge: "Eco Wooden",
     image:
-      "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 36,
     createdAt: "2026-08-09T08:01:03.158Z",
@@ -3419,7 +3427,7 @@ export const products: Product[] = [
     reviews: 690,
     badge: "STEM Favorite",
     image:
-      "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
     createdAt: "2026-08-10T14:09:28.421Z",
@@ -3459,7 +3467,7 @@ export const products: Product[] = [
     reviews: 510,
     badge: "3-in-1 Desk",
     image:
-      "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 15,
     createdAt: "2026-08-13T02:26:18.947Z",
@@ -3666,7 +3674,7 @@ export const products: Product[] = [
     reviews: 920,
     badge: "100% Whole Leaf",
     image:
-      "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
     createdAt: "2026-08-25T15:50:31.579Z",
@@ -3686,7 +3694,7 @@ export const products: Product[] = [
     reviews: 1240,
     badge: "Swiss Master",
     image:
-      "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 35,
@@ -3727,7 +3735,7 @@ export const products: Product[] = [
     reviews: 860,
     badge: "Rich in Omega-3",
     image:
-      "https://images.unsplash.com/photo-1508061252445-5350f3ab0a55?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1596560548464-f010549b84d7?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 55,
     createdAt: "2026-08-29T10:15:47.368Z",
@@ -3787,7 +3795,7 @@ export const products: Product[] = [
     reviews: 1120,
     badge: "No Preservatives",
     image:
-      "https://images.unsplash.com/photo-1622484216279-d599b50b6a22?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 65,
     createdAt: "2026-09-02T04:41:03.158Z",
@@ -3847,7 +3855,7 @@ export const products: Product[] = [
     reviews: 590,
     badge: "Bronze Cut",
     image:
-      "https://images.unsplash.com/photo-1621996346565-e3d5d6281729?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1551462147-ff29053bfc14?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
     createdAt: "2026-09-05T23:06:18.947Z",
@@ -3867,7 +3875,7 @@ export const products: Product[] = [
     reviews: 730,
     badge: "Made in Italy",
     image:
-      "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 36,
     createdAt: "2026-09-07T05:14:44.211Z",
@@ -3952,7 +3960,7 @@ export const products: Product[] = [
     reviews: 740,
     badge: "40% OFF",
     image:
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 46,
     createdAt: "2026-09-12T05:48:25.263Z",
@@ -3972,7 +3980,7 @@ export const products: Product[] = [
     reviews: 1120,
     badge: "Lab Tested",
     image:
-      "https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 62,
     createdAt: "2026-09-13T11:56:50.526Z",
@@ -4053,7 +4061,7 @@ export const products: Product[] = [
     reviews: 1420,
     badge: "1-Sec Reading",
     image:
-      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1584744982491-665216d95f8b?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 35,
@@ -4095,7 +4103,7 @@ export const products: Product[] = [
     reviews: 940,
     badge: "43% OFF",
     image:
-      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
     createdAt: "2026-09-21T00:47:22.105Z",
@@ -4115,7 +4123,7 @@ export const products: Product[] = [
     reviews: 2150,
     badge: "Orthopaedic",
     image:
-      "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
     createdAt: "2026-09-22T06:55:47.368Z",
@@ -4135,7 +4143,7 @@ export const products: Product[] = [
     reviews: 380,
     badge: "Deep Knead",
     image:
-      "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 14,
     createdAt: "2026-09-23T13:04:12.632Z",
@@ -4175,7 +4183,7 @@ export const products: Product[] = [
     reviews: 290,
     badge: "German Tech",
     image:
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 16,
     createdAt: "2026-09-26T01:21:03.158Z",
@@ -4215,7 +4223,7 @@ export const products: Product[] = [
     reviews: 510,
     badge: "Migraine Relief",
     image:
-      "https://images.unsplash.com/photo-1512290903671-17adc8465f45?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
     createdAt: "2026-09-28T13:37:53.684Z",
@@ -4235,7 +4243,7 @@ export const products: Product[] = [
     reviews: 2450,
     badge: "Immunity Boost",
     image:
-      "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
     createdAt: "2026-09-29T19:46:18.947Z",
@@ -4255,7 +4263,7 @@ export const products: Product[] = [
     reviews: 1820,
     badge: "Daily Vitality",
     image:
-      "https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1577401239170-897942555fb3?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 80,
     createdAt: "2026-10-01T01:54:44.211Z",
@@ -4275,7 +4283,7 @@ export const products: Product[] = [
     reviews: 1350,
     badge: "NABL Lab Tested",
     image:
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
     createdAt: "2026-10-02T08:03:09.474Z",
@@ -4340,7 +4348,7 @@ export const products: Product[] = [
     reviews: 950,
     badge: "Essential",
     image:
-      "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
     createdAt: "2026-10-06T02:28:25.263Z",
@@ -4440,7 +4448,7 @@ export const products: Product[] = [
     reviews: 560,
     badge: "Diagnostic",
     image:
-      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 37,
     createdAt: "2026-10-12T09:10:31.579Z",
@@ -4460,7 +4468,7 @@ export const products: Product[] = [
     reviews: 1120,
     badge: "Built-in GPS",
     image:
-      "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 25,
@@ -4481,7 +4489,7 @@ export const products: Product[] = [
     reviews: 950,
     badge: "65W GaN",
     image:
-      "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
     createdAt: "2026-10-14T21:27:22.105Z",
@@ -4521,7 +4529,7 @@ export const products: Product[] = [
     reviews: 820,
     badge: "All-Metal Motor",
     image:
-      "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 22,
@@ -4562,7 +4570,7 @@ export const products: Product[] = [
     reviews: 910,
     badge: "Complete Kit",
     image:
-      "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
     createdAt: "2026-10-19T22:01:03.158Z",
@@ -4582,7 +4590,7 @@ export const products: Product[] = [
     reviews: 1350,
     badge: "Lint-Free",
     image:
-      "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
     createdAt: "2026-10-21T04:09:28.421Z",
@@ -4622,7 +4630,7 @@ export const products: Product[] = [
     reviews: 620,
     badge: "Accurate",
     image:
-      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
     createdAt: "2026-10-23T16:26:18.947Z",
@@ -4642,7 +4650,7 @@ export const products: Product[] = [
     reviews: 1480,
     badge: "Safety Essential",
     image:
-      "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 90,
     createdAt: "2026-10-24T22:34:44.211Z",
@@ -4682,7 +4690,7 @@ export const products: Product[] = [
     reviews: 430,
     badge: "Solar Powered",
     image:
-      "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 18,
     createdAt: "2026-10-27T10:51:34.737Z",
