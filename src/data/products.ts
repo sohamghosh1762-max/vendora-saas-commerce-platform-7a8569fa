@@ -23,6 +23,9 @@ export type Product = {
   storeId: string;
   storeName: string;
   category: string;
+  subcategory?: string | undefined;
+  keywords?: string[] | undefined;
+  createdAt?: string | undefined;
   price: number;
   originalPrice: number;
   rating: number;
@@ -56,6 +59,7 @@ export const products: Product[] = [
     featured: true,
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-01-15T09:00:00.000Z",
     brand: "Acoustix",
     description:
       "Over-ear wireless headphones with active noise cancellation, deep bass, plush memory-foam ear cushions, and up to 30 hours of continuous battery life.",
@@ -75,6 +79,7 @@ export const products: Product[] = [
     featured: true,
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-01-16T15:08:25.263Z",
     brand: "PulseTech",
     description:
       "Round 1.43-inch AMOLED smart watch with 24/7 SpO2 and heart-rate tracking, 120+ workout modes, Bluetooth calling, and 7-day battery endurance.",
@@ -90,10 +95,12 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 840,
     badge: "44% OFF",
-    image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 55,
+    createdAt: "2026-01-17T21:16:50.526Z",
     brand: "SoundWave",
     description:
       "Pocket-sized earbuds with hybrid 35dB noise cancellation, low-latency gaming mode, wireless charging case, and water-resistant nano-coating.",
@@ -109,9 +116,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 612,
     badge: "Top Rated",
-    image: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 19,
+    createdAt: "2026-01-19T03:25:15.789Z",
     brand: "KeyForge",
     description:
       "Hot-swappable 75% mechanical keyboard featuring custom linear red switches, sound-dampening silicone foam, and per-key RGB backlighting.",
@@ -127,9 +136,11 @@ export const products: Product[] = [
     rating: 4.5,
     reviews: 430,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 64,
+    createdAt: "2026-01-20T09:33:41.053Z",
     brand: "VoltGrid",
     description:
       "Snap-on 15W Qi-compatible wireless magnetic battery pack with 20W USB-C Power Delivery and integrated foldable kickstand.",
@@ -145,9 +156,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 385,
     badge: "Popular",
-    image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 37,
+    createdAt: "2026-01-21T15:42:06.316Z",
     brand: "ErgoDesk",
     description:
       "Natural 57-degree handshake grip vertical wireless mouse designed to alleviate wrist strain during extended desktop workflows.",
@@ -163,9 +176,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1240,
     badge: "42% OFF",
-    image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 80,
+    createdAt: "2026-01-22T21:50:31.579Z",
     brand: "BoomCraft",
     description:
       "IPX7 waterproof portable Bluetooth speaker delivering punchy 20W audio, omnidirectional sound dispersion, and 16-hour playtime.",
@@ -181,15 +196,17 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 510,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1544652478-6653e09f18a2?auto=format&fit=crop&w=800&q=80",
-    inStock: true,
-    stockCount: 45,
+    image:
+      "https://images.unsplash.com/photo-1544652478-6653e09f18a2?auto=format&fit=crop&w=800&q=80",
+    inStock: false,
+    stockCount: 0,
+    createdAt: "2026-01-24T03:58:56.842Z",
     brand: "DockPro",
     description:
       "Premium space-gray aluminum adapter equipped with 4K HDMI, 100W PD passthrough, SD/TF card reader, and triple high-speed USB 3.0 ports.",
   },
 
-    {
+  {
     id: "apple-macbook-air-m3-13",
     name: "Apple MacBook Air 13-inch M3 Chip (16GB RAM, 512GB SSD)",
     storeId: "techzone",
@@ -200,10 +217,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 840,
     badge: "Bestseller",
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 18,
+    createdAt: "2026-01-25T10:07:22.105Z",
     brand: "Apple",
     description:
       "Incredibly thin and fast MacBook Air supercharged by the Apple M3 chip, featuring an 8-core CPU, 10-core GPU, 13.6-inch Liquid Retina display, and up to 18 hours of battery life.",
@@ -219,10 +238,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 512,
     badge: "Pro Choice",
-    image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 12,
+    createdAt: "2026-01-26T16:15:47.368Z",
     brand: "Apple",
     description:
       "Pro workstation laptop powered by the M3 Pro chip in Space Black finish. Features stunning 14.2-inch Liquid Retina XDR display, HDMI, MagSafe 3, and advanced thermal design.",
@@ -238,9 +259,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 670,
     badge: "21% OFF",
-    image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 32,
+    createdAt: "2026-01-27T22:24:12.632Z",
     brand: "Dell",
     description:
       "Reliable everyday performance laptop featuring 13th Gen Intel Core i5-1334U processor, 15.6-inch FHD 120Hz anti-glare display, lift hinge ergonomics, and ExpressCharge capability.",
@@ -256,9 +279,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 430,
     badge: "Convertible",
-    image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-01-29T04:32:37.895Z",
     brand: "HP",
     description:
       "Flexible 360-degree geared hinge laptop with 14-inch Full HD multitouch display, edge-to-edge glass, Audio by B&O, 16GB DDR4 RAM, and 512GB PCIe NVMe SSD.",
@@ -274,9 +299,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 580,
     badge: "25% OFF",
-    image: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 29,
+    createdAt: "2026-01-30T10:41:03.158Z",
     brand: "Lenovo",
     description:
       "Sleek 1.62kg Arctic Grey ultra-thin notebook equipped with 8-core AMD Ryzen 7 5700U, 15.6-inch FHD anti-glare IPS display, privacy camera shutter, and Dolby Audio.",
@@ -292,9 +319,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 310,
     badge: "OLED 120Hz",
-    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 15,
+    createdAt: "2026-01-31T16:49:28.421Z",
     brand: "ASUS",
     description:
       "Premium Intel Evo certified ultraportable with 14-inch 3K 120Hz Lumina OLED display, Intel Core Ultra 7 155H with AI Boost NPU, 75Wh battery, and military-grade durability.",
@@ -310,10 +339,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 240,
     badge: "RTX 4070",
-    image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 10,
+    createdAt: "2026-02-01T22:57:53.684Z",
     brand: "ASUS",
     description:
       "CNC aluminum chassis powerhouse engineered with 16-inch 2.5K 240Hz ROG Nebula OLED display, NVIDIA GeForce RTX 4070 8GB GPU, Intel Core Ultra 9 185H, and 32GB LPDDR5X RAM.",
@@ -329,10 +360,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1420,
     badge: "Flagship",
-    image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-02-03T05:06:18.947Z",
     brand: "Apple",
     description:
       "Grade 5 titanium design housing the revolutionary A18 Pro chip, Camera Control button, 48MP Fusion camera system with 5x telephoto, and expansive 6.9-inch Super Retina XDR screen.",
@@ -348,9 +381,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 2190,
     badge: "17% OFF",
-    image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-02-04T11:14:44.211Z",
     brand: "Apple",
     description:
       "Dynamic Island brings alerts and live activities seamlessly to life. Features color-infused glass, aerospace-grade aluminum, 48MP Main camera with 2x Telephoto, and USB-C connectivity.",
@@ -366,10 +401,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1680,
     badge: "Galaxy AI",
-    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-02-05T17:23:09.474Z",
     brand: "Samsung",
     description:
       "Next-gen titanium flagship featuring Galaxy AI Circle to Search, Live Translate, built-in S-Pen, 200MP camera system, Snapdragon 8 Gen 3 for Galaxy, and Corning Gorilla Armor glass.",
@@ -385,9 +422,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 820,
     badge: "19% OFF",
-    image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-02-06T23:31:34.737Z",
     brand: "Samsung",
     description:
       "Premium metal frame smartphone boasting 6.6-inch Super AMOLED 120Hz display, 50MP OIS triple camera with Nightography, Samsung Knox Vault security, and 5000mAh battery.",
@@ -403,9 +442,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 740,
     badge: "Google AI",
-    image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 16,
+    createdAt: "2026-02-08T05:40:00.000Z",
     brand: "Google",
     description:
       "Google's most powerful Pixel with Gemini AI built-in, custom Tensor G4 processor, pro triple camera system with 30x Super Res Zoom, and 6.8-inch Super Actua display.",
@@ -421,9 +462,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 690,
     badge: "Best Camera",
-    image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-02-09T11:48:25.263Z",
     brand: "Google",
     description:
       "The AI-first phone with Google Tensor G3, Best Take, Magic Editor, Audio Magic Eraser, 6.1-inch 120Hz Actua display, and guaranteed 7 years of OS and security updates.",
@@ -439,9 +482,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 950,
     badge: "SuperVOOC",
-    image: "https://images.unsplash.com/photo-1575695342320-d2d2d2f9b73f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1575695342320-d2d2d2f9b73f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 24,
+    createdAt: "2026-02-10T17:56:50.526Z",
     brand: "OnePlus",
     description:
       "Powered by Snapdragon 8 Gen 3 with 4th Gen Hasselblad Camera for Mobile, 2K 120Hz ProXDR display, dual cryo-velocity VC cooling, and 100W SUPERVOOC charging.",
@@ -457,9 +502,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 1320,
     badge: "14% OFF",
-    image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-02-12T00:05:15.789Z",
     brand: "OnePlus",
     description:
       "Sub-20k value champion featuring 120Hz AMOLED 2100 nits peak display, 50MP Sony LYT-600 OIS camera, colossal 5500mAh battery, and 80W wired fast charging.",
@@ -475,10 +522,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 640,
     badge: "M2 Power",
-    image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-02-13T06:13:41.053Z",
     brand: "Apple",
     description:
       "Redesigned 11-inch iPad Air with astonishing Apple M2 performance, landscape 12MP front camera with Center Stage, Wi-Fi 6E, and Apple Pencil Pro support.",
@@ -494,9 +543,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1850,
     badge: "18% OFF",
-    image: "https://images.unsplash.com/photo-1561154464-82e9adf32764?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1561154464-82e9adf32764?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 38,
+    createdAt: "2026-02-14T12:22:06.316Z",
     brand: "Apple",
     description:
       "All-screen design with 10.9-inch Liquid Retina display, A14 Bionic chip, landscape 12MP Ultra Wide front camera, USB-C connector, and all-day battery life.",
@@ -512,9 +563,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 320,
     badge: "S-Pen Included",
-    image: "https://images.unsplash.com/photo-1585792180666-f75a7c3ab27c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1585792180666-f75a7c3ab27c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 14,
+    createdAt: "2026-02-15T18:30:31.579Z",
     brand: "Samsung",
     description:
       "IP68 water-and-dust resistant flagship tablet with gargantuan 14.6-inch Dynamic AMOLED 2X 120Hz display, quad AKG speakers, and Snapdragon 8 Gen 2 for Galaxy.",
@@ -530,9 +583,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 410,
     badge: "22% OFF",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 26,
+    createdAt: "2026-02-17T00:38:56.842Z",
     brand: "Lenovo",
     description:
       "Immersive entertainment tablet offering 12.7-inch 3K LCD display, Dolby Vision and Dolby Atmos, quad JBL speakers, 10200mAh battery, and bundled Lenovo Tab Pen Plus.",
@@ -548,10 +603,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 2840,
     badge: "Pro ANC",
-    image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-02-18T06:47:22.105Z",
     brand: "Apple",
     description:
       "Re-engineered with the Apple H2 chip providing up to 2x more Active Noise Cancellation, Adaptive Audio, Transparency mode, Personalized Spatial Audio, and USB-C MagSafe case.",
@@ -567,9 +624,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1980,
     badge: "Top ANC",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-02-19T12:55:47.368Z",
     brand: "Sony",
     description:
       "Industry-leading noise cancellation powered by two processors and eight microphones. Features ultra-comfortable soft fit leather, 30-hour battery life, and crystal-clear hands-free calling.",
@@ -585,9 +644,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 870,
     badge: "IP67 Rated",
-    image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-02-20T19:04:12.632Z",
     brand: "Bose",
     description:
       "Astonishingly deep, clear sound with PositionIQ technology that optimizes acoustics in any orientation. Rugged IP67 dustproof and waterproof build that actually floats in water.",
@@ -603,9 +664,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 360,
     badge: "Dolby Atmos",
-    image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 16,
+    createdAt: "2026-02-22T01:12:37.895Z",
     brand: "JBL",
     description:
       "Cinematic 590W total output featuring MultiBeam and 3D Dolby Atmos surround sound, 10-inch wireless down-firing subwoofer, PureVoice dialogue enhancement, and AirPlay/Chromecast built-in.",
@@ -621,9 +684,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 3120,
     badge: "22% OFF",
-    image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
+    createdAt: "2026-02-23T07:21:03.158Z",
     brand: "OnePlus",
     description:
       "Massive 12.4mm bass drivers delivering rich acoustics, 30 hours of continuous playback, 10-minute fast charging for 20 hours audio, and IP55 sweat-and-water resistance.",
@@ -639,10 +704,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 620,
     badge: "Thinnest Ever",
-    image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-02-24T13:29:28.421Z",
     brand: "Apple",
     description:
       "Featuring Apple's biggest, most advanced wide-angle OLED display, depth gauge, water temperature sensor, sleep apnea detection, faster charging, and sleek titanium or polished aluminum finishes.",
@@ -658,9 +725,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 290,
     badge: "Titanium LTE",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 15,
+    createdAt: "2026-02-25T19:37:53.684Z",
     brand: "Samsung",
     description:
       "Built for extreme endurance with grade 4 titanium cushion design, 10ATM and IP68 water resistance, dual-frequency GPS, customizable Quick Button, and emergency siren.",
@@ -676,9 +745,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 780,
     badge: "17% OFF",
-    image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 34,
+    createdAt: "2026-02-27T01:46:18.947Z",
     brand: "Fitbit",
     description:
       "Google-integrated fitness band offering 40+ exercise modes, real-time heart rate on compatible gym machines, built-in GPS, YouTube Music controls, and up to 7-day battery life.",
@@ -694,9 +765,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 1890,
     badge: "49% OFF",
-    image: "https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1510017803434-a899398421b3?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 60,
+    createdAt: "2026-02-28T07:54:44.211Z",
     brand: "Fastrack",
     description:
       "Vibrant 1.96-inch Super AMOLED curved arced display with 410x502 resolution, SingleSync Bluetooth calling, advanced NitroFast charging, and 110+ sports tracking modes.",
@@ -712,10 +785,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1540,
     badge: "Quiet Clicks",
-    image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-03-01T14:03:09.474Z",
     brand: "Logitech",
     description:
       "Iconic ergonomic productivity mouse featuring MagSpeed electromagnetic scrolling, 8,000 DPI track-on-glass optical sensor, Quiet Click technology, and multi-computer Flow control.",
@@ -731,9 +806,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 820,
     badge: "Hot-Swap",
-    image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-03-02T20:11:34.737Z",
     brand: "Keychron",
     description:
       "Compact 84-key layout Bluetooth/USB-C mechanical keyboard compatible with Mac and Windows. Features pre-lubed tactile Gateron G Pro brown switches and per-key RGB backlighting.",
@@ -749,9 +826,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 490,
     badge: "4K UHD",
-    image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 18,
+    createdAt: "2026-03-04T02:20:00.000Z",
     brand: "LG",
     description:
       "Color-accurate 27UP850-W 4K UHD (3840x2160) IPS panel with DCI-P3 95% gamut, VESA DisplayHDR 400, AMD FreeSync, USB-C single cable connectivity, and ergonomic pivot stand.",
@@ -767,9 +846,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 620,
     badge: "4K HDR",
-    image: "https://images.unsplash.com/photo-1587826080692-f33e21820904?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1587826080692-f33e21820904?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-03-05T08:28:25.263Z",
     brand: "Logitech",
     description:
       "Premier streaming webcam supporting 4K recording at 30 fps or 1080p at 60 fps. Features RightLight 3 with HDR, adjustable field of view (65°/78°/90°), and dual noise-canceling mics.",
@@ -785,9 +866,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1430,
     badge: "38% OFF",
-    image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-03-06T14:36:50.526Z",
     brand: "BoYata",
     description:
       "Heavy-duty dual hinge aluminum alloy laptop riser supporting up to 20kg. Provides smooth height and angle adjustment to alleviate neck strain with silicone anti-slip pads.",
@@ -803,9 +886,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 980,
     badge: "1050 MB/s",
-    image: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-03-07T20:45:15.789Z",
     brand: "Samsung",
     description:
       "High-speed external drive delivering read/write speeds up to 1,050/1,000 MB/s. Protected by an IP65 water/dust-resistant rubberized outer bumper and 3-meter drop resistance.",
@@ -821,10 +906,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 310,
     badge: "Pro Imaging",
-    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 8,
+    createdAt: "2026-03-09T02:53:41.053Z",
     brand: "Sony",
     description:
       "Groundbreaking hybrid camera featuring 33MP back-illuminated CMOS sensor, BIONZ XR processing engine, Real-time Eye AF for humans/animals/birds, and 10-bit 4:2:2 4K video.",
@@ -840,10 +927,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1850,
     badge: "Next-Gen",
-    image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 15,
+    createdAt: "2026-03-10T09:02:06.316Z",
     brand: "Sony",
     description:
       "Slimmed-down PS5 packed with high-speed 1TB internal SSD storage, ray tracing hardware acceleration, 4K-TV gaming up to 120 fps, Tempest 3D AudioTech, and DualSense haptics.",
@@ -859,9 +948,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1240,
     badge: "Wireless",
-    image: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-03-11T15:10:31.579Z",
     brand: "Microsoft",
     description:
       "Ergonomic modern controller with sculpted surfaces, refined hybrid D-pad, textured grip on triggers and bumpers, dedicated Share button, and cross-compatibility with PC, Xbox, and iOS/Android.",
@@ -877,9 +968,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 690,
     badge: "140W Ultra-Fast",
-    image: "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-03-12T21:18:56.842Z",
     brand: "Anker",
     description:
       "Equipped with the latest Power Delivery 3.1 and bi-directional technology to quickly recharge the 24,000mAh portable charger or deliver a 140W ultra-powerful charge to MacBook and phones.",
@@ -895,10 +988,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 450,
     badge: "OLED evo",
-    image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 10,
+    createdAt: "2026-03-14T03:27:22.105Z",
     brand: "LG",
     description:
       "Brilliant α9 AI Processor 4K Gen7 engineering perfect blacks and infinite contrast. Features Brightness Booster, 0.1ms response time, 4 HDMI 2.1 ports for 120Hz VRR gaming, and webOS.",
@@ -914,9 +1009,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 3410,
     badge: "18% OFF",
-    image: "https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 80,
+    createdAt: "2026-03-15T09:35:47.368Z",
     brand: "Amazon",
     description:
       "Best-sounding Echo Dot yet with deeper bass, clearer vocals, built-in ultrasound motion detection, indoor temperature sensor, and tap gesture controls to pause music or snooze timers.",
@@ -940,6 +1037,7 @@ export const products: Product[] = [
     featured: true,
     inStock: true,
     stockCount: 31,
+    createdAt: "2026-03-16T15:44:12.632Z",
     brand: "StyleNest Studio",
     description:
       "A timeless medium-wash pure cotton denim jacket with antique copper buttons, twin chest flap pockets, and a tailored regular silhouette.",
@@ -955,10 +1053,12 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 890,
     badge: "Trending",
-    image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 48,
+    createdAt: "2026-03-17T21:52:37.895Z",
     brand: "UrbanThread",
     description:
       "400 GSM heavyweight brushed French Terry hoodie featuring dropped shoulders, ribbed cuffs, and a double-layered structured hood.",
@@ -974,9 +1074,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 478,
     badge: "Handcrafted",
-    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 14,
+    createdAt: "2026-03-19T04:01:03.158Z",
     brand: "Virasat Weaves",
     description:
       "Authentic handloom Chanderi silk-cotton saree detailed with intricate gold zari booties and paired with an unstitched blouse piece.",
@@ -992,9 +1094,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 620,
     badge: "32% OFF",
-    image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 52,
+    createdAt: "2026-03-20T10:09:28.421Z",
     brand: "StyleNest Studio",
     description:
       "100% European flax certified linen shirt with a mandarin band collar, mother-of-pearl buttons, and relaxed airy drape.",
@@ -1010,9 +1114,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 340,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-03-21T16:17:53.684Z",
     brand: "Heritage Craft",
     description:
       "Full-grain handcrafted leather satchel with antique brass hardware, adjustable crossbody strap, and protective suede interior lining.",
@@ -1028,9 +1134,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 580,
     badge: "Bestseller",
-    image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 39,
+    createdAt: "2026-03-22T22:26:18.947Z",
     brand: "Chronos",
     description:
       "Ultra-slim 38mm stainless steel casing with a pristine sunburst dial, Japanese quartz movement, and interchangeable quick-release mesh strap.",
@@ -1046,9 +1154,11 @@ export const products: Product[] = [
     rating: 4.5,
     reviews: 715,
     badge: "36% OFF",
-    image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 60,
+    createdAt: "2026-03-24T04:34:44.211Z",
     brand: "StyleNest Studio",
     description:
       "Garment-dyed twill chinos woven with 3% elastane for effortless flexibility throughout workdays and casual weekends.",
@@ -1064,15 +1174,17 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 420,
     badge: "41% OFF",
-    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 46,
+    createdAt: "2026-03-25T10:43:09.474Z",
     brand: "Optix Luxe",
     description:
       "Handcrafted acetate frame with UV400 anti-glare polarized lenses, reinforced 5-barrel barrel hinges, and a protective leather pouch.",
   },
 
-    {
+  {
     id: "puma-smash-v2-leather-sneakers",
     name: "Puma Unisex Smash V2 Classic Leather Low-Top Sneakers",
     storeId: "stylenest",
@@ -1083,10 +1195,12 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1420,
     badge: "38% OFF",
-    image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-03-26T16:51:34.737Z",
     brand: "Puma",
     description:
       "Tennis-inspired everyday sneaker with soft genuine leather upper, cushioned SoftFoam+ comfort sockliner, and clean durable rubber cupsole.",
@@ -1102,10 +1216,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 980,
     badge: "Air Max",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-03-27T23:00:00.000Z",
     brand: "Nike",
     description:
       "Classic track styling meets modern street wear. Crafted with genuine and synthetic leather overlays, breathable mesh, and visible Max Air cushioning.",
@@ -1121,9 +1237,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 310,
     badge: "Handcrafted",
-    image: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=800&q=80",
-    inStock: true,
-    stockCount: 18,
+    image:
+      "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=800&q=80",
+    inStock: false,
+    stockCount: 0,
+    createdAt: "2026-03-29T05:08:25.263Z",
     brand: "Clarks",
     description:
       "Refined formal brogue oxford handcrafted from burnished full-grain leather with Ortholite dual-density footbed and flexible Goodyear welted sole.",
@@ -1139,9 +1257,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 870,
     badge: "55% OFF",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-03-30T11:16:50.526Z",
     brand: "Lavie",
     description:
       "Spacious everyday tote with saffiano textured synthetic leather, dual flat shoulder straps, multi-compartment zip dividers, and metallic gold accents.",
@@ -1157,9 +1277,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 640,
     badge: "Commuter Pick",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-03-31T17:25:15.789Z",
     brand: "Mokobara",
     description:
       "Architectural silhouette built with vegan leather and weatherproof ballistic nylon, padded 15.6-inch laptop pocket, hidden passport pocket, and luggage sleeve.",
@@ -1175,9 +1297,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1540,
     badge: "33% OFF",
-    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 55,
+    createdAt: "2026-04-01T23:33:41.053Z",
     brand: "Levi's",
     description:
       "A modern slim with room to move, cut from premium stretch denim with Levi's Flex technology for maximum mobility and authentic whiskered wash.",
@@ -1193,9 +1317,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 480,
     badge: "Trending",
-    image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 32,
+    createdAt: "2026-04-03T05:42:06.316Z",
     brand: "AND",
     description:
       "Flowy flared silhouette adorned with botanical watercolor floral prints, V-neckline with self-tie waist belt, and sheer flute sleeves.",
@@ -1211,9 +1337,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 690,
     badge: "Festive Pick",
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-04-04T11:50:31.579Z",
     brand: "Manyavar",
     description:
       "Regal wedding and festival ethnic set in deep royal blue with gold thread zari embroidery on mandarin collar and placket, paired with cream churidar.",
@@ -1229,9 +1357,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 380,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 16,
+    createdAt: "2026-04-05T17:58:56.842Z",
     brand: "Tommy Hilfiger",
     description:
       "Cold-weather quilted bomber with Ultra-Loft faux down thermal fill, signature flag chest patch, storm cuffs, stand collar, and water-repellent shell.",
@@ -1247,9 +1377,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 730,
     badge: "Classic",
-    image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-04-07T00:07:22.105Z",
     brand: "Fossil",
     description:
       "Mid-century architecture-inspired 44mm timepiece with stainless steel case, amber tinted crystal, cream Roman numerals dial, and genuine leather strap.",
@@ -1265,9 +1397,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1120,
     badge: "Iconic",
-    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-04-08T06:15:47.368Z",
     brand: "Ray-Ban",
     description:
       "The most recognizable style in the history of sunglasses. Premium black acetate frame with crystal green G-15 polarized anti-reflective lenses.",
@@ -1283,9 +1417,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 520,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-04-09T12:24:12.632Z",
     brand: "W for Woman",
     description:
       "Contemporary ethnic ensemble crafted in breathable fluid rayon with intricate threadwork neckline detailing, three-quarter sleeves, and coordinating wide-leg palazzo.",
@@ -1310,6 +1446,7 @@ export const products: Product[] = [
     featured: true,
     inStock: true,
     stockCount: 8,
+    createdAt: "2026-04-10T18:32:37.895Z",
     brand: "HomeHaven Living",
     description:
       "A plush textured fabric lounge chair resting on solid beechwood splayed legs. Neutral oatmeal tone designed for slow, mindful evenings.",
@@ -1325,10 +1462,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 523,
     badge: "Handcrafted",
-    image: "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 16,
+    createdAt: "2026-04-12T00:41:03.158Z",
     brand: "Terra Clay",
     description:
       "Artisan-crafted ceramic tableware set includes four dinner plates, salad plates, bowls, and mugs. Microwave and dishwasher safe.",
@@ -1344,9 +1483,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 312,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 34,
+    createdAt: "2026-04-13T06:49:28.421Z",
     brand: "KnotCraft",
     description:
       "Intricately braided 100% natural cotton rope hanging from a sustainably sourced eucalyptus dowel, adding organic warmth to empty walls.",
@@ -1362,9 +1503,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 415,
     badge: "Chef's Pick",
-    image: "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-04-14T12:57:53.684Z",
     brand: "CulinaryForge",
     description:
       "Heavy-duty porcelain enameled cast iron pot with tight-fitting condensation lid for baking crusty artisan sourdough and slow braising.",
@@ -1380,9 +1523,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 680,
     badge: "38% OFF",
-    image: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
+    createdAt: "2026-04-15T19:06:18.947Z",
     brand: "Lumiere Botanics",
     description:
       "Hand-poured 250g clean-burning soy wax candle infused with pure essential oils and a crackling lead-free organic wood wick (55h burn time).",
@@ -1398,9 +1543,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 490,
     badge: "Eco-Friendly",
-    image: "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-04-17T01:14:44.211Z",
     brand: "EcoKitchen",
     description:
       "Thick end-grain bamboo boards with deep juice grooves and thumb handles for easy kitchen food prep and charcuterie serving.",
@@ -1416,9 +1563,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 360,
     badge: "36% OFF",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 29,
+    createdAt: "2026-04-18T07:23:09.474Z",
     brand: "HomeHaven Living",
     description:
       "Heavyweight textured linen-blend blackout curtain panels with triple-weave thermal backing that blocks 95% of sunlight and outdoor noise.",
@@ -1434,15 +1583,17 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 295,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-04-19T13:31:34.737Z",
     brand: "LumenCraft",
     description:
       "Modern anodized aluminum architecture lamp offering 5 color temperatures, step-less brightness sliding, and built-in 10W fast wireless charging base.",
   },
 
-    {
+  {
     id: "wakefit-napper-3seater-sofa",
     name: "Wakefit Napper 3-Seater High-Density Foam Living Room Sofa",
     storeId: "homehaven",
@@ -1453,10 +1604,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 640,
     badge: "33% OFF",
-    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 8,
+    createdAt: "2026-04-20T19:40:00.000Z",
     brand: "Wakefit",
     description:
       "Neem wood reinforced frame sofa upholstered in high-GSM breathable fabric with high resilience foam and plush pocket spring base for ergonomic seating comfort.",
@@ -1472,10 +1625,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 920,
     badge: "Work From Home",
-    image: "https://images.unsplash.com/photo-1580481077195-731da03fed62?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1580481077195-731da03fed62?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 15,
+    createdAt: "2026-04-22T01:48:25.263Z",
     brand: "Green Soul",
     description:
       "Engineered breathable mesh chair featuring adjustable 3D armrests, magnetic memory foam lumbar support pillow, multi-lock recline mechanism, and Class 4 gas lift.",
@@ -1491,9 +1646,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 580,
     badge: "39% OFF",
-    image: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-04-23T07:56:50.526Z",
     brand: "DeckUp",
     description:
       "Minimalist dark walnut finish workstation with durable melamine lamination, generous legroom, open vertical book storage shelves, and cable grommet.",
@@ -1509,9 +1666,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 810,
     badge: "Luxury Cotton",
-    image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-04-24T14:05:15.789Z",
     brand: "Spaces",
     description:
       "Sateen weave king size flat bedsheet paired with two matching pillow covers. Silky smooth touch, naturally hypoallergenic, and colorfast wash durability.",
@@ -1527,9 +1686,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 740,
     badge: "Chef's Choice",
-    image: "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-04-25T20:13:41.053Z",
     brand: "Hawkins",
     description:
       "Heavy-gauge hard anodized aluminum with durable non-stick coating. Includes 26cm frying pan, deep kadhai with lid, saucepan with lid, and stay-cool stainless handles.",
@@ -1545,9 +1706,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 430,
     badge: "Chip Resistant",
-    image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 16,
+    createdAt: "2026-04-27T02:22:06.316Z",
     brand: "Corelle",
     description:
       "Triple-layer patented Vitrelle glass dinnerware that resists chips, cracks, and stains. Lightweight, ultra-hygienic, non-porous, and dishwasher/microwave safe.",
@@ -1563,9 +1726,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 620,
     badge: "36% OFF",
-    image: "https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 38,
+    createdAt: "2026-04-28T08:30:31.579Z",
     brand: "Kuber Industries",
     description:
       "Powder-coated rustproof carbon steel storage rack with breathable mesh wire baskets, 360-degree lockable swivel caster wheels, and tool-free quick assembly.",
@@ -1581,9 +1746,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 350,
     badge: "Handwoven",
-    image: "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 14,
+    createdAt: "2026-04-29T14:38:56.842Z",
     brand: "Saral Home",
     description:
       "High-density plush pile rug handcrafted from blended New Zealand wool with contemporary Berber diamond motifs and braided fringe edges.",
@@ -1599,9 +1766,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 290,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-04-30T20:47:22.105Z",
     brand: "Urban Ladder",
     description:
       "Elegant circular accent mirror encased in an iron metal frame with brushed antique brass finish. High-definition distortion-free glass with safety backboard.",
@@ -1617,9 +1786,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 410,
     badge: "Smart Lighting",
-    image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80",
-    inStock: true,
-    stockCount: 19,
+    image:
+      "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80",
+    inStock: false,
+    stockCount: 0,
+    createdAt: "2026-05-02T02:55:47.368Z",
     brand: "Philips Hue",
     description:
       "Vintage-inspired amber spiral filament LED fixture with Bluetooth and Zigbee smart connectivity. Control 50,000 shades of warm-to-cool white light via mobile app.",
@@ -1635,9 +1806,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1120,
     badge: "Stainless Steel",
-    image: "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-05-03T09:04:12.632Z",
     brand: "Prestige",
     description:
       "Heavy-gauge surgical grade stainless steel body with Alpha induction bottom, controlled gasket release system, and durable cool-touch handles for safe Indian cooking.",
@@ -1653,9 +1826,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 510,
     badge: "Solid Wood",
-    image: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1532372320572-cda25653a26d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 24,
+    createdAt: "2026-05-04T15:12:37.895Z",
     brand: "Solimo",
     description:
       "Handcrafted from seasoned Indian Rosewood with honey finish grain polish. Features a smooth-sliding drawer and lower open shelf for books and nighttime essentials.",
@@ -1679,6 +1854,7 @@ export const products: Product[] = [
     featured: true,
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-05-05T21:21:03.158Z",
     brand: "BeautyBliss Naturals",
     description:
       "A dermatologically tested brightening duo containing concentrated hyaluronic serum and rose-gold nourishing repair cream for supple skin barrier.",
@@ -1694,10 +1870,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1420,
     badge: "Best Seller",
-    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 68,
+    createdAt: "2026-05-07T03:29:28.421Z",
     brand: "DermaGlow",
     description:
       "Potent antioxidant elixir combining stabilized L-Ascorbic Acid, Vitamin E, and Ferulic Acid to fade hyperpigmentation and boost natural luminosity.",
@@ -1713,9 +1891,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 890,
     badge: "41% OFF",
-    image: "https://images.unsplash.com/photo-1608248597359-2e11894a4c6a?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608248597359-2e11894a4c6a?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 44,
+    createdAt: "2026-05-08T09:37:53.684Z",
     brand: "MoroccoGold",
     description:
       "100% pure organic cold-pressed argan oil that tames frizz, protects against heat styling damage, and restores brilliant natural shine.",
@@ -1731,9 +1911,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 640,
     badge: "39% OFF",
-    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 82,
+    createdAt: "2026-05-09T15:46:18.947Z",
     brand: "BeautyBliss Naturals",
     description:
       "Steam-distilled from freshly handpicked Kannauj Damask rose petals to balance skin pH and refresh dull complexion on hot humid days.",
@@ -1749,9 +1931,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 510,
     badge: "42% OFF",
-    image: "https://images.unsplash.com/photo-1567928815104-b7980ee5032e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1567928815104-b7980ee5032e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 38,
+    createdAt: "2026-05-10T21:54:44.211Z",
     brand: "PureClay",
     description:
       "Deep pore clarifying mask with French green clay, bamboo activated charcoal, and soothing tea tree extract to gently purify without over-drying.",
@@ -1767,9 +1951,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 980,
     badge: "Derm Approved",
-    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 57,
+    createdAt: "2026-05-12T04:03:09.474Z",
     brand: "DermaGlow",
     description:
       "Non-comedogenic gel-cream formulated with five essential ceramides and multi-molecular hyaluronic acid for 72-hour deep cellular hydration.",
@@ -1785,9 +1971,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 1250,
     badge: "35% OFF",
-    image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 90,
+    createdAt: "2026-05-13T10:11:34.737Z",
     brand: "Velvetine",
     description:
       "Weightless, smudge-proof liquid lip color infused with jojoba oil and vitamin E for a velvety matte finish that lasts 12+ hours comfortably.",
@@ -1803,15 +1991,17 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 830,
     badge: "Top Choice",
-    image: "https://images.unsplash.com/photo-1556228852-6d35a585d566?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1556228852-6d35a585d566?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-05-14T16:20:00.000Z",
     brand: "DermaGlow",
     description:
       "Zero white-cast zinc oxide physical sunscreen offering PA++++ high UVA/UVB protection with an ultra-light oil-free primer feel.",
   },
 
-    {
+  {
     id: "cerave-hydrating-facial-cleanser",
     name: "CeraVe Hydrating Facial Cleanser for Normal to Dry Skin (237ml)",
     storeId: "beautybliss",
@@ -1822,10 +2012,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1840,
     badge: "Derm Choice",
-    image: "https://images.unsplash.com/photo-1556228722-d0b5de70b79b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1556228722-d0b5de70b79b?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-05-15T22:28:25.263Z",
     brand: "CeraVe",
     description:
       "Non-foaming lotion cleanser formulated with three essential ceramides and hyaluronic acid to cleanse, hydrate, and help restore the protective skin barrier.",
@@ -1841,10 +2033,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 2410,
     badge: "Best Seller",
-    image: "https://images.unsplash.com/photo-1608248597359-2e11894a4c6a?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608248597359-2e11894a4c6a?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-05-17T04:36:50.526Z",
     brand: "Minimalist",
     description:
       "Pure European grade Vitamin B3 serum enriched with antimicrobial Zinc PCA to balance sebum production, reduce acne inflammation, and refine enlarged pores.",
@@ -1860,9 +2054,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 780,
     badge: "100H Hydration",
-    image: "https://images.unsplash.com/photo-1567928815104-b7980ee5032e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1567928815104-b7980ee5032e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-05-18T10:45:15.789Z",
     brand: "Clinique",
     description:
       "Refreshing oil-free gel moisturizer infused with exclusive aloe bio-ferment and hyaluronic acid that penetrates deep into skin surfaces for radiant plump skin.",
@@ -1878,9 +2074,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 950,
     badge: "Ultra-Light",
-    image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-05-19T16:53:41.053Z",
     brand: "La Roche-Posay",
     description:
       "Broad-spectrum very high UVA/UVB protection featuring Mexoryl 400 filter. Invisible, non-greasy, non-comedogenic fluid that does not sting eyes.",
@@ -1896,9 +2094,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 620,
     badge: "Luxury Scent",
-    image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 15,
+    createdAt: "2026-05-20T23:02:06.316Z",
     brand: "Yves Saint Laurent",
     description:
       "Captivating and intoxicating women's floral gourmand fragrance opening with black coffee adrenaline and white flowers, anchored by warm sensual vanilla.",
@@ -1914,9 +2114,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 440,
     badge: "24K Gold",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 18,
+    createdAt: "2026-05-22T05:10:31.579Z",
     brand: "Forest Essentials",
     description:
       "Ayurvedic rejuvenating night cream infused with pure 24 Karat gold bhasma, saffron, ashwagandha, and cold-pressed almond oil for deep firmness and illumination.",
@@ -1932,9 +2134,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 1980,
     badge: "Transfer-Proof",
-    image: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 52,
+    createdAt: "2026-05-23T11:18:56.842Z",
     brand: "Maybelline",
     description:
       "Oil-free matte foundation delivering saturated color pigments for a 24-hour flawless finish that withstands sweat, humidity, and heat without clogging pores.",
@@ -1950,10 +2154,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 580,
     badge: "Fast Drying",
-    image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 10,
+    createdAt: "2026-05-24T17:27:22.105Z",
     brand: "Dyson",
     description:
       "Intelligent heat control prevents extreme heat damage to preserve hair natural shine. Powered by Dyson digital motor V9 with Air Multiplier technology and Flyaway attachment.",
@@ -1969,9 +2175,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1250,
     badge: "28% OFF",
-    image: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 36,
+    createdAt: "2026-05-25T23:35:47.368Z",
     brand: "Philips",
     description:
       "Infused with Keratin ceramic plates and ionic care for ultra-smooth gliding, anti-frizz shine, instant 60-second heat-up, and variable heat settings up to 210°C.",
@@ -1987,9 +2195,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 340,
     badge: "Pro Shave",
-    image: "https://images.unsplash.com/photo-1621607512214-68297480165e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1621607512214-68297480165e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 12,
+    createdAt: "2026-05-27T05:44:12.632Z",
     brand: "Braun",
     description:
       "World's most efficient electric razor engineered with innovative ProLift trimmer and Sonic Technology to shave tough 1, 3, or 7-day beards gently and flawlessly.",
@@ -2005,9 +2215,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 2310,
     badge: "30% OFF",
-    image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 60,
+    createdAt: "2026-05-28T11:52:37.895Z",
     brand: "Philips",
     description:
       "Self-sharpening rounded stainless steel blades with Lift & Trim system, precision dial with 20 lock-in length settings (0.5 to 10mm), and 60-minute cordless run time.",
@@ -2023,9 +2235,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1480,
     badge: "Cult Classic",
-    image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-05-29T18:01:03.158Z",
     brand: "MAC",
     description:
       "The world-famous vivid blue-red shade with an intense, non-shiny, completely matte finish that stays put for 8+ hours with zero bleeding.",
@@ -2049,6 +2263,7 @@ export const products: Product[] = [
     featured: true,
     inStock: true,
     stockCount: 26,
+    createdAt: "2026-05-31T00:09:28.421Z",
     brand: "UrbanCart Sport",
     description:
       "Lightweight road running shoes with an engineered breathable mesh upper, energy-returning rebound foam midsole, and durable rubber traction outsole.",
@@ -2064,9 +2279,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 940,
     badge: "Eco Pick",
-    image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-06-01T06:17:53.684Z",
     brand: "ZenFlow",
     description:
       "Non-slip natural tree rubber yoga mat with laser-engraved body alignment markings and anti-tear mesh core, complete with carrying strap.",
@@ -2082,9 +2299,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 320,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 12,
+    createdAt: "2026-06-02T12:26:18.947Z",
     brand: "TitanStrength",
     description:
       "Space-saving dial adjustable dumbbells transitioning from 2.5kg to 20kg per hand in 2.5kg increments with heavy-duty storage cradle.",
@@ -2100,9 +2319,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1120,
     badge: "38% OFF",
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 70,
+    createdAt: "2026-06-03T18:34:44.211Z",
     brand: "HydroPeak",
     description:
       "Double-walled 18/8 food-grade stainless steel flask keeping beverages ice-cold for 24 hours or steaming hot for 12 hours with leakproof spout lid.",
@@ -2118,9 +2339,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 650,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 88,
+    createdAt: "2026-06-05T00:43:09.474Z",
     brand: "VelocityFit",
     description:
       "High-speed 360-degree dual ball-bearing jump rope equipped with steel braided wire cable and knurled anti-slip aluminum alloy handles.",
@@ -2136,9 +2359,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 540,
     badge: "35% OFF",
-    image: "https://images.unsplash.com/photo-1506152983158-b4a74a01c721?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506152983158-b4a74a01c721?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-06-06T06:51:34.737Z",
     brand: "UrbanCart Sport",
     description:
       "Graduated compression leggings reducing muscle fatigue and lactic acid buildup during high-intensity training, featuring concealed phone pocket.",
@@ -2154,9 +2379,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 810,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-06-07T13:00:00.000Z",
     brand: "RecoverPro",
     description:
       "Deep tissue percussive therapy device operating under 45dB with brushless high-torque motor, 4 interchangeable silicone heads, and hardshell case.",
@@ -2172,15 +2399,17 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 430,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 33,
+    createdAt: "2026-06-08T19:08:25.263Z",
     brand: "TrailPeak",
     description:
       "Ripstop nylon trail backpack with ventilated air-mesh back panel, trekking pole loops, integrated rain cover, and internal hydration bladder sleeve.",
   },
 
-    {
+  {
     id: "boldfit-fabric-booty-bands-set",
     name: "Boldfit Heavy-Duty Fabric Resistance Loop Bands (Set of 3)",
     storeId: "urbancart",
@@ -2191,9 +2420,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1640,
     badge: "Non-Slip",
-    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-06-10T01:16:50.526Z",
     brand: "Boldfit",
     description:
       "Triple resistance levels (Light, Medium, Heavy) built from non-slip durable elastic fabric that will never roll up or pinch skin during squats and glute bridges.",
@@ -2209,10 +2440,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 890,
     badge: "Cast Iron",
-    image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-06-11T07:25:15.789Z",
     brand: "Decathlon",
     description:
       "Modular home gym kit packed in a molded plastic case. Includes threaded steel bar, spinlock collars, and cast iron weight plates for customized progressive overload.",
@@ -2228,9 +2461,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 420,
     badge: "Pro Mat",
-    image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=800&q=80",
-    inStock: true,
-    stockCount: 16,
+    image:
+      "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=800&q=80",
+    inStock: false,
+    stockCount: 0,
+    createdAt: "2026-06-12T13:33:41.053Z",
     brand: "Manduka",
     description:
       "Legendary closed-cell surface yoga mat that keeps moisture from seeping into the mat. Provides unrivaled joint protection, dense cushioning, and lifetime longevity.",
@@ -2246,10 +2481,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 730,
     badge: "Marathon Ready",
-    image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-06-13T19:42:06.316Z",
     brand: "Asics",
     description:
       "Engineered with 4D GUIDANCE SYSTEM for adaptive stability, PureGEL technology for softer landings, and FF BLAST PLUS ECO lightweight bio-cushioning.",
@@ -2265,9 +2502,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1120,
     badge: "Spacious",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-06-15T01:50:31.579Z",
     brand: "Nike",
     description:
       "Durable polyester duffel with ventilated wet/dry footwear compartment, zip exterior accessory pockets, coated water-resistant base, and padded shoulder strap.",
@@ -2283,9 +2522,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 310,
     badge: "Shimano Gears",
-    image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 10,
+    createdAt: "2026-06-16T07:58:56.842Z",
     brand: "Firefox",
     description:
       "Hydroformed lightweight aluminum hardtail frame equipped with zoom front suspension fork, dual mechanical disc brakes, and genuine Shimano 21-speed thumb shifters.",
@@ -2301,9 +2542,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 460,
     badge: "Bluetooth App",
-    image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 12,
+    createdAt: "2026-06-17T14:07:22.105Z",
     brand: "Cultsport",
     description:
       "Whisper-quiet magnetic resistance flywheel with stepless tension knob, tablet holder, Bluetooth telemetry for live leaderboard workouts, and 4-way adjustable seat.",
@@ -2319,9 +2562,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 380,
     badge: "Auto Incline",
-    image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 8,
+    createdAt: "2026-06-18T20:15:47.368Z",
     brand: "PowerMax",
     description:
       "4.0 HP peak DC motor with speed up to 14 km/h, 12 pre-set training programs, hydraulic soft-drop folding system, multi-layer shock absorption running belt, and heart monitor.",
@@ -2337,9 +2582,11 @@ export const products: Product[] = [
     rating: 4.5,
     reviews: 1480,
     badge: "50% OFF",
-    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-06-20T02:24:12.632Z",
     brand: "Kore",
     description:
       "Comprehensive starter home strength kit containing 20kg durable PVC weight plates, 3-foot solid steel curl rod, dumbbell rods, spring collars, and gym gloves.",
@@ -2355,9 +2602,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 940,
     badge: "Smash Power",
-    image: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-06-21T08:32:37.895Z",
     brand: "Yonex",
     description:
       "Head-heavy rotational generator system racket designed for devastating power smashes and rapid shuttlecock acceleration, crafted with high-modulus full graphite.",
@@ -2373,9 +2622,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 670,
     badge: "FIBA Approved",
-    image: "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-06-22T14:41:03.158Z",
     brand: "Cosco",
     description:
       "Premium moisture-wicking microfiber composite leather casing offering superior grip, deep pebbling, consistent bounce on hardwood or outdoor asphalt courts.",
@@ -2391,9 +2642,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 820,
     badge: "No Screws",
-    image: "https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-06-23T20:49:28.421Z",
     brand: "Fitkit",
     description:
       "Telescopic stainless steel pull-up bar extending from 65cm to 100cm with non-slip silicone pads and anti-loosen safety lock mechanism supporting up to 150kg.",
@@ -2413,10 +2666,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 780,
     badge: "Handcrafted",
-    image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-06-25T02:57:53.684Z",
     brand: "BookCraft",
     description:
       "Hand-stitched full-grain buffalo leather notebook containing 240 pages of bleed-resistant 120 GSM recycled cotton deckle edge paper.",
@@ -2432,9 +2687,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 430,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 27,
+    createdAt: "2026-06-26T09:06:18.947Z",
     brand: "Scriptor",
     description:
       "Solid machined raw brass fountain pen with stainless steel medium-fine nib, piston ink converter, and 50ml bottle of archival pigment black ink.",
@@ -2450,9 +2707,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 310,
     badge: "Collector Edition",
-    image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 15,
+    createdAt: "2026-06-27T15:14:44.211Z",
     brand: "ClassicPress",
     description:
       "Foil-stamped clothbound editions of literary masterpieces featuring ribbon bookmarks, gilded page edges, and authoritative scholarly introductions.",
@@ -2468,9 +2727,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 620,
     badge: "38% OFF",
-    image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 58,
+    createdAt: "2026-06-28T21:23:09.474Z",
     brand: "FocusMind",
     description:
       "Science-backed undated 12-month productivity planner with weekly spreads, quarterly review prompts, habit trackers, and expandable back pocket.",
@@ -2486,9 +2747,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 390,
     badge: "Artist Choice",
-    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-06-30T03:31:34.737Z",
     brand: "StudioDraft",
     description:
       "Comprehensive artist kit including 12 graphite grading pencils, waterproof pigment micron pens, kneaded eraser, and 160 GSM lay-flat sketchbook.",
@@ -2504,9 +2767,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 210,
     badge: "Vintage",
-    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 24,
+    createdAt: "2026-07-01T09:40:00.000Z",
     brand: "Heritage Craft",
     description:
       "Heirloom-grade optical magnifying glass crafted with an antique brass filigree frame, rosewood turned handle, and scratch-resistant 5X glass lens.",
@@ -2522,9 +2787,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 350,
     badge: "38% OFF",
-    image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 92,
+    createdAt: "2026-07-02T15:48:25.263Z",
     brand: "OrigamiZen",
     description:
       "Square 15x15cm authentic mulberry fiber washi sheets showcasing traditional floral, crane, and geometric motifs with rich metallic gold accents.",
@@ -2540,15 +2807,17 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 260,
     badge: "36% OFF",
-    image: "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 18,
+    createdAt: "2026-07-03T21:56:50.526Z",
     brand: "BookCraft",
     description:
       "Solid black walnut wooden bookends featuring non-skid weighted steel bases to neatly support heavy encyclopedias and binders on open shelves.",
   },
 
-    {
+  {
     id: "the-midnight-library-hardcover",
     name: "The Midnight Library by Matt Haig - Hardcover Edition",
     storeId: "bookcraft",
@@ -2559,10 +2828,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1480,
     badge: "Bestseller",
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-07-05T04:05:15.789Z",
     brand: "Viking Books",
     description:
       "The dazzling international bestseller about all the choices that go into a life well lived, exploring an infinite library between life and death.",
@@ -2578,10 +2849,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 3200,
     badge: "#1 Non-Fiction",
-    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-07-06T10:13:41.053Z",
     brand: "Random House",
     description:
       "The definitive guide to breaking bad behaviors and adopting good ones in four simple steps, backed by cutting-edge biology, psychology, and neuroscience.",
@@ -2597,9 +2870,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 890,
     badge: "Tech Essential",
-    image: "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1532012164546-f432f2e3777a?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-07-07T16:22:06.316Z",
     brand: "O'Reilly Media",
     description:
       "Comprehensive software architecture treatise detailing reliable, scalable, and maintainable systems covering storage engines, replication, partitioning, and stream processing.",
@@ -2615,9 +2890,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1140,
     badge: "Developer Pick",
-    image: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-07-08T22:30:31.579Z",
     brand: "Pearson",
     description:
       "Legendary software engineering guide by Uncle Bob Martin outlining pragmatic rules, patterns, and refactoring practices for writing readable, clean Java and TypeScript code.",
@@ -2633,9 +2910,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 850,
     badge: "Archival",
-    image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-07-10T04:38:56.842Z",
     brand: "Moleskine",
     description:
       "Reliable travel companion featuring rounded corners, ivory acid-free 70 GSM dotted paper, matching elastic closure band, ribbon placeholder, and expandable inner pocket.",
@@ -2651,9 +2930,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 620,
     badge: "Thread-Bound",
-    image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-07-11T10:47:22.105Z",
     brand: "Leuchtturm1917",
     description:
       "German-engineered 251 numbered pages of 80 GSM ink-proof paper with blank table of contents, 8 perforated sheets, sticker labels, and dual bookmark ribbons.",
@@ -2669,9 +2950,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 980,
     badge: "German Made",
-    image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-07-12T16:55:47.368Z",
     brand: "Lamy",
     description:
       "Iconic ABS matte plastic body with spring-loaded brass wire clip, transparent ink window, ergonomic contoured grip section, and black chromium-plated steel nib.",
@@ -2687,9 +2970,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1420,
     badge: "Smooth Ink",
-    image: "https://images.unsplash.com/photo-1585336261026-7fcf1899e984?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1585336261026-7fcf1899e984?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 60,
+    createdAt: "2026-07-13T23:04:12.632Z",
     brand: "Pilot",
     description:
       "America's #1 selling gel ink pen proven to write longer than top competitors. Dynamic gel ink formula glides effortlessly with contoured rubber comfort grip.",
@@ -2705,9 +2990,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 490,
     badge: "Artist Grade",
-    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-07-15T05:12:37.895Z",
     brand: "Faber-Castell",
     description:
       "Unsurpassed lightfastness and intense pigment vibrancy. Oil-based 3.8mm thick break-resistant leads water-resistant and smudge-proof on heavy drawing paper.",
@@ -2723,9 +3010,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 580,
     badge: "Pocket Studio",
-    image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 26,
+    createdAt: "2026-07-16T11:21:03.158Z",
     brand: "Winsor & Newton",
     description:
       "Compact travel watercolor set containing 12 vibrant half pans, pocket brush, and integral mixing palette with thumb ring for plein-air sketching.",
@@ -2741,9 +3030,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 730,
     badge: "Ergonomic",
-    image: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 38,
+    createdAt: "2026-07-17T17:29:28.421Z",
     brand: "BookCraft",
     description:
       "Multi-angle adjustable book holder with spring-loaded page clips, solid aluminum base, and foldable design ideal for thick textbooks, cookbooks, and tablets.",
@@ -2759,9 +3050,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 890,
     badge: "Eye Care",
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-07-18T23:37:53.684Z",
     brand: "Glocusent",
     description:
       "Hands-free flexible silicone neck arms with narrow 90° beam angle to illuminate your pages without disturbing your sleeping partner. Up to 80 hours battery per charge.",
@@ -2781,10 +3074,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 840,
     badge: "Parent Choice",
-    image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-07-20T05:46:18.947Z",
     brand: "Wonderland Play",
     description:
       "Non-toxic, splinter-free solid natural beechwood stacking blocks in varied geometric shapes to foster spatial reasoning and imaginative play.",
@@ -2800,9 +3095,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 560,
     badge: "Educational",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 31,
+    createdAt: "2026-07-21T11:54:44.211Z",
     brand: "FutureLab",
     description:
       "Hands-on robotics builder kit powered directly by sunlight; transform 190 components into 12 operating robots traversing land and water without batteries.",
@@ -2818,9 +3115,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 420,
     badge: "Montessori",
-    image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-07-22T18:03:09.474Z",
     brand: "Wonderland Play",
     description:
       "Toddler development board with brass latches, wooden gears, shoelace tie, abacus beads, and click switches to build fine motor skills.",
@@ -2836,9 +3135,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1150,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1559454403-b8fb88521f11?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1559454403-b8fb88521f11?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-07-24T00:11:34.737Z",
     brand: "SnugglePaws",
     description:
       "Super-soft 14-inch embroidered plush animal crafted from GOTS-certified organic cotton with non-toxic recycled polyfill, safe from newborn age.",
@@ -2854,9 +3155,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 730,
     badge: "35% OFF",
-    image: "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-07-25T06:20:00.000Z",
     brand: "TurboDrift",
     description:
       "High-speed 2.4GHz stunt vehicle with 4WD vacuum rubber tires capable of double-sided flips, spins, and steep climbing over grass, dirt, and tiles.",
@@ -2872,9 +3175,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 640,
     badge: "Classic",
-    image: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 38,
+    createdAt: "2026-07-26T12:28:25.263Z",
     brand: "Grandmaster",
     description:
       "12-inch handcrafted magnetic wooden chess and checkers 2-in-1 set with Staunton wooden pieces nestled securely in felt interior storage slots.",
@@ -2890,9 +3195,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 380,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 26,
+    createdAt: "2026-07-27T18:36:50.526Z",
     brand: "ColorPop",
     description:
       "All-in-one artist chest containing watercolor cakes, oil pastels, vibrant colored pencils, sketching tools, and a built-in double-sided tabletop easel.",
@@ -2908,15 +3215,17 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 290,
     badge: "STEM Approved",
-    image: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 17,
+    createdAt: "2026-07-29T00:45:15.789Z",
     brand: "CosmoScope",
     description:
       "Fully coated optical glass refractor telescope with 400mm focal length, 3X Barlow lens, smartphone photography adapter, and adjustable aluminum tripod.",
   },
 
-    {
+  {
     id: "lego-classic-medium-brick-box",
     name: "LEGO Classic Medium Creative Brick Box 10696 (484 Pieces)",
     storeId: "wonderland",
@@ -2927,10 +3236,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 2120,
     badge: "Top Toy",
-    image: "https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-07-30T06:53:41.053Z",
     brand: "LEGO",
     description:
       "Includes a wide range of LEGO bricks in 35 different colors, 18 tires, wheel rims, green baseplate, windows, eyes, and convenient plastic storage box.",
@@ -2946,9 +3257,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 640,
     badge: "Softclick",
-    image: "https://images.unsplash.com/photo-1618842676088-c4d48a6a7c9d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1618842676088-c4d48a6a7c9d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-07-31T13:02:06.316Z",
     brand: "Ravensburger",
     description:
       "Extra-thick cardboard combined with linen-structured paper creating a glare-free puzzle image with perfectly interlocking pieces for children and adults.",
@@ -2964,10 +3277,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1140,
     badge: "Award Winner",
-    image: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-08-01T19:10:31.579Z",
     brand: "Catan Studio",
     description:
       "The multi-award-winning civilization building and trading board game where players harvest resources (ore, grain, lumber, brick, wool) to build settlements.",
@@ -2983,9 +3298,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1890,
     badge: "Family Pick",
-    image: "https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-08-03T01:18:56.842Z",
     brand: "Hasbro",
     description:
       "Classic fast-dealing property trading game updated with iconic Indian cities from Mumbai to Bengaluru, metal tokens, speed die, and paper money.",
@@ -3001,9 +3318,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 780,
     badge: "28% OFF",
-    image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 32,
+    createdAt: "2026-08-04T07:27:22.105Z",
     brand: "Barbie",
     description:
       "Playful posable doll showcasing bold, exaggerated fashion with pastel rainbow braids, fluffy cloud print jacket, platform boots, and pet puppy with sunglasses.",
@@ -3019,9 +3338,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1320,
     badge: "Marvel Official",
-    image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-08-05T13:35:47.368Z",
     brand: "Marvel",
     description:
       "Large 12-inch scale Iron Man action figure featuring classic movie-accurate red and gold armor detailing and basic articulation at the shoulders and hips.",
@@ -3037,9 +3358,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 460,
     badge: "Collector Pick",
-    image: "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 18,
+    createdAt: "2026-08-06T19:44:12.632Z",
     brand: "Transformers",
     description:
       "7-inch Voyager Class robot converting from iconic Decepticon communications officer into Cybertronian spacecraft mode in 25 complex steps with missile launcher accessory.",
@@ -3055,9 +3378,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1540,
     badge: "40 Experiments",
-    image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-08-08T01:52:37.895Z",
     brand: "Einstein Box",
     description:
       "Packed with child-safe chemicals, safety goggles, test tubes, and illustrated manual to perform 40 jaw-dropping experiments including erupting volcanoes and glowing slime.",
@@ -3073,9 +3398,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 820,
     badge: "Eco Wooden",
-    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 36,
+    createdAt: "2026-08-09T08:01:03.158Z",
     brand: "Smartivity",
     description:
       "Laser-cut re-engineered engineered wood construction kit utilizing hydraulic pressure and elasticity principles to safely launch soft foam rockets up to 30 feet high.",
@@ -3091,9 +3418,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 690,
     badge: "STEM Favorite",
-    image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-08-10T14:09:28.421Z",
     brand: "Magna-Tiles",
     description:
       "Translucent magnetic building tiles welded with sonic seams and metal rivets for long-lasting toddler play, fostering 3D spatial thinking and creative architecture.",
@@ -3109,9 +3438,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 950,
     badge: "Creative Play",
-    image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 55,
+    createdAt: "2026-08-11T20:17:53.684Z",
     brand: "Play-Doh",
     description:
       "Includes cookie sheet tray, 4 pretend cutters, frosting extruder tool, spatula, and 5 non-toxic Play-Doh modeling compound cans to craft fun pretend bakery treats.",
@@ -3127,9 +3458,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 510,
     badge: "3-in-1 Desk",
-    image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 15,
+    createdAt: "2026-08-13T02:26:18.947Z",
     brand: "VTech",
     description:
       "3-in-1 interactive desk, chalkboard, and art easel featuring 5 touch pages filled with 100+ vocabulary words, alphabet sounds, and musical activities for ages 2 to 5.",
@@ -3149,10 +3482,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1320,
     badge: "Fresh Roast",
-    image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-08-14T08:34:44.211Z",
     brand: "Coorg Roasters",
     description:
       "Shade-grown 100% Arabica beans harvested in the Western Ghats; small-batch roasted weekly with rich notes of dark chocolate and caramelized hazelnut.",
@@ -3168,9 +3503,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 890,
     badge: "100% Organic",
-    image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
+    createdAt: "2026-08-15T14:43:09.474Z",
     brand: "Himalayan Nectar",
     description:
       "Pure multifloral forest honey ethically gathered by mountain beekeepers. Unheated and unprocessed, preserving natural enzymes, pollen, and propolis.",
@@ -3186,9 +3523,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 670,
     badge: "Award Winning",
-    image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-08-16T20:51:34.737Z",
     brand: "CacaoCraft",
     description:
       "Artisanal dark chocolate confections infused with Kerala spices, sea salt flakes, and roasted almond praline, presented in an embossed rigid gift box.",
@@ -3204,9 +3543,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 450,
     badge: "First Flush",
-    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-08-18T03:00:00.000Z",
     brand: "ChaiEstate",
     description:
       "Exquisite spring pluck Darjeeling black tea celebrated for its delicate muscatel bouquet, amber liquor, and crisp refreshing floral finish.",
@@ -3222,9 +3563,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 520,
     badge: "Import Grade",
-    image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 38,
+    createdAt: "2026-08-19T09:08:25.263Z",
     brand: "Oliveto",
     description:
       "Single-estate extra virgin olive oil with low acidity (<0.3%), peppery green finish, and rich polyphenol antioxidants, packed in UV-shield dark glass.",
@@ -3240,9 +3583,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 780,
     badge: "No Added Sugar",
-    image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 60,
+    createdAt: "2026-08-20T15:16:50.526Z",
     brand: "NutriSpoon",
     description:
       "Pure slow stone-ground almonds without palm oil, added sugar, or preservatives. Packed with plant protein, magnesium, and dietary fiber.",
@@ -3258,9 +3603,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 910,
     badge: "Best Seller",
-    image: "https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 95,
+    createdAt: "2026-08-21T21:25:15.789Z",
     brand: "ChaiEstate",
     description:
       "Robust malty Assam orthodox tea paired with freshly crushed Idukki green cardamom, sun-dried ginger, and aromatic Ceylon cinnamon quills.",
@@ -3276,15 +3623,17 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 340,
     badge: "35% OFF",
-    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-08-23T03:33:41.053Z",
     brand: "ModenaVines",
     description:
       "IGP-certified thick balsamic glaze matured in succession barrels of oak, chestnut, and juniper. Drizzle over artisanal cheeses, salads, and gelato.",
   },
 
-    {
+  {
     id: "blue-tokai-french-roast-beans",
     name: "Blue Tokai French Roast Vienna Whole Coffee Beans (500g Fresh Pack)",
     storeId: "artisangourmet",
@@ -3295,10 +3644,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1480,
     badge: "Dark Roast",
-    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-08-24T09:42:06.316Z",
     brand: "Blue Tokai",
     description:
       "Our darkest roast with bold notes of dark cocoa and toasted walnuts. Harvested from high-altitude shade estates and freshly roasted to order.",
@@ -3314,9 +3665,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 920,
     badge: "100% Whole Leaf",
-    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-08-25T15:50:31.579Z",
     brand: "Vahdam",
     description:
       "Hand-picked high-elevation green tea blended with organic lemongrass and crisp spearmint leaves. Packed in nitrogen-flushed golden vacuum tins for farm-fresh antioxidant potency.",
@@ -3332,10 +3685,12 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 1240,
     badge: "Swiss Master",
-    image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-08-26T21:58:56.842Z",
     brand: "Lindt",
     description:
       "Expertly crafted full-bodied dark chocolate with balanced bitterness, delicate earthiness, and subtle notes of dried fruit and vanilla.",
@@ -3351,9 +3706,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 2180,
     badge: "Gifting Pick",
-    image: "https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-08-28T04:07:22.105Z",
     brand: "Ferrero Rocher",
     description:
       "Whole crunchy hazelnut surrounded by creamy cocoa filling, encased in a delicate crispy wafer shell coated with smooth milk chocolate and chopped roasted hazelnuts.",
@@ -3369,9 +3726,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 860,
     badge: "Rich in Omega-3",
-    image: "https://images.unsplash.com/photo-1508061252445-5350f3ab0a55?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1508061252445-5350f3ab0a55?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 55,
+    createdAt: "2026-08-29T10:15:47.368Z",
     brand: "Happilo",
     description:
       "Premium sun-dried Chandler California walnuts paired with naturally opened California pistachios roasted and lightly seasoned with Himalayan pink rock salt.",
@@ -3387,9 +3746,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 640,
     badge: "30% OFF",
-    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 48,
+    createdAt: "2026-08-30T16:24:12.632Z",
     brand: "Nutraj",
     description:
       "King of Dates known for their large size, soft caramel-like flesh, and rich sweetness. 100% natural, unprocessed, and packed with dietary fiber and potassium.",
@@ -3405,9 +3766,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1350,
     badge: "Superfood",
-    image: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 70,
+    createdAt: "2026-08-31T22:32:37.895Z",
     brand: "True Elements",
     description:
       "Nutritious roasted blend of pumpkin seeds, sunflower seeds, flax seeds, chia seeds, watermelon seeds, sesame, and soynuts lightly spiced for guilt-free crunch.",
@@ -3423,9 +3786,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1120,
     badge: "No Preservatives",
-    image: "https://images.unsplash.com/photo-1622484216279-d599b50b6a22?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1622484216279-d599b50b6a22?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-09-02T04:41:03.158Z",
     brand: "Yoga Bar",
     description:
       "Crafted with whole grains (oats, quinoa, buckwheat), almonds, flax seeds, and premium dark chocolate chunks. Provides clean, steady energy with zero corn syrup.",
@@ -3441,9 +3806,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1670,
     badge: "20% OFF",
-    image: "https://images.unsplash.com/photo-1521483451569-e33803c0330c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1521483451569-e33803c0330c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-09-03T10:49:28.421Z",
     brand: "Kellogg's",
     description:
       "Wholesome 5-grain cereal (wheat, corn, barley, oats, rice) enriched with sliced California almonds, sun-ripened raisins, and pure golden bee honey.",
@@ -3459,9 +3826,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1410,
     badge: "Heart Healthy",
-    image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 80,
+    createdAt: "2026-09-04T16:57:53.684Z",
     brand: "Bagrry's",
     description:
       "Jumbo thick-cut wholegrain rolled oats helping naturally reduce cholesterol. High in soluble dietary fiber and plant protein for sustained morning satiety.",
@@ -3477,9 +3846,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 590,
     badge: "Bronze Cut",
-    image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281729?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1621996346565-e3d5d6281729?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-09-05T23:06:18.947Z",
     brand: "De Cecco",
     description:
       "Authentic Italian pasta extruded through bronze dies and slow-dried at low temperatures to lock in durum wheat gluten flavor and ensure perfect al dente sauce holding.",
@@ -3495,9 +3866,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 730,
     badge: "Made in Italy",
-    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 36,
+    createdAt: "2026-09-07T05:14:44.211Z",
     brand: "Barilla",
     description:
       "Fragrant Ligurian sweet basil blended with authentic Parmigiano Reggiano DOP cheese, cashews, garlic, and extra virgin olive oil. Ready to toss directly with warm pasta.",
@@ -3517,10 +3890,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1450,
     badge: "Ayurvedic",
-    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 70,
+    createdAt: "2026-09-08T11:23:09.474Z",
     brand: "Prana Essentials",
     description:
       "Full-spectrum concentrated root extract standardized to 5% withanolides to support cortisol reduction, restorative sleep, and natural physical vitality.",
@@ -3536,9 +3911,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 890,
     badge: "Clean Label",
-    image: "https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-09-09T17:31:34.737Z",
     brand: "GreenFuel",
     description:
       "25g complete vegan protein per serving with 5g BCAAs, digestive enzyme blend, zero artificial sweeteners, and zero chalky aftertaste.",
@@ -3554,9 +3931,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 630,
     badge: "Cold Pressed",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 52,
+    createdAt: "2026-09-10T23:40:00.000Z",
     brand: "Prana Essentials",
     description:
       "Extra virgin cold-pressed black seed oil packed with thymoquinone (TQ 2.5%+) for cellular immunity, joint wellness, and glowing skin.",
@@ -3572,9 +3951,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 740,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 46,
+    createdAt: "2026-09-12T05:48:25.263Z",
     brand: "AuraAroma",
     description:
       "100% pure undiluted essential oils set: French Lavender, Tea Tree, Eucalyptus, Lemongrass, Sweet Orange, and Peppermint for ultrasonic diffusers.",
@@ -3590,9 +3971,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1120,
     badge: "Lab Tested",
-    image: "https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 62,
+    createdAt: "2026-09-13T11:56:50.526Z",
     brand: "OceanPure",
     description:
       "Molecularly distilled wild deep-sea fish oil providing 1000mg active Omega-3 (550mg EPA + 350mg DHA) with enteric coating for zero fishy aftertaste.",
@@ -3608,9 +3991,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 850,
     badge: "Hydration",
-    image: "https://images.unsplash.com/photo-1514733670139-4d87a1941d55?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1514733670139-4d87a1941d55?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 90,
+    createdAt: "2026-09-14T18:05:15.789Z",
     brand: "HydroVital",
     description:
       "Fast-dissolving effervescent hydration tablets packed with sodium, potassium, magnesium, zinc, and vitamin C for instant energy and anti-cramp recovery.",
@@ -3626,9 +4011,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 490,
     badge: "Ergonomic",
-    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-09-16T00:13:41.053Z",
     brand: "Prana Essentials",
     description:
       "Eco-friendly natural linen mat filled with organic coconut fiber, studded with 6,210 precision stimulation points to relieve back pain and stress.",
@@ -3644,15 +4031,17 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 680,
     badge: "33% OFF",
-    image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 78,
+    createdAt: "2026-09-17T06:22:06.316Z",
     brand: "SomnoCalm",
     description:
       "Caffeine-free soothing bedtime blend of Egyptian chamomile flowers, valerian root, lavender blossoms, and spearmint in unbleached pyramid tea bags.",
   },
 
-    {
+  {
     id: "omron-mc720-infrared-thermometer",
     name: "Omron MC-720 Non-Contact Forehead Infrared Digital Thermometer",
     storeId: "pranaherbal",
@@ -3663,10 +4052,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1420,
     badge: "1-Sec Reading",
-    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 35,
+    createdAt: "2026-09-18T12:30:31.579Z",
     brand: "Omron",
     description:
       "3-in-1 clinical thermometer measuring forehead temperature, surface object temperature, and room temperature in 1 second with backlit LCD screen and 25-reading memory.",
@@ -3682,10 +4073,12 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1890,
     badge: "Smart Sync",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-09-19T18:38:56.842Z",
     brand: "Dr Trust",
     description:
       "Bioelectrical impedance analysis (BIA) sensor tracking body fat, BMI, visceral fat, muscle mass, bone density, and BMR with automatic sync to iOS and Android health apps.",
@@ -3701,9 +4094,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 940,
     badge: "43% OFF",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 28,
+    createdAt: "2026-09-21T00:47:22.105Z",
     brand: "Agaro",
     description:
       "Deep tissue vibrating handheld massager with powerful copper motor, 8 detachable massage heads, variable speed dial, and extended reach non-slip handle.",
@@ -3719,9 +4114,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 2150,
     badge: "Orthopaedic",
-    image: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 50,
+    createdAt: "2026-09-22T06:55:47.368Z",
     brand: "Flamingo",
     description:
       "Imported heating element with in-built dual thermostat and 3 temperature levels providing uniform soothing heat therapy for sprains, muscle cramps, and arthritis.",
@@ -3737,9 +4134,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 380,
     badge: "Deep Knead",
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 14,
+    createdAt: "2026-09-23T13:04:12.632Z",
     brand: "Dr Physio",
     description:
       "Four simulated kneading discs and rolling nodes target plantar reflexology points with gentle infrared heating to relieve swollen ankles, arches, and plantar fasciitis.",
@@ -3755,9 +4154,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 3120,
     badge: "Clinically Validated",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-09-24T19:12:37.895Z",
     brand: "Omron",
     description:
       "Intellisense technology ensures comfortable controlled cuff inflation without pre-setting. Features body movement detection and irregular heartbeat indicator.",
@@ -3773,9 +4174,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 290,
     badge: "German Tech",
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 16,
+    createdAt: "2026-09-26T01:21:03.158Z",
     brand: "Beurer",
     description:
       "Ceramic glass screen radiating deep penetrating infrared heat to boost local blood circulation, relax bronchial passages, and speed muscle rehabilitation.",
@@ -3791,9 +4194,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1420,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 60,
+    createdAt: "2026-09-27T07:29:28.421Z",
     brand: "Care Touch",
     description:
       "Accurately determines SpO2 blood oxygen saturation levels and pulse rate in 8 seconds with dual-color rotatable OLED display and lanyard included.",
@@ -3809,9 +4214,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 510,
     badge: "Migraine Relief",
-    image: "https://images.unsplash.com/photo-1512290903671-17adc8465f45?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1512290903671-17adc8465f45?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-09-28T13:37:53.684Z",
     brand: "Lifelong",
     description:
       "Intelligent airbag oscillating pressure combined with 42°C constant warm compress and calming white noise music to relieve digital eye fatigue and headaches.",
@@ -3827,9 +4234,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 2450,
     badge: "Immunity Boost",
-    image: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
+    createdAt: "2026-09-29T19:46:18.947Z",
     brand: "Fast&Up",
     description:
       "Orange flavored effervescent tablets formulated with natural Amla extract and elemental zinc for high bioavailability, daily cellular antioxidant defence, and energy.",
@@ -3845,9 +4254,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1820,
     badge: "Daily Vitality",
-    image: "https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 80,
+    createdAt: "2026-10-01T01:54:44.211Z",
     brand: "HealthKart",
     description:
       "Fortified with 100% RDA of essential vitamins, minerals, Korean Red Ginseng, and amino acids to combat lethargy, improve immunity, and support heart health.",
@@ -3863,9 +4274,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1350,
     badge: "NABL Lab Tested",
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-10-02T08:03:09.474Z",
     brand: "Kapiva",
     description:
       "Sourced from 18,000+ feet in the Himalayan peaks and purified through traditional Shodhana processes with Triphala. Rich in 80+ trace minerals and fulvic acid.",
@@ -3885,10 +4298,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 870,
     badge: "Top Seller",
-    image: "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 24,
+    createdAt: "2026-10-03T14:11:34.737Z",
     brand: "DriveVision",
     description:
       "Ultra-HD 4K front and 1080p rear camera with Sony Starvis sensor, 170° wide angle, 5GHz Wi-Fi app preview, G-sensor collision lock, and GPS logger.",
@@ -3904,9 +4319,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1230,
     badge: "37% OFF",
-    image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 55,
+    createdAt: "2026-10-04T20:20:00.000Z",
     brand: "CleanRide",
     description:
       "9000Pa powerful suction portable wet/dry cordless vacuum with washable HEPA filter, crevice nozzle, and LED searchlight for dark corners.",
@@ -3922,9 +4339,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 950,
     badge: "Essential",
-    image: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 42,
+    createdAt: "2026-10-06T02:28:25.263Z",
     brand: "AeroPump",
     description:
       "Fast 12V DC portable air compressor with real-time digital LCD pressure monitor, auto stop at target PSI, and emergency hazard strobe light.",
@@ -3940,9 +4359,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 810,
     badge: "36% OFF",
-    image: "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-10-07T08:36:50.526Z",
     brand: "VoltDrive",
     description:
       "Smart infrared sensing motorized grip phone holder securing devices on bumpy roads with 360-degree rotation and air-vent heavy-duty hook clip.",
@@ -3958,9 +4379,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 620,
     badge: "Detailer Grade",
-    image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 48,
+    createdAt: "2026-10-08T14:45:15.789Z",
     brand: "GlowShield",
     description:
       "SiO2-infused spray sealant creating an ultra-slick hydrophobic barrier that repels water spots, mud, UV rays, and road grime with mirror gloss.",
@@ -3976,9 +4399,11 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 480,
     badge: "Emergency Pick",
-    image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 20,
+    createdAt: "2026-10-09T20:53:41.053Z",
     brand: "SparkMaster",
     description:
       "Safely jump-starts up to 6.0L petrol and 4.0L diesel engines in seconds with spark-proof smart jumper cables and heavy-duty 12,000mAh battery.",
@@ -3994,9 +4419,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 750,
     badge: "40% OFF",
-    image: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 85,
+    createdAt: "2026-10-11T03:02:06.316Z",
     brand: "CleanRide",
     description:
       "Ultra-dense Korean split microfiber towels engineered for scratch-free, swirl-free wax removal, water drying, and interior dusting.",
@@ -4012,9 +4439,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 560,
     badge: "Diagnostic",
-    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 37,
+    createdAt: "2026-10-12T09:10:31.579Z",
     brand: "AutoScan Pro",
     description:
       "Bluetooth 5.0 vehicle diagnostic adapter compatible with torque and OBD apps on iOS & Android. Read and clear check engine lights and view real-time sensor telemetry.",
@@ -4030,10 +4459,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1120,
     badge: "Built-in GPS",
-    image: "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 25,
+    createdAt: "2026-10-13T15:18:56.842Z",
     brand: "70mai",
     description:
       "1944P Ultra HD front camera paired with 1080P rear camera. Features Sony IMX335 sensor, Advanced Driver-Assistance System (ADAS), 24H parking surveillance, and app control.",
@@ -4049,9 +4480,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 950,
     badge: "65W GaN",
-    image: "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 45,
+    createdAt: "2026-10-14T21:27:22.105Z",
     brand: "Spigen",
     description:
       "Compact aluminum car socket charger with 45W and 20W Power Delivery ports simultaneously fast-charging a laptop and smartphone with intelligent temperature guard.",
@@ -4067,9 +4500,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 1680,
     badge: "Strong Suction",
-    image: "https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 65,
+    createdAt: "2026-10-16T03:35:47.368Z",
     brand: "Portronics",
     description:
       "Extra-strong sticky gel suction cup adhering securely to textured dashboards and windshields. Features 360° ball joint, telescopic arm, and one-touch release.",
@@ -4085,10 +4520,12 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 820,
     badge: "All-Metal Motor",
-    image: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
     featured: true,
     inStock: true,
     stockCount: 22,
+    createdAt: "2026-10-17T09:44:12.632Z",
     brand: "Bergmann",
     description:
       "100% pure copper direct-drive 150W motor inflating a mid-size car tyre from 0 to 30 PSI in under 2 minutes. Auto shutoff digital gauge and bright LED torch.",
@@ -4104,9 +4541,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 640,
     badge: "Pack of 2",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-10-18T15:52:37.895Z",
     brand: "AutoHub",
     description:
       "Custom-fit seat protector featuring tablet sleeve holder, bottle holders, umbrella pocket, tissue box slot, and fold-down dining food tray.",
@@ -4122,9 +4561,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 910,
     badge: "Complete Kit",
-    image: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 30,
+    createdAt: "2026-10-19T22:01:03.158Z",
     brand: "Wavex",
     description:
       "Professional cleaning pack including Carnauba Wash & Wax Shampoo, Tyre Black Polish, Dashboard Leather Conditioner, Microfiber Wash Mitt, and glass cleaner.",
@@ -4140,9 +4581,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 1350,
     badge: "Lint-Free",
-    image: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 75,
+    createdAt: "2026-10-21T04:09:28.421Z",
     brand: "3M",
     description:
       "High-density microfiber chenille noodle mitt trapping road dirt and grit without scratching clear-coat paintwork, machine washable with elastic wrist cuff.",
@@ -4158,9 +4601,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 2140,
     badge: "Spill-Proof",
-    image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 85,
+    createdAt: "2026-10-22T10:17:53.684Z",
     brand: "Godrej aer",
     description:
       "Sleek AC vent clip diffuser with clever on/off click mechanism releasing fresh Petal Crush, Cool Surf Blue, and Musk fragrances for up to 60 days each.",
@@ -4176,9 +4621,11 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 620,
     badge: "Accurate",
-    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 40,
+    createdAt: "2026-10-23T16:26:18.947Z",
     brand: "TUSA",
     description:
       "Lighted nozzle and blue backlit display screen providing accurate pressure readings (0-150 PSI) in PSI, Bar, KPA, and Kg/cm² for cars, motorcycles, and bicycles.",
@@ -4194,9 +4641,11 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 1480,
     badge: "Safety Essential",
-    image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 90,
+    createdAt: "2026-10-24T22:34:44.211Z",
     brand: "AmazonBasics",
     description:
       "Tungsten carbide dual-head emergency hammer engineered to shatter tempered vehicle side windows swiftly with razor-sharp guarded razor blade to slice jammed seatbelts.",
@@ -4212,9 +4661,11 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 890,
     badge: "UV Protection",
-    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 32,
+    createdAt: "2026-10-26T04:43:09.474Z",
     brand: "Solimo",
     description:
       "High-grade 190T polyester taffeta fabric shielding vehicle paint from harsh UV rays, rain, tree sap, and dust, featuring heavy-duty buckle strap and elastic hems.",
@@ -4230,15 +4681,16 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 430,
     badge: "Solar Powered",
-    image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=800&q=80",
     inStock: true,
     stockCount: 18,
+    createdAt: "2026-10-27T10:51:34.737Z",
     brand: "Qubo",
     description:
       "Real-time monitoring of tire pressure and temperature across all 4 wheels. Solar rechargeable dashboard LCD display with audible high/low pressure leak warnings.",
   },
-
-  ];
+];
 
 export const featuredProducts = products.filter((p) => p.featured);
 
