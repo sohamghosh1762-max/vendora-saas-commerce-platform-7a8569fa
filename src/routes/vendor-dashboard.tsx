@@ -124,28 +124,35 @@ export function VendorDashboardPage() {
     name: string;
     category: string;
     price: number;
-    originalPrice: number;
-    description: string;
+    originalPrice?: number;
+    stock?: number;
+    status?: "active" | "draft" | "out_of_stock";
+    description?: string;
     badge?: string;
+    image?: string;
   }) => {
-    if (store) {
-      addVendorProduct({
-        name: data.name,
-        storeId: store.id,
-        storeName: store.name,
-        category: data.category,
-        price: data.price,
-        originalPrice: data.originalPrice,
-        rating: 5.0,
-        reviews: 0,
-        ...(data.badge ? { badge: data.badge } : {}),
-        image:
-          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
-        description: data.description,
-        featured: true,
-      });
-      refreshStore();
-    }
+    const targetStoreId = store?.id || storeSlug;
+    const targetStoreName = store?.name || storeName;
+
+    addVendorProduct({
+      name: data.name,
+      storeId: targetStoreId,
+      storeName: targetStoreName,
+      category: data.category,
+      price: data.price,
+      originalPrice: data.originalPrice ?? data.price,
+      stock: data.stock !== undefined ? data.stock : 25,
+      status: data.status || "active",
+      rating: 5.0,
+      reviews: 0,
+      ...(data.badge ? { badge: data.badge } : {}),
+      image:
+        data.image ||
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
+      description: data.description || "Handcrafted artisan product with premium materials.",
+      featured: true,
+    });
+    refreshStore();
   };
 
   const handleSaveStoreSettings = async (data: {
@@ -301,6 +308,8 @@ export function VendorDashboardPage() {
               onBackToDashboard={() => handleTabChange("dashboard")}
               onAddProductClick={() => setIsAddProductOpen(true)}
               storeName={storeName}
+              storeId={storeSlug}
+              onProductsChange={() => refreshStore()}
             />
           )}
         </main>

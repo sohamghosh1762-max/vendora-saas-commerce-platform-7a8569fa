@@ -1,13 +1,16 @@
 import { ArrowLeft, Check, Plus, Search, Tag } from "lucide-react";
 import type { SidebarTab } from "./VendorSidebar";
-import { REFERENCE_ORDERS, REFERENCE_TOP_PRODUCTS } from "@/lib/vendor-dashboard-data";
+import { REFERENCE_ORDERS } from "@/lib/vendor-dashboard-data";
 import { useState } from "react";
+import { VendorProductsView } from "./VendorProductsView";
 
-interface VendorNonDashboardViewProps {
+export interface VendorNonDashboardViewProps {
   activeTab: SidebarTab;
   onBackToDashboard: () => void;
   onAddProductClick?: () => void;
   storeName?: string;
+  storeId?: string;
+  onProductsChange?: () => void;
 }
 
 export function VendorNonDashboardView({
@@ -15,9 +18,9 @@ export function VendorNonDashboardView({
   onBackToDashboard,
   onAddProductClick,
   storeName = "The Urban Nest",
+  storeId = "the-urban-nest",
+  onProductsChange,
 }: VendorNonDashboardViewProps) {
-  const [filterQuery, setFilterQuery] = useState("");
-
   const tabTitles: Record<SidebarTab, { title: string; subtitle: string }> = {
     dashboard: { title: "Dashboard", subtitle: "Overview of your storefront" },
     products: {
@@ -99,42 +102,12 @@ export function VendorNonDashboardView({
 
       {/* Tab Specific Content */}
       {activeTab === "products" && (
-        <div className="rounded-2xl border border-[#ECEAF5] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-          <div className="flex items-center justify-between pb-4 border-b border-[#ECEAF5]">
-            <span className="text-xs font-bold text-[#110D27]">
-              All Products ({REFERENCE_TOP_PRODUCTS.length})
-            </span>
-          </div>
-
-          <div className="mt-3 divide-y divide-[#F1EFF7]">
-            {REFERENCE_TOP_PRODUCTS.map((p) => (
-              <div
-                key={p.id}
-                className="flex items-center justify-between py-3 rounded-xl px-2 hover:bg-[#F9F8FD]"
-              >
-                <div className="flex items-center gap-3">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="size-11 rounded-xl object-cover shrink-0 bg-[#F4F2FC]"
-                  />
-                  <div>
-                    <h4 className="text-xs font-bold text-[#110D27]">{p.name}</h4>
-                    <span className="text-[11px] text-[#7A7F93]">
-                      {p.unitsSold} units sold • Stock: 48 units available
-                    </span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-[#110D27]">{p.formattedRevenue}</span>
-                  <span className="block text-[10px] font-semibold text-[#10B981]">
-                    Active in catalog
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <VendorProductsView
+          storeId={storeId}
+          storeName={storeName}
+          onAddProductClick={onAddProductClick}
+          onProductsChange={onProductsChange}
+        />
       )}
 
       {activeTab === "orders" && (

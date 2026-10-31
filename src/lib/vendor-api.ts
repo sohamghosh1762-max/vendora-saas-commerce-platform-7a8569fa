@@ -21,6 +21,7 @@ export { getActiveSession };
 import { generateSalt, hashPassword, verifyPassword } from "./vendor-crypto";
 import { getAllStores, stores as mockStores, type Store } from "@/data/stores";
 import { products as initialProducts, type Product } from "@/data/products";
+import { REFERENCE_VENDOR_PRODUCTS } from "./vendor-dashboard-data";
 
 const CUSTOM_PRODUCTS_KEY = "vendora_custom_products_v1";
 
@@ -326,17 +327,36 @@ export async function updateVendorStore(
 
 /** Products for a store */
 export function getVendorProducts(storeId: string): Product[] {
-  const custom = getStoredCustomProducts().filter((p) => p.storeId === storeId);
+  const custom = getStoredCustomProducts();
+  const storeCustom = custom.filter((p) => p.storeId === storeId);
+
+  // If the store is the default reference store ('the-urban-nest') and no custom products key has been set in localStorage:
+  if (storeId === "the-urban-nest") {
+    const hasInitialized = typeof window !== "undefined" && window.localStorage.getItem(CUSTOM_PRODUCTS_KEY) !== null;
+    if (!hasInitialized) {
+      saveCustomProducts(REFERENCE_VENDOR_PRODUCTS);
+      return [...REFERENCE_VENDOR_PRODUCTS];
+    }
+    return storeCustom;
+  }
+
   const initial = initialProducts.filter((p) => p.storeId === storeId);
-  return [...custom, ...initial];
+  return [...storeCustom, ...initial];
 }
 
 /** Add a product to a vendor store */
 export function addVendorProduct(product: Omit<Product, "id">): Product {
   const custom = getStoredCustomProducts();
+  if (product.storeId === "the-urban-nest" && typeof window !== "undefined" && window.localStorage.getItem(CUSTOM_PRODUCTS_KEY) === null) {
+    custom.push(...REFERENCE_VENDOR_PRODUCTS);
+  }
   const newProduct: Product = {
     ...product,
-    id: `prod_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    id: "prod_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+    rating: product.rating ?? 5.0,
+    reviews: product.reviews ?? 0,
+    stock: product.stock !== undefined ? product.stock : 25,
+    status: product.status || "active",
   };
   custom.unshift(newProduct);
   saveCustomProducts(custom);
@@ -352,12 +372,45 @@ export function addVendorProduct(product: Omit<Product, "id">): Product {
   return newProduct;
 }
 
+/** Update an existing product */
+export function updateVendorProduct(
+  productId: string,
+  updates: Partial<Product>,
+): Product | null {
+  const custom = getStoredCustomProducts();
+  const index = custom.findIndex((p) => p.id === productId);
+  if (index !== -1) {
+    custom[index] = { ...custom[index], ...updates };
+    saveCustomProducts(custom);
+    return custom[index];
+  }
+
+  const inInitial = [...initialProducts, ...REFERENCE_VENDOR_PRODUCTS].find((p) => p.id === productId);
+  if (inInitial) {
+    const allForStore = getVendorProducts(inInitial.storeId);
+    const storeUpdated = allForStore.map((p) => (p.id === productId ? { ...p, ...updates } : p));
+    const otherStores = custom.filter((p) => p.storeId !== inInitial.storeId);
+    saveCustomProducts([...storeUpdated, ...otherStores]);
+    return storeUpdated.find((p) => p.id === productId) || null;
+  }
+  return null;
+}
+
 /** Delete a product */
 export function deleteVendorProduct(productId: string): boolean {
   const custom = getStoredCustomProducts();
-  const filtered = custom.filter((p) => p.id !== productId);
-  if (filtered.length !== custom.length) {
+  const exists = custom.some((p) => p.id === productId);
+  if (exists) {
+    const filtered = custom.filter((p) => p.id !== productId);
     saveCustomProducts(filtered);
+    return true;
+  }
+
+  const inInitial = [...initialProducts, ...REFERENCE_VENDOR_PRODUCTS].find((p) => p.id === productId);
+  if (inInitial) {
+    const allForStore = getVendorProducts(inInitial.storeId).filter((p) => p.id !== productId);
+    const otherStores = custom.filter((p) => p.storeId !== inInitial.storeId);
+    saveCustomProducts([...allForStore, ...otherStores]);
     return true;
   }
   return false;

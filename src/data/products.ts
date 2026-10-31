@@ -5,6 +5,8 @@ import skincareImg from "@/assets/product-skincare.jpg";
 import shoesImg from "@/assets/product-shoes.jpg";
 import sofaImg from "@/assets/promo-sofa.jpg";
 
+export type ProductStatus = "active" | "draft" | "out_of_stock";
+
 export type Product = {
   id: string;
   name: string;
@@ -20,6 +22,8 @@ export type Product = {
   imagePosition?: string;
   featured?: boolean;
   description: string;
+  stock?: number;
+  status?: ProductStatus | string;
 };
 
 export const products: Product[] = [
@@ -38,6 +42,8 @@ export const products: Product[] = [
     featured: true,
     description:
       "Over-ear wireless headphones with deep bass, soft cushioned ear cups and up to 30 hours of battery life. Foldable design with a built-in mic for calls.",
+    stock: 25,
+    status: "active",
   },
   {
     id: "classic-denim-jacket",
@@ -54,6 +60,8 @@ export const products: Product[] = [
     featured: true,
     description:
       "A timeless medium-wash denim jacket with copper buttons and a comfortable regular fit. Pairs with everything, season after season.",
+    stock: 18,
+    status: "active",
   },
   {
     id: "smart-watch-pro",
@@ -70,6 +78,8 @@ export const products: Product[] = [
     featured: true,
     description:
       "Round AMOLED smart watch with heart-rate tracking, step counting, workout modes and notifications. Water resistant with a 7-day battery.",
+    stock: 12,
+    status: "active",
   },
   {
     id: "skincare-set",
@@ -86,6 +96,8 @@ export const products: Product[] = [
     featured: true,
     description:
       "A radiant renewal duo: hydrating serum and nourishing repair cream with rose-gold finishing. Dermatologically tested, suitable for all skin types.",
+    stock: 45,
+    status: "active",
   },
   {
     id: "running-shoes",
@@ -102,6 +114,8 @@ export const products: Product[] = [
     featured: true,
     description:
       "Lightweight running shoes with a breathable mesh upper, responsive foam midsole and grippy outsole. Built for daily runs and long walks.",
+    stock: 30,
+    status: "active",
   },
   {
     id: "modern-lounge-chair",
@@ -118,6 +132,8 @@ export const products: Product[] = [
     imagePosition: "88% center",
     description:
       "A plush fabric lounge chair with solid wood legs and a calm, neutral tone. The perfect corner companion for slow evenings.",
+    stock: 8,
+    status: "active",
   },
 ];
 
