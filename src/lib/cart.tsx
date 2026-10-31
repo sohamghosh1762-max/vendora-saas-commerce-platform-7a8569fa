@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
 
 type CartState = {
   /** productId -> quantity */
@@ -15,17 +8,19 @@ type CartState = {
 };
 
 type CartAction =
-  | { type: "ADD"; id: string }
+  | { type: "ADD"; id: string; qty?: number }
   | { type: "REMOVE"; id: string }
   | { type: "SET_QTY"; id: string; qty: number }
+  | { type: "CLEAR" }
   | { type: "TOGGLE_WISHLIST"; id: string }
   | { type: "HYDRATE"; items: Record<string, number>; wishlist: string[] };
 
 function reducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "ADD": {
-      const qty = state.items[action.id] ?? 0;
-      return { ...state, items: { ...state.items, [action.id]: qty + 1 } };
+      const current = state.items[action.id] ?? 0;
+      const amount = action.qty !== undefined && action.qty > 0 ? action.qty : 1;
+      return { ...state, items: { ...state.items, [action.id]: current + amount } };
     }
     case "REMOVE": {
       const items = { ...state.items };
@@ -37,6 +32,9 @@ function reducer(state: CartState, action: CartAction): CartState {
       if (action.qty <= 0) delete items[action.id];
       else items[action.id] = action.qty;
       return { ...state, items };
+    }
+    case "CLEAR": {
+      return { ...state, items: {} };
     }
     case "TOGGLE_WISHLIST": {
       const has = state.wishlist.includes(action.id);
@@ -61,9 +59,10 @@ type CartContextValue = {
   cartItems: Record<string, number>;
   wishlist: string[];
   hydrated: boolean;
-  addToCart: (id: string) => void;
+  addToCart: (id: string, qty?: number) => void;
   removeFromCart: (id: string) => void;
   setQty: (id: string, qty: number) => void;
+  clearCart: () => void;
   toggleWishlist: (id: string) => void;
   isWishlisted: (id: string) => boolean;
 };
@@ -116,9 +115,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       cartItems: state.items,
       wishlist: state.wishlist,
       hydrated: state.hydrated,
-      addToCart: (id) => dispatch({ type: "ADD", id }),
+      addToCart: (id, qty) => dispatch({ type: "ADD", id, qty }),
       removeFromCart: (id) => dispatch({ type: "REMOVE", id }),
       setQty: (id, qty) => dispatch({ type: "SET_QTY", id, qty }),
+      clearCart: () => dispatch({ type: "CLEAR" }),
       toggleWishlist: (id) => dispatch({ type: "TOGGLE_WISHLIST", id }),
       isWishlisted: (id) => state.wishlist.includes(id),
     };
