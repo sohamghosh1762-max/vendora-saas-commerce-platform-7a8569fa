@@ -31,9 +31,9 @@ export const Route = createFileRoute("/signin")({
   component: SignInPage,
   head: ({ search }) => {
     const title =
-      search.role === "vendor"
+      search?.role === "vendor"
         ? "Vendor Sign In — Vendora"
-        : search.role === "super-admin"
+        : search?.role === "super-admin"
           ? "Super Admin Sign In — Vendora"
           : "Sign In — Choose Account Type — Vendora";
     return {
