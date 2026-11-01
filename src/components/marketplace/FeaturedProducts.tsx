@@ -17,10 +17,7 @@ const filters = [
 export function FeaturedProducts() {
   const [active, setActive] = useState("all");
 
-  const list =
-    active === "all"
-      ? featuredProducts
-      : products.filter((p) => p.category === active);
+  const list = active === "all" ? featuredProducts : products.filter((p) => p.category === active);
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-6">

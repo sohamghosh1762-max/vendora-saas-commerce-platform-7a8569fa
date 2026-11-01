@@ -14,10 +14,7 @@ export const Route = createFileRoute("/product/$id")({
   },
   component: ProductDetailPage,
   head: () => ({
-    meta: [
-      { title: "Product — Vendora" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Product — Vendora" }, { name: "robots", content: "noindex" }],
   }),
 });
 
@@ -136,7 +133,10 @@ function ProductDetailPage() {
               { icon: Truck, text: "Free shipping across India" },
               { icon: RotateCcw, text: "7-day easy returns" },
             ].map((item) => (
-              <li key={item.text} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+              <li
+                key={item.text}
+                className="flex items-center gap-2.5 text-sm text-muted-foreground"
+              >
                 <item.icon className="size-4 text-success" />
                 {item.text}
               </li>

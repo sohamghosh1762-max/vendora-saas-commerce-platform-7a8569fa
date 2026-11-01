@@ -29,6 +29,7 @@ import { Route as SigninRouteImport } from './routes/signin'
 import { Route as StoresRouteImport } from './routes/stores'
 import { Route as StudentDiscountRouteImport } from './routes/student-discount'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
+import { Route as SuperAdminDashboardRouteImport } from './routes/super-admin-dashboard'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrackOrderRouteImport } from './routes/track-order'
 import { Route as VendorDashboardRouteImport } from './routes/vendor-dashboard'
@@ -139,6 +140,11 @@ const SuccessStoriesRoute = SuccessStoriesRouteImport.update({
   path: '/success-stories',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SuperAdminDashboardRoute = SuperAdminDashboardRouteImport.update({
+  id: '/super-admin-dashboard',
+  path: '/super-admin-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -206,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/stores': typeof StoresRoute
   '/student-discount': typeof StudentDiscountRoute
   '/success-stories': typeof SuccessStoriesRoute
+  '/super-admin-dashboard': typeof SuperAdminDashboardRoute
   '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
   '/vendor-dashboard': typeof VendorDashboardRoute
@@ -237,6 +244,7 @@ export interface FileRoutesByTo {
   '/stores': typeof StoresRoute
   '/student-discount': typeof StudentDiscountRoute
   '/success-stories': typeof SuccessStoriesRoute
+  '/super-admin-dashboard': typeof SuperAdminDashboardRoute
   '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
   '/vendor-dashboard': typeof VendorDashboardRoute
@@ -269,6 +277,7 @@ export interface FileRoutesById {
   '/stores': typeof StoresRoute
   '/student-discount': typeof StudentDiscountRoute
   '/success-stories': typeof SuccessStoriesRoute
+  '/super-admin-dashboard': typeof SuperAdminDashboardRoute
   '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
   '/vendor-dashboard': typeof VendorDashboardRoute
@@ -302,6 +311,7 @@ export interface FileRouteTypes {
     | '/stores'
     | '/student-discount'
     | '/success-stories'
+    | '/super-admin-dashboard'
     | '/terms'
     | '/track-order'
     | '/vendor-dashboard'
@@ -333,6 +343,7 @@ export interface FileRouteTypes {
     | '/stores'
     | '/student-discount'
     | '/success-stories'
+    | '/super-admin-dashboard'
     | '/terms'
     | '/track-order'
     | '/vendor-dashboard'
@@ -364,6 +375,7 @@ export interface FileRouteTypes {
     | '/stores'
     | '/student-discount'
     | '/success-stories'
+    | '/super-admin-dashboard'
     | '/terms'
     | '/track-order'
     | '/vendor-dashboard'
@@ -396,6 +408,7 @@ export interface RootRouteChildren {
   StoresRoute: typeof StoresRoute
   StudentDiscountRoute: typeof StudentDiscountRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
+  SuperAdminDashboardRoute: typeof SuperAdminDashboardRoute
   TermsRoute: typeof TermsRoute
   TrackOrderRoute: typeof TrackOrderRoute
   VendorDashboardRoute: typeof VendorDashboardRoute
@@ -549,6 +562,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuccessStoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/super-admin-dashboard': {
+      id: '/super-admin-dashboard'
+      path: '/super-admin-dashboard'
+      fullPath: '/super-admin-dashboard'
+      preLoaderRoute: typeof SuperAdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -636,6 +656,7 @@ const rootRouteChildren: RootRouteChildren = {
   StoresRoute: StoresRoute,
   StudentDiscountRoute: StudentDiscountRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,
+  SuperAdminDashboardRoute: SuperAdminDashboardRoute,
   TermsRoute: TermsRoute,
   TrackOrderRoute: TrackOrderRoute,
   VendorDashboardRoute: VendorDashboardRoute,

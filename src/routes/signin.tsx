@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/marketplace/Logo";
 import { useVendorAuth } from "@/lib/vendor-context";
+import { useSuperAdminAuth } from "@/lib/super-admin-context";
 import heroShopper from "@/assets/hero-shopper.png";
 
 export interface SignInSearch {
@@ -22,18 +23,19 @@ export interface SignInSearch {
 
 export const Route = createFileRoute("/signin")({
   validateSearch: (search: Record<string, unknown>): SignInSearch => {
-    const role = search.role;
+    const role = search["role"];
     if (role === "vendor" || role === "super-admin") {
       return { role };
     }
     return {};
   },
   component: SignInPage,
-  head: ({ search }) => {
+  head: (ctx) => {
+    const role = (ctx as { search?: SignInSearch })?.search?.role;
     const title =
-      search.role === "vendor"
+      role === "vendor"
         ? "Vendor Sign In — Vendora"
-        : search.role === "super-admin"
+        : role === "super-admin"
           ? "Super Admin Sign In — Vendora"
           : "Sign In — Choose Account Type — Vendora";
     return {
@@ -436,6 +438,9 @@ export function VendorSignInForm({ onBack }: { onBack: () => void }) {
  * Step 2B: Super Admin Sign In Form
  */
 export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
+  const { isConfigured, login, isAuthenticated, admin } = useSuperAdminAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -445,20 +450,27 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!isConfigured) {
+      setError(
+        "Administrative Authorization Required: Dedicated backend IAM authentication service is not connected to this environment. Contact platform operations to provision an administrator session with multi-factor authentication (MFA).",
+      );
+      return;
+    }
+
     setIsSubmitting(true);
-
-    // Administrative Security Verification
-    await new Promise((r) => setTimeout(r, 700));
-
-    // Security requirement:
-    // "Selecting Super Admin is not proof of administrative access.
-    // Do not grant admin privileges based on a frontend role selector, query parameter, editable local storage, or client-side flag.
-    // Validate administrator permissions through the trusted authentication/backend layer.
-    // If separate admin authentication is not configured, provide a clearly labeled development placeholder or explain that admin authentication requires backend configuration."
-    setError(
-      "Administrative Authorization Required: Dedicated backend IAM authentication service is not connected to this environment. Contact platform operations to provision an administrator session with multi-factor authentication (MFA).",
-    );
-    setIsSubmitting(false);
+    try {
+      const res = await login(email, password);
+      if (res.success) {
+        navigate({ to: "/super-admin-dashboard" });
+      } else {
+        setError(res.error || "Invalid administrator credentials.");
+      }
+    } catch {
+      setError("An unexpected error occurred during administrative verification.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -484,6 +496,18 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">Sign in to manage the Vendora platform.</p>
 
+      {isAuthenticated && admin && (
+        <div className="mt-4 rounded-2xl border border-primary/20 bg-primary-soft/40 p-3.5 text-xs text-primary-dark">
+          <p className="font-semibold">Signed in as Administrator ({admin.email})</p>
+          <Link
+            to="/super-admin-dashboard"
+            className="mt-2 inline-block font-bold text-primary underline"
+          >
+            Open Super Admin Dashboard →
+          </Link>
+        </div>
+      )}
+
       {/* Security Governance Notice */}
       <div className="mt-4 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3.5 text-xs text-amber-900 dark:text-amber-200">
         <div className="flex items-start gap-2.5">
@@ -498,6 +522,17 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
           </div>
         </div>
       </div>
+
+      {!isConfigured && !error && (
+        <div
+          role="alert"
+          className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs font-semibold text-amber-900 dark:text-amber-200 leading-relaxed"
+        >
+          Administrative Authorization Required: Dedicated backend IAM authentication service is not
+          connected to this environment. Contact platform operations to provision an administrator
+          session with multi-factor authentication (MFA).
+        </div>
+      )}
 
       {error && (
         <div
@@ -568,6 +603,37 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
           )}
         </button>
       </form>
+
+      {/* Demo Administrator Account Box */}
+      <div className="mt-5 rounded-2xl border border-border bg-muted/30 p-3.5 text-xs">
+        <p className="flex items-center gap-1.5 font-semibold text-foreground">
+          <ShieldCheck className="size-3.5 text-primary" />
+          Demo Administrator Account:
+        </p>
+        <div className="mt-2 rounded-xl border border-primary/20 bg-primary-soft/30 p-2.5">
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-foreground">Super Administrator</span>
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+              Full Governance Access
+            </span>
+          </div>
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            Email: <code className="font-mono font-bold text-foreground">admin@vendora.com</code> •
+            Pass: <code className="font-mono font-bold text-foreground">vendora123</code>
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setEmail("admin@vendora.com");
+              setPassword("vendora123");
+              setError(null);
+            }}
+            className="mt-1.5 text-[11px] font-bold text-primary underline hover:text-primary-dark"
+          >
+            Auto-fill Administrator Credentials
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -12,10 +12,7 @@ export const Route = createFileRoute("/store/$id")({
   },
   component: StoreDetailPage,
   head: () => ({
-    meta: [
-      { title: "Store — Vendora" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Store — Vendora" }, { name: "robots", content: "noindex" }],
   }),
 });
 

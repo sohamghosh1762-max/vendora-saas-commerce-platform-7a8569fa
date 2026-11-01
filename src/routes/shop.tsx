@@ -21,7 +21,10 @@ export const Route = createFileRoute("/shop")({
         content: "Browse every product across all independent Vendora stores.",
       },
       { property: "og:title", content: "Shop All Products — Vendora" },
-      { property: "og:description", content: "Browse every product across all independent Vendora stores." },
+      {
+        property: "og:description",
+        content: "Browse every product across all independent Vendora stores.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
@@ -56,7 +59,9 @@ function ShopPage() {
           search={{ q }}
           className={cn(
             "rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors",
-            !category ? "bg-primary text-primary-foreground" : "border text-muted-foreground hover:border-primary hover:text-primary",
+            !category
+              ? "bg-primary text-primary-foreground"
+              : "border text-muted-foreground hover:border-primary hover:text-primary",
           )}
         >
           All

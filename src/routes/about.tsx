@@ -3,7 +3,10 @@ import { StaticPage } from "@/components/marketplace/StaticPage";
 
 export const Route = createFileRoute("/about")({
   component: () => (
-    <StaticPage title="About Vendora" description="More than a marketplace — a smarter way to shop.">
+    <StaticPage
+      title="About Vendora"
+      description="More than a marketplace — a smarter way to shop."
+    >
       <p className="mt-6 rounded-2xl border bg-card p-6 text-sm text-muted-foreground">
         This page is part of the Vendora demo — full content is coming soon.
       </p>

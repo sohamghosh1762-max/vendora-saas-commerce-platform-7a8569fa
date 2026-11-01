@@ -36,11 +36,16 @@ export function ProductCard({ product }: { product: Product }) {
       <button
         onClick={() => toggleWishlist(product.id)}
         aria-pressed={wishlisted}
-        aria-label={wishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+        aria-label={
+          wishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`
+        }
         className="absolute right-3 top-3 grid size-8 place-items-center rounded-full border bg-card shadow-soft transition-transform hover:scale-110"
       >
         <Heart
-          className={cn("size-4", wishlisted ? "fill-destructive text-destructive" : "text-muted-foreground")}
+          className={cn(
+            "size-4",
+            wishlisted ? "fill-destructive text-destructive" : "text-muted-foreground",
+          )}
         />
       </button>
 
@@ -62,7 +67,9 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="flex items-center gap-1">
           <Star className="size-3.5 fill-gold text-gold" />
           <span className="text-xs font-semibold text-foreground">{product.rating}</span>
-          <span className="text-xs text-muted-foreground">({product.reviews.toLocaleString("en-IN")})</span>
+          <span className="text-xs text-muted-foreground">
+            ({product.reviews.toLocaleString("en-IN")})
+          </span>
         </div>
         <div className="flex items-baseline gap-2">
           <span className="text-base font-bold text-foreground">{formatINR(product.price)}</span>

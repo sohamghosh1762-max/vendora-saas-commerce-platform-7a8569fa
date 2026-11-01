@@ -9,7 +9,10 @@ export const Route = createFileRoute("/stores")({
       { title: "All Stores — Vendora" },
       { name: "description", content: "Meet the independent sellers on the Vendora marketplace." },
       { property: "og:title", content: "All Stores — Vendora" },
-      { property: "og:description", content: "Meet the independent sellers on the Vendora marketplace." },
+      {
+        property: "og:description",
+        content: "Meet the independent sellers on the Vendora marketplace.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
