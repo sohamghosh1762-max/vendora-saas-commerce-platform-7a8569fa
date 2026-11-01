@@ -17,7 +17,9 @@ export function ProductCard({ product }: { product: Product }) {
   const savings = Math.max(0, product.originalPrice - product.price);
   const badgeLabel = product.badge || (discount > 0 ? `${discount}% OFF` : undefined);
   const isOutOfStock = product.inStock === false;
-  const isLowStock = Boolean(product.stockCount && product.stockCount <= 10 && product.stockCount > 0);
+  const isLowStock = Boolean(
+    product.stockCount && product.stockCount <= 10 && product.stockCount > 0,
+  );
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -132,7 +134,9 @@ export function ProductCard({ product }: { product: Product }) {
           <span className="text-base font-bold text-foreground">{formatINR(product.price)}</span>
           {savings > 0 && (
             <>
-              <del className="text-xs text-muted-foreground">{formatINR(product.originalPrice)}</del>
+              <del className="text-xs text-muted-foreground">
+                {formatINR(product.originalPrice)}
+              </del>
               <span className="text-[11px] font-semibold text-success">
                 Save {formatINR(savings)}
               </span>
