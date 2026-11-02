@@ -749,7 +749,7 @@ function ShopPage() {
             value={inputVal}
             onChange={handleSearchInputChange}
             placeholder="Search by name, category, brand, description..."
-            className="w-full rounded-full border bg-card py-2.5 pl-10 pr-20 text-sm text-foreground shadow-soft placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full min-h-[44px] rounded-full border bg-card py-2.5 pl-10 pr-20 text-sm text-foreground shadow-soft placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           {inputVal && (
@@ -764,7 +764,7 @@ function ShopPage() {
           )}
           <button
             type="submit"
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full bg-primary px-3.5 py-1 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary-dark"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary-dark"
           >
             Search
           </button>
@@ -772,7 +772,7 @@ function ShopPage() {
       </div>
 
       {/* Category Pills Strip with Icons */}
-      <div className="mt-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div className="-mx-4 px-4 sm:mx-0 sm:px-0 mt-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none touch-pan-x">
         <button
           type="button"
           onClick={handleSelectAllCategories}
@@ -847,14 +847,14 @@ function ShopPage() {
         {/* Products Column */}
         <div className="lg:col-span-3 xl:col-span-4">
           {/* Top Control Bar: Mobile Filter Button, Sort Selector, Results Count */}
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-3 shadow-soft sm:px-4">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border bg-card p-3 shadow-soft sm:px-4">
+            <div className="flex items-center justify-between sm:justify-start gap-2.5">
               {/* Mobile Filter Drawer Trigger */}
               <Sheet open={mobileSheetOpen} onOpenChange={setMobileSheetOpen}>
                 <SheetTrigger asChild>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-xl border bg-secondary/80 px-3 py-1.5 text-xs font-semibold text-secondary-foreground transition-colors hover:bg-secondary lg:hidden"
+                    className="inline-flex min-h-[38px] items-center gap-2 rounded-xl border bg-secondary/80 px-3.5 py-1.5 text-xs font-semibold text-secondary-foreground transition-colors hover:bg-secondary lg:hidden"
                   >
                     <SlidersHorizontal className="size-3.5" />
                     <span>Filters</span>
@@ -865,7 +865,7 @@ function ShopPage() {
                     )}
                   </button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto p-6">
+                <SheetContent side="left" className="w-[88vw] max-w-sm overflow-y-auto p-4 sm:p-6">
                   <SheetHeader className="mb-4 text-left">
                     <SheetTitle className="text-lg font-bold">Filter Products</SheetTitle>
                   </SheetHeader>
@@ -908,10 +908,10 @@ function ShopPage() {
             </div>
 
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex items-center justify-between sm:justify-end gap-2 text-xs border-t sm:border-t-0 pt-2.5 sm:pt-0">
               <label
                 htmlFor="shop-sort"
-                className="flex items-center gap-1 font-medium text-muted-foreground"
+                className="flex items-center gap-1 font-medium text-muted-foreground shrink-0"
               >
                 <ArrowUpDown className="size-3.5 text-muted-foreground" />
                 <span>Sort by:</span>
@@ -920,7 +920,7 @@ function ShopPage() {
                 id="shop-sort"
                 value={sort}
                 onChange={(e) => handleSortChange(e.target.value as SortOption)}
-                className="rounded-lg border bg-background px-3 py-1.5 text-xs font-semibold text-foreground shadow-xs outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
+                className="min-h-[38px] rounded-lg border bg-background px-3 py-1.5 text-xs font-semibold text-foreground shadow-xs outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
               >
                 <option value="featured">Featured</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -1096,7 +1096,7 @@ function ShopPage() {
           {/* Product Grid */}
           {paginatedList.length > 0 ? (
             <>
-              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              <div className="mt-6 grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 {paginatedList.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}

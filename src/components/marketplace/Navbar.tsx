@@ -43,8 +43,8 @@ export function Navbar() {
         isHiddenDuringIntro ? "opacity-0 pointer-events-none" : "opacity-100",
       )}
     >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-        <div className="flex shrink-0 items-center min-w-[210px] sm:min-w-[230px] lg:w-[240px]">
+      <div className="mx-auto flex h-16 sm:h-20 max-w-7xl items-center justify-between gap-2 sm:gap-3 px-3 sm:px-6 lg:px-8">
+        <div className="flex shrink items-center">
           <Logo />
         </div>
 
@@ -67,7 +67,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           <form
             className="relative hidden w-48 xl:w-64 lg:block"
             role="search"
@@ -90,9 +90,9 @@ export function Navbar() {
           <Link
             to="/wishlist"
             aria-label={`Wishlist, ${wishlist.length} items`}
-            className="relative grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent hover:text-primary"
+            className="relative grid size-9 sm:size-10 min-h-[40px] min-w-[40px] place-items-center rounded-full text-foreground transition-colors hover:bg-accent hover:text-primary"
           >
-            <Heart className="size-5" />
+            <Heart className="size-4.5 sm:size-5" />
             {hydrated && wishlist.length > 0 && (
               <span className={cn(iconBadge, "bg-primary text-primary-foreground")}>
                 {wishlist.length}
@@ -103,9 +103,9 @@ export function Navbar() {
           <Link
             to="/cart"
             aria-label={`Cart, ${cartCount} items`}
-            className="relative grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent hover:text-primary"
+            className="relative grid size-9 sm:size-10 min-h-[40px] min-w-[40px] place-items-center rounded-full text-foreground transition-colors hover:bg-accent hover:text-primary"
           >
-            <ShoppingBag className="size-5" />
+            <ShoppingBag className="size-4.5 sm:size-5" />
             {hydrated && cartCount > 0 && (
               <span className={cn(iconBadge, "bg-primary text-primary-foreground")}>
                 {cartCount}
@@ -133,7 +133,7 @@ export function Navbar() {
           )}
 
           <button
-            className="grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent lg:hidden"
+            className="grid size-9 sm:size-10 min-h-[40px] min-w-[40px] place-items-center rounded-full text-foreground transition-colors hover:bg-accent lg:hidden"
             onClick={() => setMenuOpen((o) => !o)}
             aria-expanded={menuOpen}
             aria-label="Toggle menu"
@@ -144,7 +144,10 @@ export function Navbar() {
       </div>
 
       {menuOpen && (
-        <nav className="border-t bg-background px-4 py-4 lg:hidden" aria-label="Mobile navigation">
+        <nav
+          className="border-t bg-background px-4 py-4 lg:hidden shadow-lg animate-in slide-in-from-top-2 duration-200"
+          aria-label="Mobile navigation"
+        >
           <form
             className="relative mb-3 block lg:hidden"
             role="search"
@@ -160,7 +163,7 @@ export function Navbar() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search for products, brands, or stores..."
               aria-label="Search products and stores"
-              className="w-full rounded-full border border-border/80 bg-lavender/30 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20"
+              className="w-full min-h-[44px] rounded-full border border-border/80 bg-lavender/30 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20"
             />
           </form>
           <ul className="flex flex-col space-y-1">
@@ -170,13 +173,20 @@ export function Navbar() {
                   to={link.to}
                   activeOptions={{ exact: link.to === "/" }}
                   onClick={() => setMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent data-[status=active]:bg-primary-soft data-[status=active]:text-primary-dark data-[status=active]:font-semibold"
+                  className="flex min-h-[44px] items-center rounded-xl px-3.5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-accent data-[status=active]:bg-primary-soft data-[status=active]:text-primary-dark data-[status=active]:font-semibold"
                 >
                   {link.label}
                 </Link>
               </li>
             ))}
             <li className="pt-2 sm:hidden">
+              <Link
+                to="/signin"
+                onClick={() => setMenuOpen(false)}
+                className="flex min-h-[44px] items-center justify-center rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-dark"
+              >
+                Sign In
+              </Link>
               {isAuthenticated && customer ? (
                 <div className="flex flex-col gap-2">
                   <Link

@@ -30,7 +30,7 @@ function DealsPage() {
       <p className="mt-2 text-sm text-muted-foreground">
         Mega sale — up to 50% off top products from your favourite stores.
       </p>
-      <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-8 grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {list.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}

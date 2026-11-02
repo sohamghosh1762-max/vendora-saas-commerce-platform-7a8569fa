@@ -370,84 +370,92 @@ function ProductDetailPage() {
           )}
 
           {/* Quantity Selector & Action Buttons */}
-          <div className="mt-6 flex flex-wrap items-center gap-3 border-t pt-5">
-            {/* Quantity Stepper bounded by stock */}
-            <div className="flex items-center gap-3 rounded-full border bg-card px-3 py-1.5 shadow-soft">
+          <div className="mt-6 flex flex-col gap-3 border-t pt-5">
+            {/* Row 1 on mobile: Quantity Stepper & Wishlist toggle */}
+            <div className="flex items-center justify-between sm:justify-start gap-3">
+              {/* Quantity Stepper bounded by stock */}
+              <div className="flex items-center gap-3 rounded-full border bg-card px-3 py-1.5 shadow-soft">
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  aria-label="Decrease quantity"
+                  disabled={isOutOfStock || qty <= 1}
+                  className="grid size-8 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
+                >
+                  <Minus className="size-3.5" />
+                </button>
+                <span className="w-6 text-center text-sm font-semibold">{qty}</span>
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.min(maxStock, q + 1))}
+                  aria-label="Increase quantity"
+                  disabled={isOutOfStock || qty >= maxStock}
+                  className="grid size-8 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
+                  title={qty >= maxStock ? `Max available stock (${maxStock}) reached` : undefined}
+                >
+                  <Plus className="size-3.5" />
+                </button>
+              </div>
+
+              {/* Wishlist Button */}
               <button
                 type="button"
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                aria-label="Decrease quantity"
-                disabled={isOutOfStock || qty <= 1}
-                className="grid size-7 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
+                onClick={() => toggleWishlist(product.id)}
+                aria-pressed={wishlisted}
+                aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                className={cn(
+                  "grid size-11 place-items-center rounded-full border bg-card text-foreground shadow-soft transition-colors hover:bg-accent sm:order-last",
+                  wishlisted && "border-destructive/30 bg-destructive/10 text-destructive",
+                )}
               >
-                <Minus className="size-3.5" />
-              </button>
-              <span className="w-6 text-center text-sm font-semibold">{qty}</span>
-              <button
-                type="button"
-                onClick={() => setQty((q) => Math.min(maxStock, q + 1))}
-                aria-label="Increase quantity"
-                disabled={isOutOfStock || qty >= maxStock}
-                className="grid size-7 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
-                title={qty >= maxStock ? `Max available stock (${maxStock}) reached` : undefined}
-              >
-                <Plus className="size-3.5" />
+                <Heart
+                  className={cn("size-5", wishlisted && "fill-destructive text-destructive")}
+                />
               </button>
             </div>
 
-            {/* Add to Cart Button */}
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              disabled={isOutOfStock}
-              className={cn(
-                "flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-full py-3 px-6 text-sm font-semibold transition-all duration-200 shadow-soft",
-                isOutOfStock
-                  ? "cursor-not-allowed bg-muted text-muted-foreground"
-                  : justAdded
-                    ? "bg-success text-success-foreground"
-                    : "bg-primary text-primary-foreground hover:bg-primary-dark",
-              )}
-            >
-              {justAdded ? (
-                <>
-                  <Check className="size-4 animate-in zoom-in-50" />
-                  <span>Added {qty > 1 ? `${qty} items` : ""}!</span>
-                </>
-              ) : (
-                <span>Add {qty > 1 ? `(${qty}) ` : ""}to Cart</span>
-              )}
-            </button>
+            {/* Row 2: Add to Cart & Buy Now Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+              {/* Add to Cart Button */}
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                disabled={isOutOfStock}
+                className={cn(
+                  "min-h-[44px] flex-1 inline-flex items-center justify-center gap-2 rounded-full py-3 px-6 text-sm font-semibold transition-all duration-200 shadow-soft",
+                  isOutOfStock
+                    ? "cursor-not-allowed bg-muted text-muted-foreground"
+                    : justAdded
+                      ? "bg-success text-success-foreground"
+                      : "bg-primary text-primary-foreground hover:bg-primary-dark",
+                )}
+              >
+                {justAdded ? (
+                  <>
+                    <Check className="size-4 animate-in zoom-in-50" />
+                    <span>Added {qty > 1 ? `${qty} items` : ""}!</span>
+                  </>
+                ) : (
+                  <span>Add {qty > 1 ? `(${qty}) ` : ""}to Cart</span>
+                )}
+              </button>
 
-            {/* Buy Now Button */}
-            <button
-              type="button"
-              onClick={handleBuyNow}
-              disabled={isOutOfStock}
-              className={cn(
-                "inline-flex items-center justify-center gap-1.5 rounded-full py-3 px-6 text-sm font-semibold transition-all duration-200 shadow-soft",
-                isOutOfStock
-                  ? "cursor-not-allowed bg-muted text-muted-foreground"
-                  : "border-2 border-primary bg-background text-primary hover:bg-primary-soft/50",
-              )}
-            >
-              <Zap className="size-4 fill-primary" />
-              <span>Buy Now</span>
-            </button>
-
-            {/* Wishlist Button */}
-            <button
-              type="button"
-              onClick={() => toggleWishlist(product.id)}
-              aria-pressed={wishlisted}
-              aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              className={cn(
-                "grid size-12 place-items-center rounded-full border bg-card text-foreground shadow-soft transition-colors hover:bg-accent",
-                wishlisted && "border-destructive/30 bg-destructive/10 text-destructive",
-              )}
-            >
-              <Heart className={cn("size-5", wishlisted && "fill-destructive text-destructive")} />
-            </button>
+              {/* Buy Now Button */}
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                disabled={isOutOfStock}
+                className={cn(
+                  "min-h-[44px] inline-flex items-center justify-center gap-1.5 rounded-full py-3 px-6 text-sm font-semibold transition-all duration-200 shadow-soft",
+                  isOutOfStock
+                    ? "cursor-not-allowed bg-muted text-muted-foreground"
+                    : "border-2 border-primary bg-background text-primary hover:bg-primary-soft/50",
+                )}
+              >
+                <Zap className="size-4 fill-primary" />
+                <span>Buy Now</span>
+              </button>
+            </div>
           </div>
 
           {/* Description Overview */}
@@ -472,16 +480,14 @@ function ProductDetailPage() {
                     <div
                       key={item.label}
                       className={cn(
-                        "grid grid-cols-3 gap-4 px-4 py-3 sm:grid-cols-4",
+                        "flex flex-col sm:grid sm:grid-cols-4 gap-1 sm:gap-4 px-4 py-3",
                         i % 2 === 0 ? "bg-muted/20" : "bg-card",
                       )}
                     >
-                      <dt className="col-span-1 font-semibold text-muted-foreground">
+                      <dt className="font-semibold text-muted-foreground sm:col-span-1">
                         {item.label}
                       </dt>
-                      <dd className="col-span-2 font-medium text-foreground sm:col-span-3">
-                        {item.value}
-                      </dd>
+                      <dd className="font-medium text-foreground sm:col-span-3">{item.value}</dd>
                     </div>
                   ))}
                 </dl>
@@ -530,7 +536,7 @@ function ProductDetailPage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {relatedProducts.map((rel) => (
               <ProductCard key={rel.id} product={rel} />
             ))}
