@@ -12,10 +12,7 @@ export const Route = createFileRoute("/store/$id")({
   },
   component: StoreDetailPage,
   head: () => ({
-    meta: [
-      { title: "Store — Vendora" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Store — Vendora" }, { name: "robots", content: "noindex" }],
   }),
 });
 
@@ -64,7 +61,7 @@ function StoreDetailPage() {
 
       <h2 className="mt-10 text-xl font-bold text-foreground">Products from {store.name}</h2>
       {storeProducts.length > 0 ? (
-        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-4 grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {storeProducts.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

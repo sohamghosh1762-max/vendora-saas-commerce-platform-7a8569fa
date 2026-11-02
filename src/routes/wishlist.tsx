@@ -42,7 +42,7 @@ function WishlistPage() {
         </p>
         <Link
           to="/shop"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all duration-200 hover:bg-primary-dark active:scale-98"
+          className="mt-8 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all duration-200 hover:bg-primary-dark active:scale-98"
         >
           <span>Explore Products</span>
           <ArrowRight className="size-4" />
@@ -84,7 +84,7 @@ function WishlistPage() {
           <button
             type="button"
             onClick={handleAddAllToCart}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow-soft transition-colors hover:bg-primary-dark min-h-[40px]"
           >
             <ShoppingBag className="size-3.5" />
             <span>Add All In-Stock to Cart</span>
@@ -93,7 +93,7 @@ function WishlistPage() {
       </div>
 
       {/* Wishlist Products Grid */}
-      <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-8 grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {list.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}

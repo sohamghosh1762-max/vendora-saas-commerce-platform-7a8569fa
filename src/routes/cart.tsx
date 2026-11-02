@@ -84,7 +84,7 @@ function CartPage() {
         </p>
         <Link
           to="/shop"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all duration-200 hover:bg-primary-dark active:scale-98"
+          className="mt-8 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all duration-200 hover:bg-primary-dark active:scale-98"
         >
           <span>Start Shopping</span>
           <ArrowRight className="size-4" />
@@ -128,71 +128,73 @@ function CartPage() {
               return (
                 <li
                   key={id}
-                  className="flex flex-col gap-4 rounded-2xl border bg-card p-4 shadow-soft transition-all sm:flex-row sm:items-center sm:gap-5"
+                  className="flex flex-col gap-3 rounded-2xl border bg-card p-3.5 sm:p-4 shadow-soft transition-all sm:flex-row sm:items-center sm:gap-5"
                 >
-                  {/* Item Image with Fallback */}
-                  <Link
-                    to="/product/$id"
-                    params={{ id }}
-                    className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-muted"
-                  >
-                    <img
-                      src={
-                        imgErrors[id]
-                          ? `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f5f3ff"/><text x="50%" y="55%" font-family="system-ui" font-size="12" font-weight="bold" fill="%237c3aed" text-anchor="middle">${encodeURIComponent(product.category.toUpperCase())}</text></svg>`
-                          : product.image
-                      }
-                      alt={product.name}
-                      width={80}
-                      height={80}
-                      onError={() => handleImgError(id)}
-                      className="size-full object-cover"
-                    />
-                  </Link>
-
-                  {/* Item Meta */}
-                  <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                    {/* Item Image with Fallback */}
                     <Link
                       to="/product/$id"
                       params={{ id }}
-                      className="line-clamp-1 text-sm font-bold text-foreground transition-colors hover:text-primary"
+                      className="relative size-16 sm:size-20 shrink-0 overflow-hidden rounded-xl bg-muted"
                     >
-                      {product.name}
+                      <img
+                        src={
+                          imgErrors[id]
+                            ? `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f5f3ff"/><text x="50%" y="55%" font-family="system-ui" font-size="12" font-weight="bold" fill="%237c3aed" text-anchor="middle">${encodeURIComponent(product.category.toUpperCase())}</text></svg>`
+                            : product.image
+                        }
+                        alt={product.name}
+                        width={80}
+                        height={80}
+                        onError={() => handleImgError(id)}
+                        className="size-full object-cover"
+                      />
                     </Link>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      Sold by{" "}
-                      <span className="font-medium text-foreground">{product.storeName}</span>
-                    </p>
-                    <div className="mt-1.5 flex items-baseline gap-2">
-                      <span className="text-sm font-extrabold text-foreground">
-                        {formatINR(product.price)}
-                      </span>
-                      {product.originalPrice > product.price && (
-                        <del className="text-xs text-muted-foreground">
-                          {formatINR(product.originalPrice)}
-                        </del>
+
+                    {/* Item Meta */}
+                    <div className="min-w-0 flex-1">
+                      <Link
+                        to="/product/$id"
+                        params={{ id }}
+                        className="line-clamp-1 text-xs sm:text-sm font-bold text-foreground transition-colors hover:text-primary"
+                      >
+                        {product.name}
+                      </Link>
+                      <p className="mt-0.5 text-xs text-muted-foreground truncate">
+                        Sold by{" "}
+                        <span className="font-medium text-foreground">{product.storeName}</span>
+                      </p>
+                      <div className="mt-1 flex items-baseline gap-1.5 sm:gap-2">
+                        <span className="text-xs sm:text-sm font-extrabold text-foreground">
+                          {formatINR(product.price)}
+                        </span>
+                        {product.originalPrice > product.price && (
+                          <del className="text-[11px] sm:text-xs text-muted-foreground">
+                            {formatINR(product.originalPrice)}
+                          </del>
+                        )}
+                      </div>
+
+                      {isAtMaxStock && (
+                        <p className="mt-1 text-[10px] sm:text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                          Max available stock ({maxStock}) reached
+                        </p>
                       )}
                     </div>
-
-                    {isAtMaxStock && (
-                      <p className="mt-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
-                        Max available stock ({maxStock}) reached
-                      </p>
-                    )}
                   </div>
 
                   {/* Quantity Stepper with Stock Limit */}
-                  <div className="flex items-center justify-between sm:justify-end gap-3 border-t pt-3 sm:border-t-0 sm:pt-0">
-                    <div className="flex items-center gap-2 rounded-full border bg-background px-2.5 py-1 shadow-soft">
+                  <div className="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 border-t sm:border-t-0 pt-2.5 sm:pt-0 shrink-0">
+                    <div className="flex items-center gap-1.5 sm:gap-2 rounded-full border bg-background px-2.5 py-1 shadow-soft">
                       <button
                         type="button"
                         onClick={() => setQty(id, qty - 1)}
                         aria-label={`Decrease quantity of ${product.name}`}
-                        className="grid size-7 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
+                        className="grid size-7 sm:size-8 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
                       >
                         <Minus className="size-3" />
                       </button>
-                      <span className="w-6 text-center text-xs font-bold text-foreground">
+                      <span className="w-5 sm:w-6 text-center text-xs font-bold text-foreground">
                         {qty}
                       </span>
                       <button
@@ -204,7 +206,7 @@ function CartPage() {
                         }}
                         disabled={isAtMaxStock}
                         aria-label={`Increase quantity of ${product.name}`}
-                        className="grid size-7 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
+                        className="grid size-7 sm:size-8 place-items-center rounded-full text-foreground hover:bg-accent disabled:opacity-40"
                         title={
                           isAtMaxStock ? `Max available stock (${maxStock}) reached` : undefined
                         }
@@ -214,7 +216,7 @@ function CartPage() {
                     </div>
 
                     {/* Item Total */}
-                    <span className="w-20 text-right text-sm font-extrabold text-foreground sm:text-base">
+                    <span className="w-16 sm:w-20 text-right text-xs sm:text-sm md:text-base font-extrabold text-foreground">
                       {formatINR(itemTotal)}
                     </span>
 
@@ -223,7 +225,7 @@ function CartPage() {
                       type="button"
                       onClick={() => removeFromCart(id)}
                       aria-label={`Remove ${product.name} from cart`}
-                      className="grid size-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                      className="grid size-8 sm:size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                       title="Remove from cart"
                     >
                       <Trash2 className="size-4" />

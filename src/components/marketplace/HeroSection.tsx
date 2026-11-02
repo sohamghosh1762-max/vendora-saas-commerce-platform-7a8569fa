@@ -57,13 +57,13 @@ export function HeroSection({ onReplayIntro }: HeroSectionProps) {
             )}
           </div>
 
-          <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-[3.4rem]">
+          <h1 className="mt-5 text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-extrabold leading-tight tracking-tight text-foreground">
             One Platform.
             <span className="block">Thousands of Stores.</span>
             <span className="block text-primary">Endless Possibilities.</span>
           </h1>
 
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">
+          <p className="mt-4 max-w-lg text-sm sm:text-base leading-relaxed text-muted-foreground">
             Discover unique products from independent businesses, shop securely, and support local
             sellers—all through one seamless platform.
           </p>
@@ -71,14 +71,14 @@ export function HeroSection({ onReplayIntro }: HeroSectionProps) {
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               to="/shop"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all hover:bg-primary-dark hover:shadow-float active:scale-[0.98]"
+              className="w-full sm:w-auto min-h-[44px] justify-center inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all hover:bg-primary-dark hover:shadow-float active:scale-[0.98]"
             >
               Shop Now
               <ArrowRight className="size-4" />
             </Link>
             <Link
               to="/become-a-vendor"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary hover:text-primary active:scale-[0.98]"
+              className="w-full sm:w-auto min-h-[44px] justify-center inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all hover:border-primary hover:text-primary active:scale-[0.98]"
             >
               Become a Vendor
             </Link>
@@ -87,7 +87,7 @@ export function HeroSection({ onReplayIntro }: HeroSectionProps) {
           <form
             role="search"
             onSubmit={submitSearch}
-            className="mt-6 flex max-w-xl items-center gap-2 rounded-full bg-card p-1.5 pl-5 shadow-card"
+            className="mt-6 flex w-full max-w-xl items-center gap-2 rounded-full bg-card p-1.5 pl-4 sm:pl-5 shadow-card min-h-[48px]"
           >
             <Search className="size-5 shrink-0 text-muted-foreground" />
             <input

@@ -16,7 +16,7 @@ export function CategoryStrip() {
         </Link>
       </div>
 
-      <ul className="no-scrollbar flex gap-5 overflow-x-auto pb-2 lg:grid lg:grid-cols-10 lg:gap-4 lg:overflow-visible lg:pb-0">
+      <ul className="no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 flex gap-4 sm:gap-5 overflow-x-auto pb-2 lg:grid lg:grid-cols-10 lg:gap-4 lg:overflow-visible lg:pb-0 touch-pan-x">
         {categories.map((cat) => (
           <li key={cat.id} className="shrink-0 lg:shrink">
             <Link

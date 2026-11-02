@@ -17,7 +17,9 @@ export function ProductCard({ product }: { product: Product }) {
   const savings = Math.max(0, product.originalPrice - product.price);
   const badgeLabel = product.badge || (discount > 0 ? `${discount}% OFF` : undefined);
   const isOutOfStock = product.inStock === false;
-  const isLowStock = Boolean(product.stockCount && product.stockCount <= 10 && product.stockCount > 0);
+  const isLowStock = Boolean(
+    product.stockCount && product.stockCount <= 10 && product.stockCount > 0,
+  );
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -81,9 +83,11 @@ export function ProductCard({ product }: { product: Product }) {
         type="button"
         onClick={handleToggleWishlist}
         aria-pressed={wishlisted}
-        aria-label={wishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+        aria-label={
+          wishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`
+        }
         className={cn(
-          "absolute right-3 top-3 grid size-8 place-items-center rounded-full border bg-card/95 backdrop-blur-xs shadow-soft transition-transform duration-200 hover:scale-110",
+          "absolute right-2.5 top-2.5 sm:right-3 sm:top-3 grid size-8 min-h-[36px] min-w-[36px] place-items-center rounded-full border bg-card/95 backdrop-blur-xs shadow-soft transition-transform duration-200 hover:scale-110",
           wishlisted && "border-destructive/40 bg-destructive/10 text-destructive",
         )}
       >
@@ -95,8 +99,8 @@ export function ProductCard({ product }: { product: Product }) {
         />
       </button>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-4">
-        <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-1 flex-col gap-1 sm:gap-1.5 p-3 sm:p-4">
+        <div className="flex items-center justify-between gap-1.5">
           <Link
             to="/store/$id"
             params={{ id: product.storeId }}
@@ -104,7 +108,7 @@ export function ProductCard({ product }: { product: Product }) {
           >
             {product.storeName}
           </Link>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground/80">
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground/80 shrink-0">
             {product.category}
           </span>
         </div>
@@ -112,7 +116,7 @@ export function ProductCard({ product }: { product: Product }) {
         <Link
           to="/product/$id"
           params={{ id: product.id }}
-          className="line-clamp-1 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+          className="line-clamp-1 text-xs sm:text-sm font-semibold text-foreground transition-colors hover:text-primary"
           title={product.name}
         >
           {product.name}
@@ -121,15 +125,21 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="flex items-center gap-1">
           <Star className="size-3.5 fill-gold text-gold" />
           <span className="text-xs font-semibold text-foreground">{product.rating}</span>
-          <span className="text-xs text-muted-foreground">({product.reviews.toLocaleString("en-IN")})</span>
+          <span className="text-[11px] sm:text-xs text-muted-foreground">
+            ({product.reviews.toLocaleString("en-IN")})
+          </span>
         </div>
 
-        <div className="mt-1 flex flex-wrap items-baseline gap-2">
-          <span className="text-base font-bold text-foreground">{formatINR(product.price)}</span>
+        <div className="mt-0.5 sm:mt-1 flex flex-wrap items-baseline gap-1.5 sm:gap-2">
+          <span className="text-sm sm:text-base font-bold text-foreground">
+            {formatINR(product.price)}
+          </span>
           {savings > 0 && (
             <>
-              <del className="text-xs text-muted-foreground">{formatINR(product.originalPrice)}</del>
-              <span className="text-[11px] font-semibold text-success">
+              <del className="text-[11px] sm:text-xs text-muted-foreground">
+                {formatINR(product.originalPrice)}
+              </del>
+              <span className="text-[10px] sm:text-[11px] font-semibold text-success">
                 Save {formatINR(savings)}
               </span>
             </>
@@ -137,7 +147,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         {isLowStock && (
-          <p className="text-[11px] font-medium text-amber-600 dark:text-amber-400">
+          <p className="text-[10px] sm:text-[11px] font-medium text-amber-600 dark:text-amber-400">
             Only {product.stockCount} left in stock
           </p>
         )}
@@ -147,7 +157,7 @@ export function ProductCard({ product }: { product: Product }) {
           onClick={handleAddToCart}
           disabled={isOutOfStock}
           className={cn(
-            "mt-auto flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-semibold transition-all duration-200",
+            "mt-auto flex w-full min-h-[40px] items-center justify-center gap-1.5 rounded-xl py-2 px-2.5 text-xs sm:text-sm font-semibold transition-all duration-200",
             isOutOfStock
               ? "cursor-not-allowed border border-muted bg-muted text-muted-foreground"
               : justAdded
