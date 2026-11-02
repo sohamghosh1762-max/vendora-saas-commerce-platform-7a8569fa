@@ -52,9 +52,20 @@ export interface OrderPriceBreakdown {
   total: number;
 }
 
+export type OrderStatus =
+  | "Placed"
+  | "Confirmed"
+  | "Processing"
+  | "Shipped"
+  | "Out for Delivery"
+  | "Delivered"
+  | "Cancelled";
+
 export interface CustomerOrder {
   orderId: string;
+  customerId?: string | undefined;
   customer: {
+    id?: string | undefined;
     fullName: string;
     email: string;
     phone: string;
@@ -64,7 +75,8 @@ export interface CustomerOrder {
   priceBreakdown: OrderPriceBreakdown;
   deliveryMethod: DeliveryMethod;
   payment: PaymentDetails;
-  orderStatus: "Confirmed" | "Processing" | "Shipped" | "Delivered";
+  orderStatus: OrderStatus;
+  statusTimestamps?: Partial<Record<OrderStatus, string>> | undefined;
   createdAt: string; // ISO format
   estimatedDeliveryDate: string;
 }
@@ -74,7 +86,7 @@ export interface CheckoutDraft {
   shippingAddress: Partial<ShippingAddress>;
   deliveryMethodId: DeliveryMethodId;
   paymentMethod: PaymentMethodType;
-  paymentForm: {
+  paymentForm?: {
     upiId?: string | undefined;
     cardNumber?: string | undefined;
     cardholderName?: string | undefined;

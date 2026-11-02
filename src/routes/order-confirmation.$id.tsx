@@ -390,15 +390,33 @@ function OrderConfirmationPage() {
         </div>
 
         {/* Footer Actions */}
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="inline-flex min-h-[44px] items-center gap-2 rounded-full border bg-card px-6 py-3 text-xs font-semibold text-foreground hover:bg-accent transition"
-          >
-            <Printer className="size-4" />
-            <span>Print Receipt</span>
-          </button>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-full border bg-card px-5 py-2.5 text-xs font-semibold text-foreground hover:bg-accent transition"
+            >
+              <Printer className="size-4" />
+              <span>Print Receipt</span>
+            </button>
+
+            <Link
+              to="/track-order"
+              search={{ orderId: order.orderId }}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-primary/30 bg-primary-soft/60 px-5 py-2.5 text-xs font-bold text-primary hover:bg-primary-soft transition"
+            >
+              <Truck className="size-4" />
+              <span>Track Order Live</span>
+            </Link>
+
+            <Link
+              to="/account"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-full border bg-card px-5 py-2.5 text-xs font-semibold text-foreground hover:bg-accent transition"
+            >
+              <span>View in Order History</span>
+            </Link>
+          </div>
 
           <Link
             to="/shop"

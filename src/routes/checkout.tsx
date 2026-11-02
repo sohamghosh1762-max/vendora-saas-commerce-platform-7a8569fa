@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getProduct, type Product } from "@/data/products";
 import { useCart } from "@/lib/cart";
+import { useCustomerAuth } from "@/lib/customer-context";
 import { formatINR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import {
@@ -91,24 +92,14 @@ function CheckoutPage() {
     () => draft?.deliveryMethodId ?? "standard",
   );
 
-  // Payment options state
+  // Customer authentication & saved addresses
+  const { customer, isAuthenticated } = useCustomerAuth();
+  const [selectedSavedAddressId, setSelectedSavedAddressId] = useState<string | null>(null);
+
+  // Payment options state (simulated demo selections only)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType>(
     () => draft?.paymentMethod ?? "cod",
   );
-  const [paymentFormValues, setPaymentFormValues] = useState<{
-    upiId: string;
-    cardholderName: string;
-    cardNumber: string;
-    cardExpiry: string;
-    cardCvv: string;
-  }>(() => ({
-    upiId: draft?.paymentForm.upiId ?? "",
-    cardholderName: draft?.paymentForm.cardholderName ?? "",
-    cardNumber: draft?.paymentForm.cardNumber ?? "",
-    cardExpiry: draft?.paymentForm.cardExpiry ?? "",
-    cardCvv: draft?.paymentForm.cardCvv ?? "",
-  }));
-  const [paymentErrors, setPaymentErrors] = useState<Record<string, string>>({});
 
   // Submitting / order placement state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -175,6 +166,27 @@ function CheckoutPage() {
     return cartEntries.filter((item) => (item.product.stockCount ?? 1) <= 0);
   }, [cartEntries]);
 
+  // Auto-populate saved address for authenticated customer if form is empty
+  useEffect(() => {
+    if (isAuthenticated && customer && customer.addresses && customer.addresses.length > 0) {
+      if (!draft?.shippingAddress?.addressLine) {
+        const defaultAddr = customer.addresses.find((a) => a.isDefault) || customer.addresses[0];
+        if (defaultAddr) {
+          setSelectedSavedAddressId(defaultAddr.id);
+          setValue("fullName", defaultAddr.fullName, { shouldValidate: true });
+          setValue("email", customer.email, { shouldValidate: true });
+          setValue("phone", defaultAddr.phone, { shouldValidate: true });
+          setValue("addressLine", defaultAddr.addressLine, { shouldValidate: true });
+          setValue("apartment", defaultAddr.apartment || "", { shouldValidate: true });
+          setValue("city", defaultAddr.city, { shouldValidate: true });
+          setValue("state", defaultAddr.state, { shouldValidate: true });
+          setValue("pinCode", defaultAddr.pinCode, { shouldValidate: true });
+          setValue("country", defaultAddr.country || "India", { shouldValidate: true });
+        }
+      }
+    }
+  }, [customer, isAuthenticated, draft, setValue]);
+
   // Autosave checkout draft
   useEffect(() => {
     if (cartEntries.length === 0) return;
@@ -194,7 +206,6 @@ function CheckoutPage() {
       },
       deliveryMethodId: selectedDeliveryMethodId,
       paymentMethod: selectedPaymentMethod,
-      paymentForm: paymentFormValues,
       updatedAt: new Date().toISOString(),
     });
   }, [
@@ -202,7 +213,6 @@ function CheckoutPage() {
     addressWatch,
     selectedDeliveryMethodId,
     selectedPaymentMethod,
-    paymentFormValues,
     cartEntries.length,
   ]);
 
@@ -221,32 +231,9 @@ function CheckoutPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Validate payment and advance from Step 3 to Step 4
+  // Validate payment and advance from Step 3 to Step 4 (Simulated selections only)
   const onPaymentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setPaymentErrors({});
-
-    const result = paymentSelectionSchema.safeParse({
-      paymentMethod: selectedPaymentMethod,
-      upiId: paymentFormValues.upiId,
-      cardholderName: paymentFormValues.cardholderName,
-      cardNumber: paymentFormValues.cardNumber,
-      cardExpiry: paymentFormValues.cardExpiry,
-      cardCvv: paymentFormValues.cardCvv,
-    });
-
-    if (!result.success) {
-      const errs: Record<string, string> = {};
-      result.error.issues.forEach((issue) => {
-        const key = issue.path[0];
-        if (key && typeof key === "string") {
-          errs[key] = issue.message;
-        }
-      });
-      setPaymentErrors(errs);
-      return;
-    }
-
     setCompletedSteps((prev) => Array.from(new Set([...prev, 3])));
     setCurrentStep(4);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -275,17 +262,12 @@ function CheckoutPage() {
       return;
     }
 
-    // Verify payment
+    // Verify payment selection
     const paymentResult = paymentSelectionSchema.safeParse({
       paymentMethod: selectedPaymentMethod,
-      upiId: paymentFormValues.upiId,
-      cardholderName: paymentFormValues.cardholderName,
-      cardNumber: paymentFormValues.cardNumber,
-      cardExpiry: paymentFormValues.cardExpiry,
-      cardCvv: paymentFormValues.cardCvv,
     });
     if (!paymentResult.success) {
-      setOrderError("Please complete demo payment details.");
+      setOrderError("Please select a simulated payment option.");
       setCurrentStep(3);
       return;
     }
@@ -323,25 +305,27 @@ function CheckoutPage() {
         };
       });
 
-      // Construct payment details
+      // Construct payment details (DEMO simulated - NO sensitive credentials)
       const paymentDetails = {
         method: selectedPaymentMethod,
         status:
           selectedPaymentMethod === "cod"
             ? ("PENDING_ON_DELIVERY" as const)
             : ("CONFIRMED_DEMO" as const),
-        upiId: selectedPaymentMethod === "upi" ? paymentFormValues.upiId : undefined,
-        cardLast4:
-          selectedPaymentMethod === "card"
-            ? paymentFormValues.cardNumber.replace(/\s+/g, "").slice(-4) || "4242"
-            : undefined,
-        cardholderName:
-          selectedPaymentMethod === "card" ? paymentFormValues.cardholderName : undefined,
+        label:
+          selectedPaymentMethod === "cod"
+            ? "Cash on Delivery (Simulated)"
+            : selectedPaymentMethod === "upi"
+              ? "UPI (Demo Selection)"
+              : "Credit / Debit Card (Demo Selection)",
       };
 
+      const nowIso = new Date().toISOString();
       const newOrder: CustomerOrder = {
         orderId,
+        customerId: customer?.id,
         customer: {
+          id: customer?.id,
           fullName: shippingAddress.fullName,
           email: shippingAddress.email,
           phone: shippingAddress.phone,
@@ -358,7 +342,11 @@ function CheckoutPage() {
         deliveryMethod: activeDeliveryMethod,
         payment: paymentDetails,
         orderStatus: "Confirmed",
-        createdAt: new Date().toISOString(),
+        statusTimestamps: {
+          Placed: nowIso,
+          Confirmed: nowIso,
+        },
+        createdAt: nowIso,
         estimatedDeliveryDate: activeDeliveryMethod.estimatedDate,
       };
 
@@ -552,6 +540,111 @@ function CheckoutPage() {
                     <MapPin className="size-5" />
                   </span>
                 </div>
+
+                {/* Saved Address Book Selector for Signed-in Customers */}
+                {isAuthenticated &&
+                  customer &&
+                  customer.addresses &&
+                  customer.addresses.length > 0 && (
+                    <div className="mt-5 rounded-2xl border border-primary/20 bg-primary-soft/30 p-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                          <MapPin className="size-3.5 text-primary" />
+                          Choose from your saved addresses:
+                        </span>
+                        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+                          {customer.addresses.length} saved
+                        </span>
+                      </div>
+
+                      <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
+                        {customer.addresses.map((addr) => {
+                          const isSelected =
+                            selectedSavedAddressId === addr.id ||
+                            (addressWatch.addressLine === addr.addressLine &&
+                              addressWatch.pinCode === addr.pinCode);
+
+                          return (
+                            <div
+                              key={addr.id}
+                              role="button"
+                              tabIndex={0}
+                              onClick={() => {
+                                setSelectedSavedAddressId(addr.id);
+                                setValue("fullName", addr.fullName, { shouldValidate: true });
+                                setValue("email", customer.email, { shouldValidate: true });
+                                setValue("phone", addr.phone, { shouldValidate: true });
+                                setValue("addressLine", addr.addressLine, { shouldValidate: true });
+                                setValue("apartment", addr.apartment || "", {
+                                  shouldValidate: true,
+                                });
+                                setValue("city", addr.city, { shouldValidate: true });
+                                setValue("state", addr.state, { shouldValidate: true });
+                                setValue("pinCode", addr.pinCode, { shouldValidate: true });
+                                setValue("country", addr.country || "India", {
+                                  shouldValidate: true,
+                                });
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  setSelectedSavedAddressId(addr.id);
+                                  setValue("fullName", addr.fullName, { shouldValidate: true });
+                                  setValue("email", customer.email, { shouldValidate: true });
+                                  setValue("phone", addr.phone, { shouldValidate: true });
+                                  setValue("addressLine", addr.addressLine, {
+                                    shouldValidate: true,
+                                  });
+                                  setValue("apartment", addr.apartment || "", {
+                                    shouldValidate: true,
+                                  });
+                                  setValue("city", addr.city, { shouldValidate: true });
+                                  setValue("state", addr.state, { shouldValidate: true });
+                                  setValue("pinCode", addr.pinCode, { shouldValidate: true });
+                                  setValue("country", addr.country || "India", {
+                                    shouldValidate: true,
+                                  });
+                                }
+                              }}
+                              className={cn(
+                                "cursor-pointer rounded-xl border p-3 text-xs transition-all text-left",
+                                isSelected
+                                  ? "border-primary bg-card ring-2 ring-primary/20 shadow-xs"
+                                  : "border-border bg-card/70 hover:border-primary/40",
+                              )}
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="font-bold text-foreground flex items-center gap-1.5">
+                                  {addr.fullName}
+                                  {addr.isDefault && (
+                                    <span className="rounded-full bg-primary/10 px-2 py-0.2 text-[10px] font-bold text-primary">
+                                      Default
+                                    </span>
+                                  )}
+                                </span>
+                                <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-semibold uppercase text-muted-foreground">
+                                  {addr.label}
+                                </span>
+                              </div>
+                              <p className="mt-1 line-clamp-1 text-muted-foreground">
+                                {addr.addressLine}
+                                {addr.apartment ? `, ${addr.apartment}` : ""}
+                              </p>
+                              <p className="text-[11px] text-muted-foreground">
+                                {addr.city}, {addr.state} - {addr.pinCode}
+                              </p>
+                              <p className="mt-1 text-[11px] font-medium text-foreground">
+                                Ph: +91 {addr.phone}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <p className="mt-2 text-[11px] text-muted-foreground">
+                        Click any saved address to prefill or edit the fields below.
+                      </p>
+                    </div>
+                  )}
 
                 <form onSubmit={handleSubmit(onAddressSubmit)} className="mt-6 space-y-4">
                   {/* Contact Details */}
@@ -949,15 +1042,15 @@ function CheckoutPage() {
                     </label>
 
                     {/* UPI Option */}
-                    <div
+                    <label
                       className={cn(
-                        "rounded-2xl border p-4 transition-all duration-200",
+                        "block cursor-pointer rounded-2xl border p-4 transition-all duration-200",
                         selectedPaymentMethod === "upi"
                           ? "border-primary bg-primary-soft/40 ring-2 ring-primary/20 shadow-xs"
                           : "border-border bg-card hover:border-primary/40",
                       )}
                     >
-                      <label className="flex cursor-pointer items-center gap-3">
+                      <div className="flex items-center gap-3">
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -972,76 +1065,30 @@ function CheckoutPage() {
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-bold text-foreground sm:text-sm">
-                              UPI (Instant Simulation)
+                              UPI (Demo Selection Only)
                             </span>
                             <span className="rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-bold text-primary">
                               Google Pay / PhonePe / Paytm
                             </span>
                           </div>
                           <p className="text-[11px] text-muted-foreground">
-                            Simulate UPI intent or VPA address verification.
+                            Simulated demo selection. No UPI ID or PIN required. Will be confirmed
+                            instantly in demo mode.
                           </p>
                         </div>
-                      </label>
-
-                      {/* UPI Expanded Fields */}
-                      {selectedPaymentMethod === "upi" && (
-                        <div className="mt-4 border-t pt-3">
-                          <label
-                            htmlFor="upiId"
-                            className="block text-xs font-semibold text-foreground"
-                          >
-                            Demo UPI ID / VPA <span className="text-destructive">*</span>
-                          </label>
-                          <div className="mt-1 flex gap-2">
-                            <input
-                              id="upiId"
-                              type="text"
-                              value={paymentFormValues.upiId}
-                              onChange={(e) =>
-                                setPaymentFormValues((p) => ({ ...p, upiId: e.target.value }))
-                              }
-                              placeholder="e.g. yourname@okhdfcbank"
-                              className={cn(
-                                "flex-1 rounded-xl border bg-background px-3.5 py-2.5 text-xs outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20",
-                                paymentErrors["upiId"] && "border-destructive bg-destructive/5",
-                              )}
-                            />
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setPaymentFormValues((p) => ({
-                                  ...p,
-                                  upiId: "demo.shopper@okhdfcbank",
-                                }))
-                              }
-                              className="rounded-xl border bg-card px-3 py-2 text-[11px] font-bold text-primary hover:bg-accent"
-                            >
-                              Fill Demo UPI
-                            </button>
-                          </div>
-                          {paymentErrors["upiId"] && (
-                            <p className="mt-1 text-[11px] text-destructive">
-                              {paymentErrors["upiId"]}
-                            </p>
-                          )}
-                          <p className="mt-1 text-[11px] text-muted-foreground">
-                            Demo simulation only. No UPI PIN or payment authentication required.
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                      </div>
+                    </label>
 
                     {/* Card Option */}
-                    <div
+                    <label
                       className={cn(
-                        "rounded-2xl border p-4 transition-all duration-200",
+                        "block cursor-pointer rounded-2xl border p-4 transition-all duration-200",
                         selectedPaymentMethod === "card"
                           ? "border-primary bg-primary-soft/40 ring-2 ring-primary/20 shadow-xs"
                           : "border-border bg-card hover:border-primary/40",
                       )}
                     >
-                      <label className="flex cursor-pointer items-center gap-3">
+                      <div className="flex items-center gap-3">
                         <input
                           type="radio"
                           name="paymentMethod"
@@ -1056,169 +1103,19 @@ function CheckoutPage() {
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-bold text-foreground sm:text-sm">
-                              Credit or Debit Card (Simulated)
+                              Credit or Debit Card (Demo Selection Only)
                             </span>
                             <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-foreground">
                               Visa / RuPay / Mastercard
                             </span>
                           </div>
                           <p className="text-[11px] text-muted-foreground">
-                            Simulated test cards only. Never enter real card data.
+                            Simulated test selection. No card numbers, expiry dates, or CVVs
+                            required.
                           </p>
                         </div>
-                      </label>
-
-                      {/* Card Expanded Fields */}
-                      {selectedPaymentMethod === "card" && (
-                        <div className="mt-4 space-y-3 border-t pt-3">
-                          <div className="flex justify-end">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setPaymentFormValues((p) => ({
-                                  ...p,
-                                  cardholderName: "Demo Shopper",
-                                  cardNumber: "4242 4242 4242 4242",
-                                  cardExpiry: "12/28",
-                                  cardCvv: "123",
-                                }))
-                              }
-                              className="text-[11px] font-bold text-primary hover:underline"
-                            >
-                              ⚡ Auto-Fill Demo Card
-                            </button>
-                          </div>
-
-                          <div>
-                            <label
-                              htmlFor="cardholderName"
-                              className="block text-xs font-semibold text-foreground"
-                            >
-                              Name on Card <span className="text-destructive">*</span>
-                            </label>
-                            <input
-                              id="cardholderName"
-                              type="text"
-                              value={paymentFormValues.cardholderName}
-                              onChange={(e) =>
-                                setPaymentFormValues((p) => ({
-                                  ...p,
-                                  cardholderName: e.target.value,
-                                }))
-                              }
-                              placeholder="e.g. Priya Sharma"
-                              className={cn(
-                                "mt-1 w-full rounded-xl border bg-background px-3.5 py-2 text-xs outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
-                                paymentErrors["cardholderName"] &&
-                                  "border-destructive bg-destructive/5",
-                              )}
-                            />
-                            {paymentErrors["cardholderName"] && (
-                              <p className="mt-1 text-[11px] text-destructive">
-                                {paymentErrors["cardholderName"]}
-                              </p>
-                            )}
-                          </div>
-
-                          <div>
-                            <label
-                              htmlFor="cardNumber"
-                              className="block text-xs font-semibold text-foreground"
-                            >
-                              16-Digit Demo Card Number <span className="text-destructive">*</span>
-                            </label>
-                            <input
-                              id="cardNumber"
-                              type="text"
-                              maxLength={19}
-                              value={paymentFormValues.cardNumber}
-                              onChange={(e) =>
-                                setPaymentFormValues((p) => ({
-                                  ...p,
-                                  cardNumber: e.target.value,
-                                }))
-                              }
-                              placeholder="4242 4242 4242 4242"
-                              className={cn(
-                                "mt-1 w-full rounded-xl border bg-background px-3.5 py-2 text-xs font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
-                                paymentErrors["cardNumber"] &&
-                                  "border-destructive bg-destructive/5",
-                              )}
-                            />
-                            {paymentErrors["cardNumber"] && (
-                              <p className="mt-1 text-[11px] text-destructive">
-                                {paymentErrors["cardNumber"]}
-                              </p>
-                            )}
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <label
-                                htmlFor="cardExpiry"
-                                className="block text-xs font-semibold text-foreground"
-                              >
-                                Expiry (MM/YY) <span className="text-destructive">*</span>
-                              </label>
-                              <input
-                                id="cardExpiry"
-                                type="text"
-                                maxLength={5}
-                                value={paymentFormValues.cardExpiry}
-                                onChange={(e) =>
-                                  setPaymentFormValues((p) => ({
-                                    ...p,
-                                    cardExpiry: e.target.value,
-                                  }))
-                                }
-                                placeholder="12/28"
-                                className={cn(
-                                  "mt-1 w-full rounded-xl border bg-background px-3.5 py-2 text-xs font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
-                                  paymentErrors["cardExpiry"] &&
-                                    "border-destructive bg-destructive/5",
-                                )}
-                              />
-                              {paymentErrors["cardExpiry"] && (
-                                <p className="mt-1 text-[11px] text-destructive">
-                                  {paymentErrors["cardExpiry"]}
-                                </p>
-                              )}
-                            </div>
-
-                            <div>
-                              <label
-                                htmlFor="cardCvv"
-                                className="block text-xs font-semibold text-foreground"
-                              >
-                                Demo CVV <span className="text-destructive">*</span>
-                              </label>
-                              <input
-                                id="cardCvv"
-                                type="password"
-                                maxLength={4}
-                                value={paymentFormValues.cardCvv}
-                                onChange={(e) =>
-                                  setPaymentFormValues((p) => ({
-                                    ...p,
-                                    cardCvv: e.target.value,
-                                  }))
-                                }
-                                placeholder="123"
-                                className={cn(
-                                  "mt-1 w-full rounded-xl border bg-background px-3.5 py-2 text-xs font-mono outline-none focus:border-primary focus:ring-2 focus:ring-primary/20",
-                                  paymentErrors["cardCvv"] && "border-destructive bg-destructive/5",
-                                )}
-                              />
-                              {paymentErrors["cardCvv"] && (
-                                <p className="mt-1 text-[11px] text-destructive">
-                                  {paymentErrors["cardCvv"]}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                      </div>
+                    </label>
                   </div>
 
                   {/* Actions */}
@@ -1333,22 +1230,18 @@ function CheckoutPage() {
                       </div>
                       <p className="mt-2 text-xs font-semibold text-foreground uppercase">
                         {selectedPaymentMethod === "cod"
-                          ? "Cash on Delivery"
+                          ? "Cash on Delivery (Simulated)"
                           : selectedPaymentMethod === "upi"
-                            ? "UPI Payment (Demo)"
-                            : "Credit/Debit Card (Demo)"}
+                            ? "UPI Payment (Demo Selection)"
+                            : "Credit/Debit Card (Demo Selection)"}
                       </p>
-                      {selectedPaymentMethod === "upi" && (
-                        <p className="text-[11px] text-muted-foreground font-mono">
-                          VPA: {paymentFormValues.upiId}
-                        </p>
-                      )}
-                      {selectedPaymentMethod === "card" && (
-                        <p className="text-[11px] text-muted-foreground font-mono">
-                          Ending in ••••{" "}
-                          {paymentFormValues.cardNumber.replace(/\s+/g, "").slice(-4) || "4242"}
-                        </p>
-                      )}
+                      <p className="text-[11px] text-muted-foreground">
+                        {selectedPaymentMethod === "cod"
+                          ? "Payment to be collected upon doorstep delivery."
+                          : selectedPaymentMethod === "upi"
+                            ? "Simulated instant confirmation. No UPI PIN required."
+                            : "Simulated instant confirmation. No card credentials stored."}
+                      </p>
                       <span className="mt-2 inline-block rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-bold text-primary">
                         Demo Sandbox
                       </span>

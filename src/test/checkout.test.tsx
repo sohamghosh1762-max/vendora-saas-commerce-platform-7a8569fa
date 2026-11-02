@@ -10,6 +10,7 @@ import {
   RouterProvider,
 } from "@tanstack/react-router";
 import { CartProvider, useCart } from "@/lib/cart";
+import { CustomerAuthProvider } from "@/lib/customer-context";
 import {
   CUSTOMER_ORDERS_STORAGE_KEY,
   CHECKOUT_DRAFT_STORAGE_KEY,
@@ -56,7 +57,9 @@ function renderWithCartAndRouter(
   const rootRoute = createRootRoute({
     component: () => (
       <QueryClientProvider client={queryClient}>
-        <CartProvider>{ui}</CartProvider>
+        <CustomerAuthProvider>
+          <CartProvider>{ui}</CartProvider>
+        </CustomerAuthProvider>
       </QueryClientProvider>
     ),
   });
@@ -202,7 +205,7 @@ describe("PROMPT 5: Complete Checkout & Order Placement", () => {
         },
         deliveryMethodId: "express",
         paymentMethod: "upi",
-        paymentForm: { upiId: "rohan@okaxis" },
+        paymentForm: { paymentMethod: "upi" },
         updatedAt: new Date().toISOString(),
       });
 
@@ -211,7 +214,8 @@ describe("PROMPT 5: Complete Checkout & Order Placement", () => {
       expect(draft?.step).toBe(2);
       expect(draft?.shippingAddress.fullName).toBe("Rohan Patel");
       expect(draft?.deliveryMethodId).toBe("express");
-      expect(draft?.paymentForm.upiId).toBe("rohan@okaxis");
+      expect(draft?.paymentForm?.paymentMethod).toBe("upi");
+
 
       clearCheckoutDraft();
       expect(getCheckoutDraft()).toBeNull();
@@ -293,44 +297,18 @@ describe("PROMPT 5: Complete Checkout & Order Placement", () => {
       expect(codResult.success).toBe(true);
     });
 
-    it("requires valid UPI ID format for UPI payment option", () => {
-      const emptyUpi = paymentSelectionSchema.safeParse({
+    it("validates UPI payment as simulated demo selection without requiring sensitive credentials", () => {
+      const upiResult = paymentSelectionSchema.safeParse({
         paymentMethod: "upi",
-        upiId: "",
       });
-      expect(emptyUpi.success).toBe(false);
-
-      const invalidUpi = paymentSelectionSchema.safeParse({
-        paymentMethod: "upi",
-        upiId: "justwordswithoutat",
-      });
-      expect(invalidUpi.success).toBe(false);
-
-      const validUpi = paymentSelectionSchema.safeParse({
-        paymentMethod: "upi",
-        upiId: "shopper@okhdfcbank",
-      });
-      expect(validUpi.success).toBe(true);
+      expect(upiResult.success).toBe(true);
     });
 
-    it("requires cardholder name, 16-digit card number, valid expiry, and CVV for card option", () => {
-      const invalidCard = paymentSelectionSchema.safeParse({
+    it("validates Card payment as simulated demo selection without collecting card numbers, CVV, or expiry", () => {
+      const cardResult = paymentSelectionSchema.safeParse({
         paymentMethod: "card",
-        cardholderName: "",
-        cardNumber: "1234",
-        cardExpiry: "99/99",
-        cardCvv: "1",
       });
-      expect(invalidCard.success).toBe(false);
-
-      const validCard = paymentSelectionSchema.safeParse({
-        paymentMethod: "card",
-        cardholderName: "Demo Customer",
-        cardNumber: "4242 4242 4242 4242",
-        cardExpiry: "12/28",
-        cardCvv: "123",
-      });
-      expect(validCard.success).toBe(true);
+      expect(cardResult.success).toBe(true);
     });
   });
 

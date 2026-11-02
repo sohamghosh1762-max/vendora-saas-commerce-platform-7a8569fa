@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useState } from "react";
 import { Logo } from "./Logo";
 import { useCart } from "@/lib/cart";
+import { useCustomerAuth } from "@/lib/customer-context";
 import { useCinematic } from "@/components/cinematic/cinematic-context";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +18,7 @@ const navLinks = [
 
 export function Navbar() {
   const { cartCount, wishlist, hydrated } = useCart();
+  const { customer, isAuthenticated, signOut } = useCustomerAuth();
   const { isIntroActive, scene } = useCinematic();
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -111,12 +113,24 @@ export function Navbar() {
             )}
           </Link>
 
-          <Link
-            to="/signin"
-            className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-dark hover:shadow-soft active:scale-[0.98] sm:inline-flex"
-          >
-            Sign In
-          </Link>
+          {isAuthenticated && customer ? (
+            <Link
+              to="/account"
+              className="hidden items-center gap-2 rounded-full border border-primary/20 bg-primary-soft/60 px-4 py-2 text-xs font-bold text-primary shadow-xs transition-all hover:bg-primary-soft hover:shadow-soft sm:inline-flex"
+            >
+              <div className="grid size-6 place-items-center rounded-full bg-primary text-[10px] font-extrabold text-primary-foreground">
+                {customer.name.charAt(0).toUpperCase()}
+              </div>
+              <span className="max-w-[120px] truncate">{customer.name}</span>
+            </Link>
+          ) : (
+            <Link
+              to="/signin"
+              className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-dark hover:shadow-soft active:scale-[0.98] sm:inline-flex"
+            >
+              Sign In
+            </Link>
+          )}
 
           <button
             className="grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-accent lg:hidden"
@@ -163,13 +177,43 @@ export function Navbar() {
               </li>
             ))}
             <li className="pt-2 sm:hidden">
-              <Link
-                to="/signin"
-                onClick={() => setMenuOpen(false)}
-                className="block rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-dark"
-              >
-                Sign In
-              </Link>
+              {isAuthenticated && customer ? (
+                <div className="flex flex-col gap-2">
+                  <Link
+                    to="/account"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2.5 rounded-xl bg-primary-soft p-3 text-xs font-bold text-primary"
+                  >
+                    <div className="grid size-8 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                      {customer.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <span className="block font-bold">{customer.name}</span>
+                      <span className="text-[10px] text-muted-foreground font-normal">
+                        My Account & Orders
+                      </span>
+                    </div>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      signOut();
+                      setMenuOpen(false);
+                    }}
+                    className="rounded-lg border border-border py-2 text-center text-xs font-semibold text-destructive hover:bg-destructive/10 transition"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/signin"
+                  onClick={() => setMenuOpen(false)}
+                  className="block rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-dark"
+                >
+                  Sign In
+                </Link>
+              )}
             </li>
           </ul>
         </nav>
