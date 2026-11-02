@@ -15,6 +15,7 @@ import { Route as BecomeAVendorRouteImport } from './routes/become-a-vendor'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactUsRouteImport } from './routes/contact-us'
 import { Route as DealsRouteImport } from './routes/deals'
 import { Route as GiftCardsRouteImport } from './routes/gift-cards'
@@ -35,6 +36,7 @@ import { Route as TrackOrderRouteImport } from './routes/track-order'
 import { Route as VendorDashboardRouteImport } from './routes/vendor-dashboard'
 import { Route as VendorPricingRouteImport } from './routes/vendor-pricing'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as OrderConfirmationIdRouteImport } from './routes/order-confirmation.$id'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as SigninSuperAdminRouteImport } from './routes/signin_.super-admin'
 import { Route as SigninVendorRouteImport } from './routes/signin_.vendor'
@@ -68,6 +70,11 @@ const CareersRoute = CareersRouteImport.update({
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactUsRoute = ContactUsRouteImport.update({
@@ -170,6 +177,11 @@ const WishlistRoute = WishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrderConfirmationIdRoute = OrderConfirmationIdRouteImport.update({
+  id: '/order-confirmation/$id',
+  path: '/order-confirmation/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductIdRoute = ProductIdRouteImport.update({
   id: '/product/$id',
   path: '/product/$id',
@@ -198,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
   '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact-us': typeof ContactUsRoute
   '/deals': typeof DealsRoute
   '/gift-cards': typeof GiftCardsRoute
@@ -218,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/vendor-dashboard': typeof VendorDashboardRoute
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
+  '/order-confirmation/$id': typeof OrderConfirmationIdRoute
   '/product/$id': typeof ProductIdRoute
   '/signin/super-admin': typeof SigninSuperAdminRoute
   '/signin/vendor': typeof SigninVendorRoute
@@ -230,6 +244,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
   '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact-us': typeof ContactUsRoute
   '/deals': typeof DealsRoute
   '/gift-cards': typeof GiftCardsRoute
@@ -250,6 +265,7 @@ export interface FileRoutesByTo {
   '/vendor-dashboard': typeof VendorDashboardRoute
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
+  '/order-confirmation/$id': typeof OrderConfirmationIdRoute
   '/product/$id': typeof ProductIdRoute
   '/signin/super-admin': typeof SigninSuperAdminRoute
   '/signin/vendor': typeof SigninVendorRoute
@@ -263,6 +279,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
   '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact-us': typeof ContactUsRoute
   '/deals': typeof DealsRoute
   '/gift-cards': typeof GiftCardsRoute
@@ -283,6 +300,7 @@ export interface FileRoutesById {
   '/vendor-dashboard': typeof VendorDashboardRoute
   '/vendor-pricing': typeof VendorPricingRoute
   '/wishlist': typeof WishlistRoute
+  '/order-confirmation/$id': typeof OrderConfirmationIdRoute
   '/product/$id': typeof ProductIdRoute
   '/signin_/super-admin': typeof SigninSuperAdminRoute
   '/signin_/vendor': typeof SigninVendorRoute
@@ -297,6 +315,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/cart'
+    | '/checkout'
     | '/contact-us'
     | '/deals'
     | '/gift-cards'
@@ -317,6 +336,7 @@ export interface FileRouteTypes {
     | '/vendor-dashboard'
     | '/vendor-pricing'
     | '/wishlist'
+    | '/order-confirmation/$id'
     | '/product/$id'
     | '/signin/super-admin'
     | '/signin/vendor'
@@ -329,6 +349,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/cart'
+    | '/checkout'
     | '/contact-us'
     | '/deals'
     | '/gift-cards'
@@ -349,6 +370,7 @@ export interface FileRouteTypes {
     | '/vendor-dashboard'
     | '/vendor-pricing'
     | '/wishlist'
+    | '/order-confirmation/$id'
     | '/product/$id'
     | '/signin/super-admin'
     | '/signin/vendor'
@@ -361,6 +383,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/cart'
+    | '/checkout'
     | '/contact-us'
     | '/deals'
     | '/gift-cards'
@@ -381,6 +404,7 @@ export interface FileRouteTypes {
     | '/vendor-dashboard'
     | '/vendor-pricing'
     | '/wishlist'
+    | '/order-confirmation/$id'
     | '/product/$id'
     | '/signin_/super-admin'
     | '/signin_/vendor'
@@ -394,6 +418,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   CareersRoute: typeof CareersRoute
   CartRoute: typeof CartRoute
+  CheckoutRoute: typeof CheckoutRoute
   ContactUsRoute: typeof ContactUsRoute
   DealsRoute: typeof DealsRoute
   GiftCardsRoute: typeof GiftCardsRoute
@@ -414,6 +439,7 @@ export interface RootRouteChildren {
   VendorDashboardRoute: typeof VendorDashboardRoute
   VendorPricingRoute: typeof VendorPricingRoute
   WishlistRoute: typeof WishlistRoute
+  OrderConfirmationIdRoute: typeof OrderConfirmationIdRoute
   ProductIdRoute: typeof ProductIdRoute
   SigninSuperAdminRoute: typeof SigninSuperAdminRoute
   SigninVendorRoute: typeof SigninVendorRoute
@@ -462,6 +488,13 @@ declare module '@tanstack/react-router' {
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact-us': {
@@ -604,6 +637,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/order-confirmation/$id': {
+      id: '/order-confirmation/$id'
+      path: '/order-confirmation/$id'
+      fullPath: '/order-confirmation/$id'
+      preLoaderRoute: typeof OrderConfirmationIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$id': {
       id: '/product/$id'
       path: '/product/$id'
@@ -642,6 +682,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   CareersRoute: CareersRoute,
   CartRoute: CartRoute,
+  CheckoutRoute: CheckoutRoute,
   ContactUsRoute: ContactUsRoute,
   DealsRoute: DealsRoute,
   GiftCardsRoute: GiftCardsRoute,
@@ -662,6 +703,7 @@ const rootRouteChildren: RootRouteChildren = {
   VendorDashboardRoute: VendorDashboardRoute,
   VendorPricingRoute: VendorPricingRoute,
   WishlistRoute: WishlistRoute,
+  OrderConfirmationIdRoute: OrderConfirmationIdRoute,
   ProductIdRoute: ProductIdRoute,
   SigninSuperAdminRoute: SigninSuperAdminRoute,
   SigninVendorRoute: SigninVendorRoute,
