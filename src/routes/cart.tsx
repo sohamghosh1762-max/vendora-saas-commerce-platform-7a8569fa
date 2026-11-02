@@ -30,11 +30,12 @@ export const Route = createFileRoute("/cart")({
 });
 
 function CartPage() {
-  const { cartItems, setQty, removeFromCart, clearCart, hydrated } = useCart();
-  const [couponCode, setCouponCode] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const { cartItems, setQty, removeFromCart, clearCart, hydrated, coupon, setCoupon } = useCart();
+  const [couponCode, setCouponCode] = useState(coupon ?? "");
   const [couponError, setCouponError] = useState("");
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
+
+  const appliedCoupon = coupon;
 
   const entries = Object.entries(cartItems)
     .map(([id, qty]) => ({ id, qty, product: getProduct(id) }))
@@ -50,7 +51,8 @@ function CartPage() {
     setCouponError("");
     const cleaned = couponCode.trim().toUpperCase();
     if (cleaned === "VENDORA10" || cleaned === "WELCOME10") {
-      setAppliedCoupon("VENDORA10");
+      setCoupon("VENDORA10");
+      setCouponCode("VENDORA10");
       setCouponError("");
     } else if (cleaned === "") {
       setCouponError("Please enter a promo code");
@@ -60,7 +62,7 @@ function CartPage() {
   };
 
   const handleRemoveCoupon = () => {
-    setAppliedCoupon(null);
+    setCoupon(null);
     setCouponCode("");
     setCouponError("");
   };
@@ -332,16 +334,15 @@ function CartPage() {
           )}
 
           {/* Checkout Button */}
-          <button
-            type="button"
-            disabled
-            title="Demo checkout preview"
-            className="mt-5 w-full cursor-not-allowed rounded-full bg-primary py-3.5 text-sm font-semibold text-primary-foreground opacity-75 shadow-soft"
+          <Link
+            to="/checkout"
+            className="mt-5 flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all duration-200 hover:bg-primary-dark active:scale-98"
           >
-            Proceed to Checkout
-          </button>
+            <span>Proceed to Checkout</span>
+            <ArrowRight className="size-4" />
+          </Link>
           <p className="mt-2.5 text-center text-[11px] text-muted-foreground">
-            Demo experience — payment gateway integration active in production.
+            Fast, secure demo checkout with multiple delivery and payment options.
           </p>
 
           <div className="mt-5 flex items-center justify-center gap-2 border-t pt-4 text-[11px] text-muted-foreground">

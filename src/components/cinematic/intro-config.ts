@@ -8,11 +8,11 @@ export const INTRO_CONFIG = {
   totalDuration: 5000,
 
   /** Scene timing boundaries (in ms from start) */
-  scene1ArrivalEnd: 1000,        // 0.0s - 1.0s: Quiet Arrival (warm ambient backdrop, understated mark arrival)
-  scene2BrandRevealEnd: 2500,    // 1.0s - 2.5s: The Brand Reveal (mark settles, wordmark unmasks horizontally)
+  scene1ArrivalEnd: 1000, // 0.0s - 1.0s: Quiet Arrival (warm ambient backdrop, understated mark arrival)
+  scene2BrandRevealEnd: 2500, // 1.0s - 2.5s: The Brand Reveal (mark settles, wordmark unmasks horizontally)
   scene3BrandStatementEnd: 4000, // 2.5s - 4.0s: Brand Statement (descriptor & tagline move together)
-  scene4FadeStart: 4250,         // 4.0s - 4.25s: Visual hold; 4.25s - 5.0s: Seamless homepage crossfade
-  scene4TransitionEnd: 5000,     // 5.0s: Sequence complete
+  scene4FadeStart: 4250, // 4.0s - 4.25s: Visual hold; 4.25s - 5.0s: Seamless homepage crossfade
+  scene4TransitionEnd: 5000, // 5.0s: Sequence complete
 
   /** Storage key to prevent replaying automatically on ordinary page refreshes */
   storageKey: "vendora_intro_seen_v1",

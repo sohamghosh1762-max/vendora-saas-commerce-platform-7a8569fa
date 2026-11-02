@@ -42,9 +42,15 @@ export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
       { title: "Vendor Pricing — Vendora" },
-      { name: "description", content: "Simple plans for selling on Vendora — start free, grow from there." },
+      {
+        name: "description",
+        content: "Simple plans for selling on Vendora — start free, grow from there.",
+      },
       { property: "og:title", content: "Vendor Pricing — Vendora" },
-      { property: "og:description", content: "Simple plans for selling on Vendora — start free, grow from there." },
+      {
+        property: "og:description",
+        content: "Simple plans for selling on Vendora — start free, grow from there.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),

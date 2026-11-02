@@ -28,8 +28,7 @@ export function IntroTagline({ scene, reducedMotion }: IntroTaglineProps) {
 
       {/* Primary Brand Tagline */}
       <h2 className="mt-2 max-w-xl text-lg font-bold tracking-tight text-[#0F0D1B] sm:text-2xl md:text-[1.75rem] leading-snug">
-        One Platform. Every Store.{" "}
-        <span className="text-[#6538F5]">Endless Possibilities.</span>
+        One Platform. Every Store. <span className="text-[#6538F5]">Endless Possibilities.</span>
       </h2>
     </div>
   );

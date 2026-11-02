@@ -20,7 +20,9 @@ export function SoundToggle({ scene }: { scene: number }) {
 
   const playCinematicChime = () => {
     try {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (!AudioCtx) return;
 
       if (!audioCtxRef.current) {
@@ -71,7 +73,10 @@ export function SoundToggle({ scene }: { scene: number }) {
     } else {
       setIsMuted(true);
       if (gainNodeRef.current && audioCtxRef.current) {
-        gainNodeRef.current.gain.linearRampToValueAtTime(0.001, audioCtxRef.current.currentTime + 0.3);
+        gainNodeRef.current.gain.linearRampToValueAtTime(
+          0.001,
+          audioCtxRef.current.currentTime + 0.3,
+        );
       }
     }
   };

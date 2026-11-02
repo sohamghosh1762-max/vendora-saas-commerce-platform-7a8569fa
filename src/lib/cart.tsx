@@ -4,6 +4,7 @@ type CartState = {
   /** productId -> quantity */
   items: Record<string, number>;
   wishlist: string[];
+  coupon: string | null;
   hydrated: boolean;
 };
 
@@ -13,7 +14,8 @@ type CartAction =
   | { type: "SET_QTY"; id: string; qty: number }
   | { type: "CLEAR" }
   | { type: "TOGGLE_WISHLIST"; id: string }
-  | { type: "HYDRATE"; items: Record<string, number>; wishlist: string[] };
+  | { type: "SET_COUPON"; coupon: string | null }
+  | { type: "HYDRATE"; items: Record<string, number>; wishlist: string[]; coupon: string | null };
 
 function reducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -34,7 +36,7 @@ function reducer(state: CartState, action: CartAction): CartState {
       return { ...state, items };
     }
     case "CLEAR": {
-      return { ...state, items: {} };
+      return { ...state, items: {}, coupon: null };
     }
     case "TOGGLE_WISHLIST": {
       const has = state.wishlist.includes(action.id);
@@ -45,8 +47,16 @@ function reducer(state: CartState, action: CartAction): CartState {
           : [...state.wishlist, action.id],
       };
     }
+    case "SET_COUPON": {
+      return { ...state, coupon: action.coupon };
+    }
     case "HYDRATE":
-      return { items: action.items, wishlist: action.wishlist, hydrated: true };
+      return {
+        items: action.items,
+        wishlist: action.wishlist,
+        coupon: action.coupon,
+        hydrated: true,
+      };
     default:
       return state;
   }
@@ -58,6 +68,7 @@ type CartContextValue = {
   cartCount: number;
   cartItems: Record<string, number>;
   wishlist: string[];
+  coupon: string | null;
   hydrated: boolean;
   addToCart: (id: string, qty?: number) => void;
   removeFromCart: (id: string) => void;
@@ -65,6 +76,7 @@ type CartContextValue = {
   clearCart: () => void;
   toggleWishlist: (id: string) => void;
   isWishlisted: (id: string) => boolean;
+  setCoupon: (code: string | null) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -73,6 +85,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, {
     items: {},
     wishlist: [],
+    coupon: null,
     hydrated: false,
   });
 
@@ -86,13 +99,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
           type: "HYDRATE",
           items: parsed.items ?? {},
           wishlist: parsed.wishlist ?? [],
+          coupon: parsed.coupon ?? null,
         });
         return;
       }
     } catch {
       // Ignore corrupted storage.
     }
-    dispatch({ type: "HYDRATE", items: {}, wishlist: [] });
+    dispatch({ type: "HYDRATE", items: {}, wishlist: [], coupon: null });
   }, []);
 
   // Persist after hydration.
@@ -101,7 +115,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       window.localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ items: state.items, wishlist: state.wishlist }),
+        JSON.stringify({
+          items: state.items,
+          wishlist: state.wishlist,
+          coupon: state.coupon,
+        }),
       );
     } catch {
       // Storage unavailable.
@@ -114,6 +132,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       cartCount,
       cartItems: state.items,
       wishlist: state.wishlist,
+      coupon: state.coupon,
       hydrated: state.hydrated,
       addToCart: (id, qty) => dispatch({ type: "ADD", id, qty }),
       removeFromCart: (id) => dispatch({ type: "REMOVE", id }),
@@ -121,6 +140,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       clearCart: () => dispatch({ type: "CLEAR" }),
       toggleWishlist: (id) => dispatch({ type: "TOGGLE_WISHLIST", id }),
       isWishlisted: (id) => state.wishlist.includes(id),
+      setCoupon: (coupon) => dispatch({ type: "SET_COUPON", coupon }),
     };
   }, [state]);
 

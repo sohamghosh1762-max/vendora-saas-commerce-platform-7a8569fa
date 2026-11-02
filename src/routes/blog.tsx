@@ -14,7 +14,10 @@ export const Route = createFileRoute("/blog")({
       { title: "Blog — Vendora" },
       { name: "description", content: "Stories, tips and trends from the Vendora community." },
       { property: "og:title", content: "Blog — Vendora" },
-      { property: "og:description", content: "Stories, tips and trends from the Vendora community." },
+      {
+        property: "og:description",
+        content: "Stories, tips and trends from the Vendora community.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),

@@ -126,6 +126,7 @@ export function ProductCard({ product }: { product: Product }) {
           <Star className="size-3.5 fill-gold text-gold" />
           <span className="text-xs font-semibold text-foreground">{product.rating}</span>
           <span className="text-[11px] sm:text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             ({product.reviews.toLocaleString("en-IN")})
           </span>
         </div>
@@ -140,6 +141,10 @@ export function ProductCard({ product }: { product: Product }) {
                 {formatINR(product.originalPrice)}
               </del>
               <span className="text-[10px] sm:text-[11px] font-semibold text-success">
+              <del className="text-xs text-muted-foreground">
+                {formatINR(product.originalPrice)}
+              </del>
+              <span className="text-[11px] font-semibold text-success">
                 Save {formatINR(savings)}
               </span>
             </>

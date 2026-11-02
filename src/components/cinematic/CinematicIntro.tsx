@@ -14,7 +14,11 @@ interface CinematicIntroProps {
   scene?: CinematicScene;
 }
 
-export function CinematicIntro({ onComplete, onSceneChange, scene: initialScene }: CinematicIntroProps) {
+export function CinematicIntro({
+  onComplete,
+  onSceneChange,
+  scene: initialScene,
+}: CinematicIntroProps) {
   const [scene, setScene] = useState<CinematicScene>(initialScene ?? 1);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -152,9 +156,7 @@ export function CinematicIntro({ onComplete, onSceneChange, scene: initialScene 
 
         {/* Minimal Progress Bar */}
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-mono font-medium text-[#0F0D1B]/40">
-            0{scene} / 04
-          </span>
+          <span className="text-[10px] font-mono font-medium text-[#0F0D1B]/40">0{scene} / 04</span>
           <div className="h-1 w-20 overflow-hidden rounded-full bg-black/[0.06] sm:w-28">
             <div
               className="h-full rounded-full bg-[#6538F5] transition-all duration-75"
