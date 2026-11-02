@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as BecomeAVendorRouteImport } from './routes/become-a-vendor'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CareersRouteImport } from './routes/careers'
@@ -27,6 +28,7 @@ import { Route as SellerResourcesRouteImport } from './routes/seller-resources'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SigninRouteImport } from './routes/signin'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as StoresRouteImport } from './routes/stores'
 import { Route as StudentDiscountRouteImport } from './routes/student-discount'
 import { Route as SuccessStoriesRouteImport } from './routes/success-stories'
@@ -50,6 +52,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BecomeAVendorRoute = BecomeAVendorRouteImport.update({
@@ -132,6 +139,11 @@ const SigninRoute = SigninRouteImport.update({
   path: '/signin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StoresRoute = StoresRouteImport.update({
   id: '/stores',
   path: '/stores',
@@ -206,6 +218,7 @@ const StoreIdRoute = StoreIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/become-a-vendor': typeof BecomeAVendorRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
@@ -222,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
   '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/stores': typeof StoresRoute
   '/student-discount': typeof StudentDiscountRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -240,6 +254,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/become-a-vendor': typeof BecomeAVendorRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
@@ -256,6 +271,7 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
   '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/stores': typeof StoresRoute
   '/student-discount': typeof StudentDiscountRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -275,6 +291,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/become-a-vendor': typeof BecomeAVendorRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
@@ -291,6 +308,7 @@ export interface FileRoutesById {
   '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
   '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/stores': typeof StoresRoute
   '/student-discount': typeof StudentDiscountRoute
   '/success-stories': typeof SuccessStoriesRoute
@@ -311,6 +329,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/become-a-vendor'
     | '/blog'
     | '/careers'
@@ -327,6 +346,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/shop'
     | '/signin'
+    | '/signup'
     | '/stores'
     | '/student-discount'
     | '/success-stories'
@@ -345,6 +365,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/become-a-vendor'
     | '/blog'
     | '/careers'
@@ -361,6 +382,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/shop'
     | '/signin'
+    | '/signup'
     | '/stores'
     | '/student-discount'
     | '/success-stories'
@@ -379,6 +401,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
     | '/become-a-vendor'
     | '/blog'
     | '/careers'
@@ -395,6 +418,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/shop'
     | '/signin'
+    | '/signup'
     | '/stores'
     | '/student-discount'
     | '/success-stories'
@@ -414,6 +438,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   BecomeAVendorRoute: typeof BecomeAVendorRoute
   BlogRoute: typeof BlogRoute
   CareersRoute: typeof CareersRoute
@@ -430,6 +455,7 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   ShopRoute: typeof ShopRoute
   SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
   StoresRoute: typeof StoresRoute
   StudentDiscountRoute: typeof StudentDiscountRoute
   SuccessStoriesRoute: typeof SuccessStoriesRoute
@@ -460,6 +486,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/become-a-vendor': {
@@ -574,6 +607,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SigninRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/stores': {
       id: '/stores'
       path: '/stores'
@@ -678,6 +718,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   BecomeAVendorRoute: BecomeAVendorRoute,
   BlogRoute: BlogRoute,
   CareersRoute: CareersRoute,
@@ -694,6 +735,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   ShopRoute: ShopRoute,
   SigninRoute: SigninRoute,
+  SignupRoute: SignupRoute,
   StoresRoute: StoresRoute,
   StudentDiscountRoute: StudentDiscountRoute,
   SuccessStoriesRoute: SuccessStoriesRoute,

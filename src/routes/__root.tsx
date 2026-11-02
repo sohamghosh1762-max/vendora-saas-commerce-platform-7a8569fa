@@ -14,6 +14,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
+import { CustomerAuthProvider } from "@/lib/customer-context";
 import { VendorAuthProvider } from "@/lib/vendor-context";
 import { SuperAdminAuthProvider } from "@/lib/super-admin-context";
 import { CinematicProvider } from "@/components/cinematic/cinematic-context";
@@ -148,25 +149,27 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-        <VendorAuthProvider>
-          <SuperAdminAuthProvider>
-            <CinematicProvider>
-              {isDedicatedApp ? (
-                <div className="min-h-screen bg-[#F6F5FC] text-foreground">
-                  <Outlet />
-                </div>
-              ) : (
-                <div className="flex min-h-screen flex-col bg-background text-foreground">
-                  <Navbar />
-                  <main className="flex-1">
+        <CustomerAuthProvider>
+          <VendorAuthProvider>
+            <SuperAdminAuthProvider>
+              <CinematicProvider>
+                {isDedicatedApp ? (
+                  <div className="min-h-screen bg-[#F6F5FC] text-foreground">
                     <Outlet />
-                  </main>
-                  <Footer />
-                </div>
-              )}
-            </CinematicProvider>
-          </SuperAdminAuthProvider>
-        </VendorAuthProvider>
+                  </div>
+                ) : (
+                  <div className="flex min-h-screen flex-col bg-background text-foreground">
+                    <Navbar />
+                    <main className="flex-1">
+                      <Outlet />
+                    </main>
+                    <Footer />
+                  </div>
+                )}
+              </CinematicProvider>
+            </SuperAdminAuthProvider>
+          </VendorAuthProvider>
+        </CustomerAuthProvider>
       </CartProvider>
     </QueryClientProvider>
   );

@@ -33,71 +33,16 @@ export const deliveryMethodSchema = z.object({
 
 export type DeliveryMethodFormValues = z.infer<typeof deliveryMethodSchema>;
 
-export const paymentSelectionSchema = z
-  .object({
-    paymentMethod: z.enum(["cod", "upi", "card"]),
-    upiId: z.string().optional(),
-    cardholderName: z.string().optional(),
-    cardNumber: z.string().optional(),
-    cardExpiry: z.string().optional(),
-    cardCvv: z.string().optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (data.paymentMethod === "upi") {
-      const trimmed = (data.upiId ?? "").trim();
-      if (!trimmed) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["upiId"],
-          message: "Please enter your UPI ID (e.g. yourname@okhdfcbank)",
-        });
-      } else if (!upiRegex.test(trimmed)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["upiId"],
-          message: "Invalid UPI ID format. Should be like user@bank",
-        });
-      }
-    }
-
-    if (data.paymentMethod === "card") {
-      const name = (data.cardholderName ?? "").trim();
-      if (name.length < 2) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["cardholderName"],
-          message: "Name on card is required",
-        });
-      }
-
-      const cleanNumber = (data.cardNumber ?? "").replace(/\s+/g, "");
-      if (!/^\d{16}$/.test(cleanNumber)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["cardNumber"],
-          message: "Card number must be 16 digits (demo format)",
-        });
-      }
-
-      const expiry = (data.cardExpiry ?? "").trim();
-      if (!/^(0[1-9]|1[0-2])\/?([2-9][0-9])$/.test(expiry)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["cardExpiry"],
-          message: "Valid expiry required (MM/YY)",
-        });
-      }
-
-      const cvv = (data.cardCvv ?? "").trim();
-      if (!/^\d{3,4}$/.test(cvv)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["cardCvv"],
-          message: "CVV must be 3 or 4 digits",
-        });
-      }
-    }
-  });
+// Payment options are simulated demo selections only.
+// As per payment safety requirements, no actual card numbers, CVVs, expiry dates, or UPI PINs are collected.
+export const paymentSelectionSchema = z.object({
+  paymentMethod: z.enum(["cod", "upi", "card"]),
+  upiId: z.string().optional(),
+  cardholderName: z.string().optional(),
+  cardNumber: z.string().optional(),
+  cardExpiry: z.string().optional(),
+  cardCvv: z.string().optional(),
+});
 
 export type PaymentSelectionFormValues = z.infer<typeof paymentSelectionSchema>;
 
