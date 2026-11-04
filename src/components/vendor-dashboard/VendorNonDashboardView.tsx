@@ -3,6 +3,7 @@ import type { SidebarTab } from "./VendorSidebar";
 import { REFERENCE_ORDERS } from "@/lib/vendor-dashboard-data";
 import { useState } from "react";
 import { VendorProductsView } from "./VendorProductsView";
+import { VendorInventoryView } from "./VendorInventoryView";
 import type { VendorStore } from "@/lib/vendor-types";
 
 export interface VendorNonDashboardViewProps {
@@ -31,6 +32,10 @@ export function VendorNonDashboardView({
     products: {
       title: "Products Catalog",
       subtitle: `Manage and organize products for ${storeName}`,
+    },
+    inventory: {
+      title: "Inventory Management",
+      subtitle: `Track and update stock for ${storeName}`,
     },
     orders: {
       title: "Order Management",
@@ -113,6 +118,10 @@ export function VendorNonDashboardView({
           onAddProductClick={onAddProductClick}
           onProductsChange={onProductsChange}
         />
+      )}
+
+      {activeTab === "inventory" && (
+        <VendorInventoryView storeId={storeId} onInventoryChange={onProductsChange} />
       )}
 
       {activeTab === "orders" && (
@@ -230,24 +239,27 @@ export function VendorNonDashboardView({
       )}
 
       {/* Generic placeholder for other tabs */}
-      {activeTab !== "products" && activeTab !== "orders" && activeTab !== "settings" && (
-        <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-[#ECEAF5] bg-white p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-          <div className="grid size-12 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5]">
-            <Tag className="size-6" />
+      {activeTab !== "products" &&
+        activeTab !== "inventory" &&
+        activeTab !== "orders" &&
+        activeTab !== "settings" && (
+          <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-[#ECEAF5] bg-white p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+            <div className="grid size-12 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5]">
+              <Tag className="size-6" />
+            </div>
+            <h3 className="mt-4 text-base font-bold text-[#110D27]">{current.title}</h3>
+            <p className="mt-1 max-w-md text-xs text-[#7A7F93]">
+              {current.subtitle}. This section is enabled for {storeName}.
+            </p>
+            <button
+              type="button"
+              onClick={onBackToDashboard}
+              className="mt-5 rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9]"
+            >
+              Return to Dashboard
+            </button>
           </div>
-          <h3 className="mt-4 text-base font-bold text-[#110D27]">{current.title}</h3>
-          <p className="mt-1 max-w-md text-xs text-[#7A7F93]">
-            {current.subtitle}. This section is enabled for {storeName}.
-          </p>
-          <button
-            type="button"
-            onClick={onBackToDashboard}
-            className="mt-5 rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9]"
-          >
-            Return to Dashboard
-          </button>
-        </div>
-      )}
+        )}
     </div>
   );
 }

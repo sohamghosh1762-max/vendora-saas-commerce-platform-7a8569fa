@@ -23,6 +23,7 @@ export type Product = {
   featured?: boolean;
   description: string;
   stock?: number;
+  sku?: string;
   status?: ProductStatus | string;
 };
 

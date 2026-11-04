@@ -14,6 +14,7 @@ import {
   Settings,
   Star,
   Users,
+  Warehouse,
   X,
 } from "lucide-react";
 import logoMark from "@/assets/logo-mark.png";
@@ -23,6 +24,7 @@ import { cn } from "@/lib/utils";
 export type SidebarTab =
   | "dashboard"
   | "products"
+  | "inventory"
   | "orders"
   | "customers"
   | "analytics"
@@ -61,6 +63,7 @@ export function VendorSidebar({
   }[] = [
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "products", label: "Products", icon: Package },
+    { id: "inventory", label: "Inventory", icon: Warehouse },
     { id: "orders", label: "Orders", icon: FileText },
     { id: "customers", label: "Customers", icon: Users },
     { id: "analytics", label: "Analytics", icon: BarChart2 },

@@ -29,6 +29,7 @@ import { addVendorProduct, updateVendorStore } from "@/lib/vendor-api";
 export const VALID_SIDEBAR_TABS: readonly SidebarTab[] = [
   "dashboard",
   "products",
+  "inventory",
   "orders",
   "customers",
   "analytics",
