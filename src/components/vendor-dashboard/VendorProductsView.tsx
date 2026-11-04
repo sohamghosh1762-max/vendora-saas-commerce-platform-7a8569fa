@@ -41,12 +41,33 @@ export function VendorProductsView({
   onProductsChange,
 }: VendorProductsViewProps) {
   // Load products for the current store
-  const [products, setProducts] = useState<Product[]>(() => getVendorProducts(storeId));
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   // Reload when storeId changes
   useEffect(() => {
-    setProducts(getVendorProducts(storeId));
+    setIsLoading(true);
+    setLoadError(null);
+    try {
+      setProducts(getVendorProducts(storeId));
+    } catch {
+      setLoadError("Products could not be loaded. Check browser storage and try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }, [storeId]);
+
+  const reloadProducts = () => {
+    try {
+      setProducts(getVendorProducts(storeId));
+      setLoadError(null);
+      return true;
+    } catch {
+      setLoadError("Products could not be saved or loaded. Check browser storage and try again.");
+      return false;
+    }
+  };
 
   // Filtering & Search states
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,48 +103,68 @@ export function VendorProductsView({
     description?: string;
     badge?: string;
   }) => {
-    const created = addVendorProduct({
-      name: data.name,
-      storeId,
-      storeName,
-      category: data.category,
-      price: data.price,
-      originalPrice: data.originalPrice ?? data.price,
-      stock: data.stock ?? 25,
-      status: data.status || "active",
-      rating: 5.0,
-      reviews: 0,
-      ...(data.badge ? { badge: data.badge } : {}),
-      image:
-        data.image ||
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
-      description: data.description || "Handcrafted artisan product.",
-      featured: true,
-    });
+    try {
+      const created = addVendorProduct({
+        name: data.name,
+        storeId,
+        storeName,
+        category: data.category,
+        price: data.price,
+        originalPrice: data.originalPrice ?? data.price,
+        stock: data.stock ?? 25,
+        status: data.status || "active",
+        rating: 5.0,
+        reviews: 0,
+        ...(data.badge ? { badge: data.badge } : {}),
+        image:
+          data.image ||
+          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
+        description: data.description || "Handcrafted artisan product.",
+        featured: true,
+      });
 
-    setProducts(getVendorProducts(storeId));
-    onProductsChange?.();
-    showFeedback(`Product "${created.name}" created successfully.`);
+      if (!reloadProducts()) return false;
+      onProductsChange?.();
+      showFeedback(`Product "${created.name}" created successfully.`);
+      return true;
+    } catch {
+      setLoadError("Product could not be saved. Check browser storage and try again.");
+      showFeedback("Product could not be saved.", "error");
+      return false;
+    }
   };
 
   // Edit product handler
   const handleEditProduct = (productId: string, updates: Partial<Product>) => {
-    const updated = updateVendorProduct(productId, updates);
-    if (updated) {
-      setProducts(getVendorProducts(storeId));
-      onProductsChange?.();
-      showFeedback(`Product "${updated.name}" updated successfully.`);
-    } else {
-      showFeedback("Failed to update product.", "error");
+    try {
+      const updated = updateVendorProduct(productId, updates);
+      if (updated) {
+        if (!reloadProducts()) return false;
+        onProductsChange?.();
+        showFeedback(`Product "${updated.name}" updated successfully.`);
+        return true;
+      } else {
+        showFeedback("Failed to update product.", "error");
+        return false;
+      }
+    } catch {
+      setLoadError("Product could not be saved. Check browser storage and try again.");
+      showFeedback("Product could not be saved.", "error");
+      return false;
     }
   };
 
   // Delete product handler
   const handleDeleteProduct = (productId: string) => {
     const target = products.find((p) => p.id === productId);
-    const success = deleteVendorProduct(productId);
+    let success = false;
+    try {
+      success = deleteVendorProduct(productId);
+    } catch {
+      setLoadError("Product could not be deleted. Check browser storage and try again.");
+    }
     if (success) {
-      setProducts(getVendorProducts(storeId));
+      if (!reloadProducts()) return;
       onProductsChange?.();
       showFeedback(`Product "${target?.name || "Item"}" deleted from catalog.`);
     } else {
@@ -164,7 +205,8 @@ export function VendorProductsView({
     });
   }, [products, searchQuery, categoryFilter, statusFilter]);
 
-  const hasActiveFilters = searchQuery.trim() !== "" || categoryFilter !== "all" || statusFilter !== "all";
+  const hasActiveFilters =
+    searchQuery.trim() !== "" || categoryFilter !== "all" || statusFilter !== "all";
 
   const handleResetFilters = () => {
     setSearchQuery("");
@@ -205,6 +247,25 @@ export function VendorProductsView({
             aria-label="Dismiss feedback"
           >
             <X className="size-3.5" />
+          </button>
+        </div>
+      )}
+
+      {loadError && (
+        <div
+          role="alert"
+          className="flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-3 text-xs font-semibold text-red-800"
+        >
+          <span>{loadError}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setLoadError(null);
+              reloadProducts();
+            }}
+            className="underline"
+          >
+            Retry
           </button>
         </div>
       )}
@@ -318,7 +379,8 @@ export function VendorProductsView({
             <div className="flex items-center justify-between text-[11px] text-[#7A7F93] pt-1">
               <span>
                 Showing <strong className="text-[#110D27]">{filteredProducts.length}</strong> of{" "}
-                <strong className="text-[#110D27]">{products.length}</strong> products matching filters
+                <strong className="text-[#110D27]">{products.length}</strong> products matching
+                filters
               </span>
               <button
                 type="button"
@@ -332,7 +394,14 @@ export function VendorProductsView({
         </div>
 
         {/* Products Table / Cards */}
-        {products.length === 0 ? (
+        {isLoading ? (
+          <div
+            role="status"
+            className="my-8 flex items-center justify-center gap-2 p-10 text-sm text-[#7A7F93]"
+          >
+            Loading products…
+          </div>
+        ) : loadError && products.length === 0 ? null : products.length === 0 ? (
           /* Empty Catalog State */
           <div className="my-8 flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#ECEAF5] bg-[#FBFBFE] p-10 text-center">
             <div className="grid size-14 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5] mb-3 shadow-xs">
@@ -340,8 +409,8 @@ export function VendorProductsView({
             </div>
             <h3 className="text-base font-bold text-[#110D27]">No products in your catalog</h3>
             <p className="mt-1 max-w-sm text-xs text-[#7A7F93] leading-relaxed">
-              You haven't added any products to your store catalog yet. Add your first product to start
-              selling to customers on Vendora.
+              You haven't added any products to your store catalog yet. Add your first product to
+              start selling to customers on Vendora.
             </p>
             <button
               type="button"
@@ -360,7 +429,9 @@ export function VendorProductsView({
             </div>
             <h3 className="text-base font-bold text-[#110D27]">No matching products found</h3>
             <p className="mt-1 max-w-sm text-xs text-[#7A7F93] leading-relaxed">
-              {searchQuery ? `No products match "${searchQuery}". ` : "No products match the selected filters. "}
+              {searchQuery
+                ? `No products match "${searchQuery}". `
+                : "No products match the selected filters. "}
               Try adjusting your search terms or reset your filters.
             </p>
             <button
@@ -543,4 +614,3 @@ export function VendorProductsView({
     </div>
   );
 }
-

@@ -36,7 +36,7 @@ export function AddProductModal({
     image?: string;
     description?: string;
     badge?: string;
-  }) => void;
+  }) => boolean | void;
 }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("home-living");
@@ -120,13 +120,11 @@ export function AddProductModal({
 
     setIsSubmitting(true);
     const parsedPrice = parseFloat(price);
-    const parsedOriginal = originalPrice.trim()
-      ? parseFloat(originalPrice)
-      : parsedPrice * 1.25;
+    const parsedOriginal = originalPrice.trim() ? parseFloat(originalPrice) : parsedPrice * 1.25;
     const parsedStock = parseInt(stock, 10);
 
     setTimeout(() => {
-      onSubmit({
+      const saved = onSubmit({
         name: name.trim(),
         category,
         price: parsedPrice,
@@ -140,7 +138,7 @@ export function AddProductModal({
         badge: badge.trim() || undefined,
       });
       setIsSubmitting(false);
-      onClose();
+      if (saved !== false) onClose();
     }, 200);
   };
 
@@ -193,7 +191,9 @@ export function AddProductModal({
                   : "border-[#ECEAF5] focus:border-[#6538F5] focus:bg-white",
               )}
             />
-            {errors.name && <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.name}</p>}
+            {errors.name && (
+              <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.name}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -259,7 +259,9 @@ export function AddProductModal({
                     : "border-[#ECEAF5] focus:border-[#6538F5] focus:bg-white",
                 )}
               />
-              {errors.price && <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.price}</p>}
+              {errors.price && (
+                <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.price}</p>
+              )}
             </div>
 
             <div>
@@ -282,7 +284,9 @@ export function AddProductModal({
                 )}
               />
               {errors.originalPrice && (
-                <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.originalPrice}</p>
+                <p className="mt-1 text-[11px] font-semibold text-red-500">
+                  {errors.originalPrice}
+                </p>
               )}
             </div>
           </div>
@@ -309,7 +313,9 @@ export function AddProductModal({
                     : "border-[#ECEAF5] focus:border-[#6538F5] focus:bg-white",
                 )}
               />
-              {errors.stock && <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.stock}</p>}
+              {errors.stock && (
+                <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.stock}</p>
+              )}
             </div>
 
             <div>
@@ -387,7 +393,7 @@ export function EditProductModal({
   isOpen: boolean;
   product: Product | null;
   onClose: () => void;
-  onSubmit: (productId: string, updates: Partial<Product>) => void;
+  onSubmit: (productId: string, updates: Partial<Product>) => boolean | void;
 }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("home-living");
@@ -465,13 +471,11 @@ export function EditProductModal({
 
     setIsSubmitting(true);
     const parsedPrice = parseFloat(price);
-    const parsedOriginal = originalPrice.trim()
-      ? parseFloat(originalPrice)
-      : parsedPrice * 1.25;
+    const parsedOriginal = originalPrice.trim() ? parseFloat(originalPrice) : parsedPrice * 1.25;
     const parsedStock = parseInt(stock, 10);
 
     setTimeout(() => {
-      onSubmit(product.id, {
+      const saved = onSubmit(product.id, {
         name: name.trim(),
         category,
         price: parsedPrice,
@@ -483,7 +487,7 @@ export function EditProductModal({
         badge: badge.trim() || undefined,
       });
       setIsSubmitting(false);
-      onClose();
+      if (saved !== false) onClose();
     }, 200);
   };
 
@@ -534,7 +538,9 @@ export function EditProductModal({
                   : "border-[#ECEAF5] focus:border-[#6538F5] focus:bg-white",
               )}
             />
-            {errors.name && <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.name}</p>}
+            {errors.name && (
+              <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.name}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -600,7 +606,9 @@ export function EditProductModal({
                     : "border-[#ECEAF5] focus:border-[#6538F5] focus:bg-white",
                 )}
               />
-              {errors.price && <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.price}</p>}
+              {errors.price && (
+                <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.price}</p>
+              )}
             </div>
 
             <div>
@@ -623,7 +631,9 @@ export function EditProductModal({
                 )}
               />
               {errors.originalPrice && (
-                <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.originalPrice}</p>
+                <p className="mt-1 text-[11px] font-semibold text-red-500">
+                  {errors.originalPrice}
+                </p>
               )}
             </div>
           </div>
@@ -650,7 +660,9 @@ export function EditProductModal({
                     : "border-[#ECEAF5] focus:border-[#6538F5] focus:bg-white",
                 )}
               />
-              {errors.stock && <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.stock}</p>}
+              {errors.stock && (
+                <p className="mt-1 text-[11px] font-semibold text-red-500">{errors.stock}</p>
+              )}
             </div>
 
             <div>
@@ -754,10 +766,12 @@ export function DeleteProductModal({
 
         <div className="mt-4 text-xs text-[#4B5264] space-y-2 leading-relaxed">
           <p>
-            Are you sure you want to delete <strong className="text-[#110D27]">"{product.name}"</strong>?
+            Are you sure you want to delete{" "}
+            <strong className="text-[#110D27]">"{product.name}"</strong>?
           </p>
           <p className="text-[11px] text-[#7A7F93]">
-            This action cannot be undone and will permanently remove this item from your vendor catalog.
+            This action cannot be undone and will permanently remove this item from your vendor
+            catalog.
           </p>
         </div>
 

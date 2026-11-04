@@ -38,11 +38,7 @@ function getStoredCustomProducts(): Product[] {
 
 function saveCustomProducts(products: Product[]): void {
   if (typeof window === "undefined") return;
-  try {
-    window.localStorage.setItem(CUSTOM_PRODUCTS_KEY, JSON.stringify(products));
-  } catch {
-    // Storage unavailable
-  }
+  window.localStorage.setItem(CUSTOM_PRODUCTS_KEY, JSON.stringify(products));
 }
 
 /** Check if email is already registered */
@@ -332,7 +328,8 @@ export function getVendorProducts(storeId: string): Product[] {
 
   // If the store is the default reference store ('the-urban-nest') and no custom products key has been set in localStorage:
   if (storeId === "the-urban-nest") {
-    const hasInitialized = typeof window !== "undefined" && window.localStorage.getItem(CUSTOM_PRODUCTS_KEY) !== null;
+    const hasInitialized =
+      typeof window !== "undefined" && window.localStorage.getItem(CUSTOM_PRODUCTS_KEY) !== null;
     if (!hasInitialized) {
       saveCustomProducts(REFERENCE_VENDOR_PRODUCTS);
       return [...REFERENCE_VENDOR_PRODUCTS];
@@ -347,7 +344,11 @@ export function getVendorProducts(storeId: string): Product[] {
 /** Add a product to a vendor store */
 export function addVendorProduct(product: Omit<Product, "id">): Product {
   const custom = getStoredCustomProducts();
-  if (product.storeId === "the-urban-nest" && typeof window !== "undefined" && window.localStorage.getItem(CUSTOM_PRODUCTS_KEY) === null) {
+  if (
+    product.storeId === "the-urban-nest" &&
+    typeof window !== "undefined" &&
+    window.localStorage.getItem(CUSTOM_PRODUCTS_KEY) === null
+  ) {
     custom.push(...REFERENCE_VENDOR_PRODUCTS);
   }
   const newProduct: Product = {
@@ -373,10 +374,7 @@ export function addVendorProduct(product: Omit<Product, "id">): Product {
 }
 
 /** Update an existing product */
-export function updateVendorProduct(
-  productId: string,
-  updates: Partial<Product>,
-): Product | null {
+export function updateVendorProduct(productId: string, updates: Partial<Product>): Product | null {
   const custom = getStoredCustomProducts();
   const index = custom.findIndex((p) => p.id === productId);
   if (index !== -1) {
@@ -385,7 +383,9 @@ export function updateVendorProduct(
     return custom[index];
   }
 
-  const inInitial = [...initialProducts, ...REFERENCE_VENDOR_PRODUCTS].find((p) => p.id === productId);
+  const inInitial = [...initialProducts, ...REFERENCE_VENDOR_PRODUCTS].find(
+    (p) => p.id === productId,
+  );
   if (inInitial) {
     const allForStore = getVendorProducts(inInitial.storeId);
     const storeUpdated = allForStore.map((p) => (p.id === productId ? { ...p, ...updates } : p));
@@ -406,7 +406,9 @@ export function deleteVendorProduct(productId: string): boolean {
     return true;
   }
 
-  const inInitial = [...initialProducts, ...REFERENCE_VENDOR_PRODUCTS].find((p) => p.id === productId);
+  const inInitial = [...initialProducts, ...REFERENCE_VENDOR_PRODUCTS].find(
+    (p) => p.id === productId,
+  );
   if (inInitial) {
     const allForStore = getVendorProducts(inInitial.storeId).filter((p) => p.id !== productId);
     const otherStores = custom.filter((p) => p.storeId !== inInitial.storeId);
