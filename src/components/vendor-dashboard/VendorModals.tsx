@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { AlertCircle, Check, Loader2, Package, Pencil, Store, Trash2, X } from "lucide-react";
 import type { DashboardOrder } from "@/lib/vendor-dashboard-data";
 import type { Product, ProductStatus } from "@/data/products";
+import type { VendorStore } from "@/lib/vendor-types";
 import { cn } from "@/lib/utils";
 
 // --- Categories List ---
@@ -801,41 +802,109 @@ export function DeleteProductModal({
 export function StoreSettingsModal({
   isOpen,
   onClose,
-  storeName,
-  tagline,
+  store,
   onSave,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  storeName: string;
-  tagline: string;
-  onSave: (data: { storeName: string; tagline: string; returnPolicy: string }) => void;
+  store: VendorStore | null;
+  onSave: (data: Partial<VendorStore>) => Promise<boolean | void> | boolean | void;
 }) {
-  const [name, setName] = useState(storeName);
-  const [storeTagline, setStoreTagline] = useState(tagline);
-  const [returnPolicy, setReturnPolicy] = useState("14-Day Easy Returns");
-  const [isSaved, setIsSaved] = useState(false);
+  const [form, setForm] = useState<Partial<VendorStore>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSaving, setIsSaving] = useState(false);
+  const [feedback, setFeedback] = useState<{ message: string; error: boolean } | null>(null);
 
   useEffect(() => {
-    setName(storeName);
-    setStoreTagline(tagline);
-  }, [storeName, tagline, isOpen]);
+    if (store && isOpen) {
+      setForm({ ...store });
+      setErrors({});
+      setFeedback(null);
+      setIsSaving(false);
+    }
+  }, [store?.id, isOpen]);
 
   if (!isOpen) return null;
 
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSaved(true);
-    onSave({ storeName: name, tagline: storeTagline, returnPolicy });
-    setTimeout(() => {
-      setIsSaved(false);
-      onClose();
-    }, 600);
+  const setField = (field: keyof VendorStore, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }));
+    setErrors((current) => ({ ...current, [field]: "" }));
+    setFeedback(null);
   };
 
+  const handleImage = (field: "logoUrl" | "cover", file?: File) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setErrors((current) => ({ ...current, [field]: "Choose an image file." }));
+      return;
+    }
+    if (file.size > 1_500_000) {
+      setErrors((current) => ({ ...current, [field]: "Image must be 1.5 MB or smaller." }));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        setField(field, reader.result);
+      } else {
+        setErrors((current) => ({ ...current, [field]: "This image could not be read." }));
+      }
+    };
+    reader.onerror = () =>
+      setErrors((current) => ({ ...current, [field]: "This image could not be read." }));
+    reader.readAsDataURL(file);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const nextErrors: Record<string, string> = {};
+    if (!form.name?.trim()) nextErrors.name = "Store name is required.";
+    if (!form.description?.trim()) nextErrors.description = "Store description is required.";
+    if (!form.phone?.trim() || form.phone.replace(/\D/g, "").length < 7) {
+      nextErrors.phone = "Enter a valid contact phone number.";
+    }
+    if (!form.ownerEmail?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.ownerEmail)) {
+      nextErrors.ownerEmail = "Enter a valid contact email address.";
+    }
+    if (form.supportEmail?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.supportEmail)) {
+      nextErrors.supportEmail = "Enter a valid support email address.";
+    }
+    for (const field of ["address", "city", "state", "postalCode", "businessType"] as const) {
+      if (!form[field]?.trim()) nextErrors[field] = "This field is required.";
+    }
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length || !store) return;
+
+    setIsSaving(true);
+    try {
+      const saved = await onSave(form);
+      if (saved === false) {
+        setFeedback({
+          message: "Store changes could not be saved. Please try again.",
+          error: true,
+        });
+      } else {
+        setFeedback({ message: "Store details saved successfully.", error: false });
+        window.setTimeout(onClose, 700);
+      }
+    } catch {
+      setFeedback({
+        message: "Store changes could not be saved. Check browser storage and try again.",
+        error: true,
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const inputClass =
+    "mt-1 w-full rounded-xl border border-[#ECEAF5] bg-[#F9F8FD] px-3.5 py-2.5 text-xs text-[#110D27] outline-none focus:border-[#6538F5] focus:bg-white transition";
+  const fieldError = (field: string) =>
+    errors[field] && <p className="mt-1 text-[11px] font-semibold text-red-600">{errors[field]}</p>;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in-50">
-      <div className="w-full max-w-lg rounded-3xl border border-[#ECEAF5] bg-white p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/40 backdrop-blur-xs p-4 animate-in fade-in-50">
+      <div className="my-6 w-full max-w-2xl rounded-3xl border border-[#ECEAF5] bg-white p-6 shadow-2xl">
         <div className="flex items-center justify-between border-b border-[#ECEAF5] pb-3">
           <div className="flex items-center gap-2">
             <span className="grid size-8 place-items-center rounded-xl bg-[#F0EBFE] text-[#6538F5]">
@@ -853,63 +922,219 @@ export function StoreSettingsModal({
           </button>
         </div>
 
-        <form onSubmit={handleSave} className="mt-4 space-y-3.5 text-xs">
-          <div>
-            <label className="font-bold text-[#110D27]">Store Display Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-[#ECEAF5] bg-[#F9F8FD] px-3.5 py-2.5 text-xs text-[#110D27] outline-none focus:border-[#6538F5] focus:bg-white transition"
-            />
+        {!store ? (
+          <div role="status" className="py-10 text-center text-sm text-[#7A7F93]">
+            Store details are unavailable.
           </div>
+        ) : (
+          <form
+            noValidate
+            onSubmit={handleSave}
+            className="mt-4 max-h-[72vh] space-y-4 overflow-y-auto pr-1 text-xs"
+          >
+            {feedback && (
+              <div
+                role={feedback.error ? "alert" : "status"}
+                className={`rounded-xl border p-3 font-semibold ${feedback.error ? "border-red-200 bg-red-50 text-red-800" : "border-emerald-200 bg-emerald-50 text-emerald-800"}`}
+              >
+                {feedback.message}
+              </div>
+            )}
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="font-bold text-[#110D27]">
+                Store name *
+                <input
+                  required
+                  value={form.name ?? ""}
+                  onChange={(e) => setField("name", e.target.value)}
+                  className={inputClass}
+                />
+                {fieldError("name")}
+              </label>
+              <label className="font-bold text-[#110D27]">
+                Tagline
+                <input
+                  value={form.tagline ?? ""}
+                  onChange={(e) => setField("tagline", e.target.value)}
+                  className={inputClass}
+                />
+              </label>
+            </div>
+            <label className="block font-bold text-[#110D27]">
+              Description *
+              <textarea
+                required
+                rows={3}
+                value={form.description ?? ""}
+                onChange={(e) => setField("description", e.target.value)}
+                className={inputClass}
+              />
+              {fieldError("description")}
+            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="font-bold text-[#110D27]">
+                Contact phone *
+                <input
+                  required
+                  type="tel"
+                  value={form.phone ?? ""}
+                  onChange={(e) => setField("phone", e.target.value)}
+                  className={inputClass}
+                />
+                {fieldError("phone")}
+              </label>
+              <label className="font-bold text-[#110D27]">
+                Contact email *
+                <input
+                  required
+                  type="email"
+                  value={form.ownerEmail ?? ""}
+                  onChange={(e) => setField("ownerEmail", e.target.value)}
+                  className={inputClass}
+                />
+                {fieldError("ownerEmail")}
+              </label>
+            </div>
+            <label className="block font-bold text-[#110D27]">
+              Support email
+              <input
+                type="email"
+                value={form.supportEmail ?? ""}
+                onChange={(e) => setField("supportEmail", e.target.value)}
+                className={inputClass}
+              />
+              {fieldError("supportEmail")}
+            </label>
+            <label className="block font-bold text-[#110D27]">
+              Street address *
+              <input
+                required
+                value={form.address ?? ""}
+                onChange={(e) => setField("address", e.target.value)}
+                className={inputClass}
+              />
+              {fieldError("address")}
+            </label>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {(
+                [
+                  ["city", "City"],
+                  ["state", "State"],
+                  ["postalCode", "Postal code"],
+                ] as const
+              ).map(([field, label]) => (
+                <label key={field} className="font-bold text-[#110D27]">
+                  {label} *
+                  <input
+                    required
+                    value={form[field] ?? ""}
+                    onChange={(e) => setField(field, e.target.value)}
+                    className={inputClass}
+                  />
+                  {fieldError(field)}
+                </label>
+              ))}
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="font-bold text-[#110D27]">
+                Business type *
+                <input
+                  required
+                  value={form.businessType ?? ""}
+                  onChange={(e) => setField("businessType", e.target.value)}
+                  className={inputClass}
+                />
+                {fieldError("businessType")}
+              </label>
+              <label className="font-bold text-[#110D27]">
+                Tax ID
+                <input
+                  value={form.taxId ?? ""}
+                  onChange={(e) => setField("taxId", e.target.value)}
+                  className={inputClass}
+                />
+              </label>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="font-bold text-[#110D27]">
+                Shipping method
+                <input
+                  value={form.shippingMethod ?? ""}
+                  onChange={(e) => setField("shippingMethod", e.target.value)}
+                  className={inputClass}
+                />
+              </label>
+              <label className="font-bold text-[#110D27]">
+                Processing time
+                <input
+                  value={form.processingTime ?? ""}
+                  onChange={(e) => setField("processingTime", e.target.value)}
+                  className={inputClass}
+                />
+              </label>
+            </div>
+            <label className="block font-bold text-[#110D27]">
+              Return policy
+              <input
+                value={form.returnPolicy ?? ""}
+                onChange={(e) => setField("returnPolicy", e.target.value)}
+                className={inputClass}
+              />
+            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {(
+                [
+                  ["logoUrl", "Store logo"],
+                  ["cover", "Store banner"],
+                ] as const
+              ).map(([field, label]) => (
+                <div key={field} className="rounded-xl border border-[#ECEAF5] p-3">
+                  <label className="font-bold text-[#110D27]">
+                    {label}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImage(field, e.target.files?.[0])}
+                      className="mt-2 block w-full text-xs"
+                    />
+                    {fieldError(field)}
+                  </label>
+                  {form[field] && (
+                    <img
+                      src={form[field]}
+                      alt={`${label} preview`}
+                      className={`mt-3 rounded-lg object-cover ${field === "logoUrl" ? "size-16" : "h-20 w-full"}`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
 
-          <div>
-            <label className="font-bold text-[#110D27]">Tagline / Subtitle</label>
-            <input
-              type="text"
-              value={storeTagline}
-              onChange={(e) => setStoreTagline(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-[#ECEAF5] bg-[#F9F8FD] px-3.5 py-2.5 text-xs text-[#110D27] outline-none focus:border-[#6538F5] focus:bg-white transition"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-[#110D27]">Return & Refund Policy</label>
-            <select
-              value={returnPolicy}
-              onChange={(e) => setReturnPolicy(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-[#ECEAF5] bg-[#F9F8FD] px-3.5 py-2.5 text-xs text-[#110D27] outline-none focus:border-[#6538F5] focus:bg-white transition"
-            >
-              <option value="14-Day Easy Returns">14-Day Easy Returns</option>
-              <option value="7-Day Hassle-Free Returns">7-Day Hassle-Free Returns</option>
-              <option value="30-Day Guarantee">30-Day Guarantee</option>
-            </select>
-          </div>
-
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#ECEAF5]">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-xl border border-[#ECEAF5] px-4 py-2 text-xs font-semibold text-[#6B7280] hover:bg-[#F4F2FC] transition"
-            >
-              Close
-            </button>
-            <button
-              type="submit"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9] transition"
-            >
-              {isSaved ? (
-                <>
-                  <Check className="size-3.5" />
-                  <span>Saved!</span>
-                </>
-              ) : (
-                "Save Changes"
-              )}
-            </button>
-          </div>
-        </form>
+            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#ECEAF5]">
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-xl border border-[#ECEAF5] px-4 py-2 text-xs font-semibold text-[#6B7280] hover:bg-[#F4F2FC] transition"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSaving || feedback?.error === false}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9] disabled:opacity-60 transition"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="size-3.5 animate-spin" />
+                    <span>Saving…</span>
+                  </>
+                ) : (
+                  "Save Store Details"
+                )}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

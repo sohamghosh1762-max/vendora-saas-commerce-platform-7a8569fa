@@ -23,6 +23,8 @@ export interface VendorDashboardOverviewProps {
   storeSlug: string;
   storeUrl: string;
   storeImage: string;
+  storeLogo?: string;
+  storeTagline?: string;
   completionPercentage: number;
   checklistItems: DashboardChecklistItem[];
   onSelectChecklistAction: (actionKey: string) => void;
@@ -38,6 +40,8 @@ export function VendorDashboardOverview({
   storeSlug,
   storeUrl,
   storeImage,
+  storeLogo,
+  storeTagline,
   completionPercentage,
   checklistItems,
   onSelectChecklistAction,
@@ -104,9 +108,7 @@ export function VendorDashboardOverview({
                   }`}
                 >
                   <span>{range}</span>
-                  {dateRange === range && (
-                    <span className="size-1.5 rounded-full bg-[#6538F5]" />
-                  )}
+                  {dateRange === range && <span className="size-1.5 rounded-full bg-[#6538F5]" />}
                 </button>
               ))}
             </div>
@@ -150,6 +152,8 @@ export function VendorDashboardOverview({
             storeSlug={storeSlug}
             storeUrl={storeUrl}
             coverImage={storeImage}
+            logoImage={storeLogo}
+            tagline={storeTagline}
             onEditStore={onOpenStoreSettings}
           />
 

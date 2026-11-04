@@ -105,10 +105,11 @@ export function VendorDashboardPage() {
 
   const displayName = isRohanOrDemo ? REFERENCE_VENDOR_NAME : vendor.fullName;
   const displayRole = REFERENCE_VENDOR_ROLE;
-  const storeName = isRohanOrDemo ? REFERENCE_STORE_NAME : store?.name || REFERENCE_STORE_NAME;
+  const storeName = store?.name || REFERENCE_STORE_NAME;
   const storeSlug = isRohanOrDemo ? REFERENCE_STORE_SLUG : store?.slug || REFERENCE_STORE_SLUG;
   const storeUrl = isRohanOrDemo ? REFERENCE_STORE_URL : `vendora.com/stores/${storeSlug}`;
-  const storeImage = storeUrbanNestCover;
+  const storeImage = store?.cover || storeUrbanNestCover;
+  const storeLogo = store?.logoUrl;
 
   // Checklist items
   const [checklistItems, setChecklistItems] =
@@ -155,19 +156,12 @@ export function VendorDashboardPage() {
     refreshStore();
   };
 
-  const handleSaveStoreSettings = async (data: {
-    storeName: string;
-    tagline: string;
-    returnPolicy: string;
-  }) => {
-    if (store) {
-      await updateVendorStore(store.id, {
-        name: data.storeName,
-        tagline: data.tagline,
-        returnPolicy: data.returnPolicy,
-      });
-      refreshStore();
-    }
+  const handleSaveStoreSettings = async (data: Partial<NonNullable<typeof store>>) => {
+    if (!store) return false;
+    const updated = await updateVendorStore(store.id, data);
+    if (!updated) return false;
+    refreshStore();
+    return true;
   };
 
   // Checklist action handler
@@ -257,6 +251,8 @@ export function VendorDashboardPage() {
               storeName={storeName}
               storeSlug={storeSlug}
               storeImage={storeImage}
+              storeLogo={storeLogo}
+              storeTagline={store?.tagline}
               onCloseMobile={() => setIsMobileMenuOpen(false)}
             />
           </div>
@@ -310,6 +306,8 @@ export function VendorDashboardPage() {
               storeName={storeName}
               storeId={storeSlug}
               onProductsChange={() => refreshStore()}
+              store={store}
+              onEditStore={() => setIsStoreSettingsOpen(true)}
             />
           )}
         </main>
@@ -325,8 +323,7 @@ export function VendorDashboardPage() {
       <StoreSettingsModal
         isOpen={isStoreSettingsOpen}
         onClose={() => setIsStoreSettingsOpen(false)}
-        storeName={storeName}
-        tagline="Your Storefront"
+        store={store}
         onSave={handleSaveStoreSettings}
       />
 

@@ -13,6 +13,7 @@ import {
   getStoredVendors,
   saveActiveSession,
   saveCustomStores,
+  saveCustomStoresStrict,
   saveStoredOrders,
   saveVendors,
 } from "./vendor-storage";
@@ -307,16 +308,19 @@ export async function updateVendorStore(
 ): Promise<VendorStore | null> {
   const custom = getCustomStores();
   const index = custom.findIndex((s) => s.id === storeId);
-  if (index !== -1) {
-    custom[index] = { ...custom[index], ...updates };
-    saveCustomStores(custom);
+  const existing = index !== -1 ? custom[index] : getVendorStore(storeId);
+  if (existing) {
+    const updated = { ...existing, ...updates, id: existing.id, slug: existing.slug };
+    if (index !== -1) custom[index] = updated;
+    else custom.unshift(updated);
+    saveCustomStoresStrict(custom);
     // Update active session store if matching
     const currentSession = getActiveSession();
     if (currentSession && currentSession.store.id === storeId) {
-      currentSession.store = custom[index];
+      currentSession.store = updated;
       saveActiveSession(currentSession);
     }
-    return custom[index];
+    return updated;
   }
   return null;
 }

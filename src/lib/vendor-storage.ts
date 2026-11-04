@@ -145,6 +145,12 @@ export function saveCustomStores(stores: VendorStore[]): void {
   }
 }
 
+/** Persist store edits and let the caller surface storage failures. */
+export function saveCustomStoresStrict(stores: VendorStore[]): void {
+  if (!isBrowser()) throw new Error("Store changes can only be saved in a browser.");
+  window.localStorage.setItem(STORES_KEY, JSON.stringify(stores));
+}
+
 export function getStoredOrders(storeId?: string): VendorOrder[] {
   if (!isBrowser())
     return storeId ? initialDemoOrders.filter((o) => o.storeId === storeId) : initialDemoOrders;
