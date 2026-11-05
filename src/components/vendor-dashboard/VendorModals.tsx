@@ -19,6 +19,36 @@ export const PRODUCT_CATEGORIES = [
   { id: "automotive", label: "Automotive" },
 ] as const;
 
+export interface ProductFormErrors {
+  name?: string;
+  category?: string;
+  price?: string;
+  originalPrice?: string;
+  stock?: string;
+  image?: string;
+  description?: string;
+  badge?: string;
+}
+
+export interface StoreFormErrors {
+  name?: string;
+  description?: string;
+  tagline?: string;
+  category?: string;
+  ownerEmail?: string;
+  supportEmail?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+  businessType?: string;
+  logoUrl?: string;
+  cover?: string;
+}
+
+
 // --- Add Product Modal ---
 export function AddProductModal({
   isOpen,
@@ -31,12 +61,12 @@ export function AddProductModal({
     name: string;
     category: string;
     price: number;
-    originalPrice?: number;
-    stock?: number;
-    status?: ProductStatus;
-    image?: string;
-    description?: string;
-    badge?: string;
+    originalPrice?: number | undefined;
+    stock?: number | undefined;
+    status?: ProductStatus | undefined;
+    image?: string | undefined;
+    description?: string | undefined;
+    badge?: string | undefined;
   }) => boolean | void;
 }) {
   const [name, setName] = useState("");
@@ -49,7 +79,7 @@ export function AddProductModal({
   const [badge, setBadge] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<ProductFormErrors>({});
 
   // Reset state when modal opens
   useEffect(() => {
@@ -71,7 +101,7 @@ export function AddProductModal({
   if (!isOpen) return null;
 
   const validate = (): boolean => {
-    const errs: Record<string, string> = {};
+    const errs: ProductFormErrors = {};
 
     // Product Name validation
     if (!name.trim()) {
@@ -406,7 +436,7 @@ export function EditProductModal({
   const [badge, setBadge] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<ProductFormErrors>({});
 
   useEffect(() => {
     if (product) {
@@ -427,7 +457,7 @@ export function EditProductModal({
   if (!isOpen || !product) return null;
 
   const validate = (): boolean => {
-    const errs: Record<string, string> = {};
+    const errs: ProductFormErrors = {};
 
     if (!name.trim()) {
       errs.name = "Product name is required.";
@@ -811,7 +841,7 @@ export function StoreSettingsModal({
   onSave: (data: Partial<VendorStore>) => Promise<boolean | void> | boolean | void;
 }) {
   const [form, setForm] = useState<Partial<VendorStore>>({});
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<StoreFormErrors>({});
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState<{ message: string; error: boolean } | null>(null);
 
@@ -828,18 +858,18 @@ export function StoreSettingsModal({
 
   const setField = (field: keyof VendorStore, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
-    setErrors((current) => ({ ...current, [field]: "" }));
+    setErrors((current) => ({ ...current, [field as keyof StoreFormErrors]: "" }));
     setFeedback(null);
   };
 
   const handleImage = (field: "logoUrl" | "cover", file?: File) => {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      setErrors((current) => ({ ...current, [field]: "Choose an image file." }));
+      setErrors((current) => ({ ...current, [field as keyof StoreFormErrors]: "Choose an image file." }));
       return;
     }
     if (file.size > 1_500_000) {
-      setErrors((current) => ({ ...current, [field]: "Image must be 1.5 MB or smaller." }));
+      setErrors((current) => ({ ...current, [field as keyof StoreFormErrors]: "Image must be 1.5 MB or smaller." }));
       return;
     }
     const reader = new FileReader();
@@ -847,17 +877,17 @@ export function StoreSettingsModal({
       if (typeof reader.result === "string") {
         setField(field, reader.result);
       } else {
-        setErrors((current) => ({ ...current, [field]: "This image could not be read." }));
+        setErrors((current) => ({ ...current, [field as keyof StoreFormErrors]: "This image could not be read." }));
       }
     };
     reader.onerror = () =>
-      setErrors((current) => ({ ...current, [field]: "This image could not be read." }));
+      setErrors((current) => ({ ...current, [field as keyof StoreFormErrors]: "This image could not be read." }));
     reader.readAsDataURL(file);
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const nextErrors: Record<string, string> = {};
+    const nextErrors: StoreFormErrors = {};
     if (!form.name?.trim()) nextErrors.name = "Store name is required.";
     if (!form.description?.trim()) nextErrors.description = "Store description is required.";
     if (!form.phone?.trim() || form.phone.replace(/\D/g, "").length < 7) {
@@ -899,7 +929,7 @@ export function StoreSettingsModal({
 
   const inputClass =
     "mt-1 w-full rounded-xl border border-[#ECEAF5] bg-[#F9F8FD] px-3.5 py-2.5 text-xs text-[#110D27] outline-none focus:border-[#6538F5] focus:bg-white transition";
-  const fieldError = (field: string) =>
+  const fieldError = (field: keyof StoreFormErrors) =>
     errors[field] && <p className="mt-1 text-[11px] font-semibold text-red-600">{errors[field]}</p>;
 
   return (

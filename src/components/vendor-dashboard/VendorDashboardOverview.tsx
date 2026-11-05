@@ -23,8 +23,8 @@ export interface VendorDashboardOverviewProps {
   storeSlug: string;
   storeUrl: string;
   storeImage: string;
-  storeLogo?: string;
-  storeTagline?: string;
+  storeLogo?: string | undefined;
+  storeTagline?: string | undefined;
   completionPercentage: number;
   checklistItems: DashboardChecklistItem[];
   onSelectChecklistAction: (actionKey: string) => void;
@@ -101,11 +101,10 @@ export function VendorDashboardOverview({
                     setDateRange(range);
                     setIsDateDropdownOpen(false);
                   }}
-                  className={`flex w-full items-center justify-between rounded-xl px-2.5 py-1.5 text-xs text-left transition ${
-                    dateRange === range
+                  className={`flex w-full items-center justify-between rounded-xl px-2.5 py-1.5 text-xs text-left transition ${dateRange === range
                       ? "bg-[#F0EBFE] font-bold text-[#6538F5]"
                       : "text-[#374151] hover:bg-[#F9F8FD]"
-                  }`}
+                    }`}
                 >
                   <span>{range}</span>
                   {dateRange === range && <span className="size-1.5 rounded-full bg-[#6538F5]" />}

@@ -9,8 +9,8 @@ interface VendorStoreCardProps {
   storeUrl?: string;
   storeStatus?: "Active" | "Pending" | "Inactive";
   coverImage?: string;
-  logoImage?: string;
-  tagline?: string;
+  logoImage?: string | undefined;
+  tagline?: string | undefined;
   onEditStore?: () => void;
 }
 

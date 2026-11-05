@@ -52,7 +52,7 @@ export interface VendorDashboardSearch {
 
 export const Route = createFileRoute("/vendor-dashboard")({
   validateSearch: (search: Record<string, unknown>): VendorDashboardSearch => {
-    const tab = search.tab;
+    const tab = search['tab'];
     if (isValidSidebarTab(tab)) {
       return { tab };
     }
@@ -126,12 +126,12 @@ export function VendorDashboardPage() {
     name: string;
     category: string;
     price: number;
-    originalPrice?: number;
-    stock?: number;
-    status?: "active" | "draft" | "out_of_stock";
-    description?: string;
-    badge?: string;
-    image?: string;
+    originalPrice?: number | undefined;
+    stock?: number | undefined;
+    status?: "active" | "draft" | "out_of_stock" | undefined;
+    description?: string | undefined;
+    badge?: string | undefined;
+    image?: string | undefined;
   }) => {
     const targetStoreId = store?.id || storeSlug;
     const targetStoreName = store?.name || storeName;

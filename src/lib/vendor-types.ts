@@ -17,8 +17,8 @@ export type VendorStore = {
   tagline: string;
   category: string;
   description: string;
-  logoUrl?: string;
-  cover?: string;
+  logoUrl?: string | undefined;
+  cover?: string | undefined;
   tint: string;
   ownerId: string;
   ownerEmail: string;
@@ -32,7 +32,7 @@ export type VendorStore = {
   shippingMethod: string;
   processingTime: string;
   supportEmail: string;
-  taxId?: string;
+  taxId?: string | undefined;
   status: "ACTIVE" | "PENDING_APPROVAL";
   rating: number;
   reviews: number;

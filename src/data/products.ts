@@ -17,14 +17,14 @@ export type Product = {
   originalPrice: number;
   rating: number;
   reviews: number;
-  badge?: string;
+  badge?: string | undefined;
   image: string;
-  imagePosition?: string;
-  featured?: boolean;
+  imagePosition?: string | undefined;
+  featured?: boolean | undefined;
   description: string;
-  stock?: number;
-  sku?: string;
-  status?: ProductStatus | string;
+  stock?: number | undefined;
+  sku?: string | undefined;
+  status?: ProductStatus | string | undefined;
 };
 
 export const products: Product[] = [

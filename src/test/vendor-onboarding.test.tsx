@@ -176,7 +176,7 @@ describe("Vendor Onboarding & Auth", () => {
 
     const currentProds = getVendorProducts(storeId);
     expect(currentProds.length).toBe(1);
-    expect(currentProds[0].name).toBe("Handcrafted Wooden Lamp");
+    expect(currentProds[0]?.name).toBe("Handcrafted Wooden Lamp");
 
     const deleted = deleteVendorProduct(added.id);
     expect(deleted).toBe(true);

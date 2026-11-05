@@ -45,7 +45,7 @@ function renderDashboardWithRouter(initialPath = "/vendor-dashboard") {
     getParentRoute: () => rootRoute,
     path: "/vendor-dashboard",
     validateSearch: (search: Record<string, unknown>) => {
-      const tab = search.tab;
+      const tab = search['tab'];
       if (isValidSidebarTab(tab)) {
         return { tab };
       }
@@ -77,6 +77,7 @@ describe("Vendor Dashboard URL-Synchronized Navigation", () => {
         name: "The Urban Nest",
         tagline: "Your Storefront",
         category: "home-living",
+        description: "Curated modern home essentials and handcrafted decor.",
         rating: 4.9,
         reviews: 320,
         productCount: 48,

@@ -28,10 +28,10 @@ import {
 } from "./VendorModals";
 
 interface VendorProductsViewProps {
-  storeId?: string;
-  storeName?: string;
-  onAddProductClick?: () => void;
-  onProductsChange?: () => void;
+  storeId?: string | undefined;
+  storeName?: string | undefined;
+  onAddProductClick?: (() => void) | undefined;
+  onProductsChange?: (() => void) | undefined;
 }
 
 export function VendorProductsView({
@@ -96,12 +96,12 @@ export function VendorProductsView({
     name: string;
     category: string;
     price: number;
-    originalPrice?: number;
-    stock?: number;
-    status?: ProductStatus;
-    image?: string;
-    description?: string;
-    badge?: string;
+    originalPrice?: number | undefined;
+    stock?: number | undefined;
+    status?: ProductStatus | undefined;
+    image?: string | undefined;
+    description?: string | undefined;
+    badge?: string | undefined;
   }) => {
     try {
       const created = addVendorProduct({

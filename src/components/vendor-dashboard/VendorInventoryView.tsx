@@ -22,8 +22,8 @@ export function VendorInventoryView({
   storeId = "the-urban-nest",
   onInventoryChange,
 }: {
-  storeId?: string;
-  onInventoryChange?: () => void;
+  storeId?: string | undefined;
+  onInventoryChange?: (() => void) | undefined;
 }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [stockInputs, setStockInputs] = useState<Record<string, string>>({});

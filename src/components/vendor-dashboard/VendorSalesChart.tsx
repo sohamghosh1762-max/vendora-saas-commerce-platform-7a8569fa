@@ -67,7 +67,7 @@ export function VendorSalesChart({ data = REFERENCE_CHART_DATA }: VendorSalesCha
   // Custom static pin for Oct 15 when not hovered
   const renderCustomDot = (props: DotProps) => {
     const { cx = 0, cy = 0, payload } = props;
-    if (payload.date === "Oct 15") {
+    if (payload?.date === "Oct 15") {
       return (
         <g key="oct15-pin">
           {/* Subtle Outer Glow */}
@@ -187,7 +187,9 @@ export function VendorSalesChart({ data = REFERENCE_CHART_DATA }: VendorSalesCha
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
-                    const pt = payload[0].payload as ChartDataPoint;
+                    const first = payload[0];
+                    if (!first) return null;
+                    const pt = first.payload as ChartDataPoint;
                     const val = pt[activeMetric];
                     return (
                       <div className="rounded-xl border border-[#ECEAF5] bg-white px-3 py-1.5 shadow-[0_4px_16px_rgba(101,56,245,0.12)] text-center animate-in fade-in-50 zoom-in-95">

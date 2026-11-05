@@ -381,10 +381,12 @@ export function addVendorProduct(product: Omit<Product, "id">): Product {
 export function updateVendorProduct(productId: string, updates: Partial<Product>): Product | null {
   const custom = getStoredCustomProducts();
   const index = custom.findIndex((p) => p.id === productId);
-  if (index !== -1) {
-    custom[index] = { ...custom[index], ...updates };
+  const existing = custom[index];
+  if (index !== -1 && existing) {
+    const updated: Product = { ...existing, ...updates };
+    custom[index] = updated;
     saveCustomProducts(custom);
-    return custom[index];
+    return updated;
   }
 
   const inInitial = [...initialProducts, ...REFERENCE_VENDOR_PRODUCTS].find(
