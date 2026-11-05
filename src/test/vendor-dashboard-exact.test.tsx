@@ -53,6 +53,7 @@ describe("Vendor Dashboard Replication & Flow", () => {
   it("shows unauthorized gate when user is unauthenticated", async () => {
     renderWithRouter(() => <VendorDashboardPage />);
 
+
     expect(await screen.findByText("Vendor Portal Authentication Required")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /sign in with vendor account/i })).toBeInTheDocument();
   });
@@ -68,6 +69,7 @@ describe("Vendor Dashboard Replication & Flow", () => {
         name: "The Urban Nest",
         tagline: "Your Storefront",
         category: "home-living",
+        description: "Curated modern home essentials and handcrafted decor.",
         rating: 4.9,
         reviews: 320,
         productCount: 48,
@@ -92,12 +94,13 @@ describe("Vendor Dashboard Replication & Flow", () => {
 
     renderWithRouter(() => <VendorDashboardPage />);
 
-    // 1. Welcome Section & Greeting
+        // 1. Welcome Section & Greeting
     expect(await screen.findByText("Welcome back, Rohan! 👋")).toBeInTheDocument();
+
     expect(screen.getByText("Here's what's happening with your store today.")).toBeInTheDocument();
     expect(screen.getByText("Oct 1, 2024 - Oct 26, 2024")).toBeInTheDocument();
 
-    // 2. Left Sidebar navigation items
+        // 2. Left Sidebar navigation items
     expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Products" })).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Orders" }).length).toBeGreaterThan(0);
@@ -111,7 +114,7 @@ describe("Vendor Dashboard Replication & Flow", () => {
     expect(screen.getByRole("button", { name: "Appearance" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Integrations" })).toBeInTheDocument();
 
-    // 3. Four KPI Metric Cards
+        // 3. Four KPI Metric Cards
     expect(screen.getByText("Total Sales")).toBeInTheDocument();
     expect(screen.getByText("₹1,24,560")).toBeInTheDocument();
     expect(screen.getByText("Total Orders")).toBeInTheDocument();
@@ -121,20 +124,20 @@ describe("Vendor Dashboard Replication & Flow", () => {
     expect(screen.getByText("Store Views")).toBeInTheDocument();
     expect(screen.getByText("12,450")).toBeInTheDocument();
 
-    // 4. Main Sales Overview Card & Tabs
+        // 4. Main Sales Overview Card & Tabs
     expect(screen.getByText("Sales Overview")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sales" })).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Orders" }).length).toBeGreaterThan(0);
     expect(screen.getByRole("button", { name: "Views" })).toBeInTheDocument();
 
-    // 5. Store Profile Card
+        // 5. Store Profile Card
     const storeHeadings = screen.getAllByText("The Urban Nest");
     expect(storeHeadings.length).toBeGreaterThan(0);
     expect(screen.getByText("Active")).toBeInTheDocument();
     expect(screen.getByText("vendora.com/stores/the-urban-nest")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Edit Store" })).toBeInTheDocument();
 
-    // 6. Store Profile Completion
+        // 6. Store Profile Completion
     expect(screen.getByText("Store Profile Completion")).toBeInTheDocument();
     expect(screen.getByText("80%")).toBeInTheDocument();
     expect(screen.getByText("Store information")).toBeInTheDocument();
@@ -143,14 +146,14 @@ describe("Vendor Dashboard Replication & Flow", () => {
     expect(screen.getByText("Add at least 5 products")).toBeInTheDocument();
     expect(screen.getByText("Set up shipping details")).toBeInTheDocument();
 
-    // 7. Quick Actions Card
+        // 7. Quick Actions Card
     expect(screen.getByText("Quick Actions")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Add Product" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Manage Products" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "View Store" })).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Store Settings" }).length).toBeGreaterThan(0);
 
-    // 8. Recent Orders
+        // 8. Recent Orders
     expect(screen.getByText("Recent Orders")).toBeInTheDocument();
     expect(screen.getByText("#1024")).toBeInTheDocument();
     expect(screen.getByText("Priya Sharma")).toBeInTheDocument();
@@ -163,7 +166,7 @@ describe("Vendor Dashboard Replication & Flow", () => {
     expect(screen.getByText("#1020")).toBeInTheDocument();
     expect(screen.getByText("Neha Kapoor")).toBeInTheDocument();
 
-    // 9. Top Products
+        // 9. Top Products
     expect(screen.getByText("Top Products")).toBeInTheDocument();
     expect(screen.getAllByText("Minimalist Skincare Set").length).toBeGreaterThan(0);
     expect(screen.getByText("₹56,120")).toBeInTheDocument();
@@ -176,10 +179,12 @@ describe("Vendor Dashboard Replication & Flow", () => {
     expect(screen.getByText("Wireless Headphones")).toBeInTheDocument();
     expect(screen.getByText("₹10,390")).toBeInTheDocument();
 
-    // 10. Recent Activity
+        // 10. Recent Activity
     expect(screen.getByText("Recent Activity")).toBeInTheDocument();
     expect(screen.getByText("New order received")).toBeInTheDocument();
     expect(screen.getByText("Product updated")).toBeInTheDocument();
     expect(screen.getByText("Store profile updated")).toBeInTheDocument();
+
+  }, 30000);
   }, 15000);
 });

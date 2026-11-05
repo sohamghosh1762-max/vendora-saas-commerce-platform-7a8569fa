@@ -9,6 +9,8 @@ interface VendorStoreCardProps {
   storeUrl?: string;
   storeStatus?: "Active" | "Pending" | "Inactive";
   coverImage?: string;
+  logoImage?: string | undefined;
+  tagline?: string | undefined;
   onEditStore?: () => void;
 }
 
@@ -18,6 +20,8 @@ export function VendorStoreCard({
   storeUrl = "vendora.com/stores/the-urban-nest",
   storeStatus = "Active",
   coverImage = storeUrbanNestCover,
+  logoImage,
+  tagline = "Your Storefront",
   onEditStore,
 }: VendorStoreCardProps) {
   const [copied, setCopied] = useState(false);
@@ -55,9 +59,13 @@ export function VendorStoreCard({
         <div className="absolute -bottom-6 left-5 z-10 flex size-13 items-center justify-center rounded-full border-2 border-white bg-white shadow-md">
           <div className="flex flex-col items-center justify-center text-center p-1">
             <Home className="size-4 text-[#110D27] stroke-[2]" />
-            <span className="text-[6.5px] font-black uppercase tracking-tighter text-[#110D27] leading-tight">
-              URBAN NEST
-            </span>
+            {logoImage ? (
+              <img src={logoImage} alt="" className="size-full rounded-full object-cover" />
+            ) : (
+              <span className="text-[6.5px] font-black uppercase tracking-tighter text-[#110D27] leading-tight">
+                {storeName}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -67,9 +75,7 @@ export function VendorStoreCard({
         <div className="flex items-start justify-between gap-2">
           <div>
             <h3 className="text-base font-extrabold text-[#110D27] leading-tight">{storeName}</h3>
-            <p className="mt-0.5 text-xs text-[#7A7F93] font-medium leading-tight">
-              Your Storefront
-            </p>
+            <p className="mt-0.5 text-xs text-[#7A7F93] font-medium leading-tight">{tagline}</p>
           </div>
 
           <span className="inline-flex items-center rounded-full bg-[#DCFCE7] px-2.5 py-0.5 text-[10px] font-bold text-[#15803D]">

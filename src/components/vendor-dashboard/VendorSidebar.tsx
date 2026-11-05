@@ -14,6 +14,7 @@ import {
   Settings,
   Star,
   Users,
+  Warehouse,
   X,
 } from "lucide-react";
 import logoMark from "@/assets/logo-mark.png";
@@ -23,6 +24,7 @@ import { cn } from "@/lib/utils";
 export type SidebarTab =
   | "dashboard"
   | "products"
+  | "inventory"
   | "orders"
   | "customers"
   | "analytics"
@@ -41,6 +43,8 @@ interface VendorSidebarProps {
   storeName?: string;
   storeSlug?: string;
   storeImage?: string;
+  storeLogo?: string | undefined;
+  storeTagline?: string | undefined;
   onCloseMobile?: () => void;
 }
 
@@ -51,6 +55,8 @@ export function VendorSidebar({
   storeName = "The Urban Nest",
   storeSlug = "the-urban-nest",
   storeImage = storeUrbanNestCover,
+  storeLogo,
+  storeTagline,
   onCloseMobile,
 }: VendorSidebarProps) {
   const navItems: {
@@ -61,6 +67,7 @@ export function VendorSidebar({
   }[] = [
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "products", label: "Products", icon: Package },
+    { id: "inventory", label: "Inventory", icon: Warehouse },
     { id: "orders", label: "Orders", icon: FileText },
     { id: "customers", label: "Customers", icon: Users },
     { id: "analytics", label: "Analytics", icon: BarChart2 },
@@ -157,7 +164,7 @@ export function VendorSidebar({
       <div className="pt-4 border-t border-[#ECEAF5]">
         <div className="flex items-center gap-2.5 rounded-2xl border border-[#ECEAF5] bg-white p-2 shadow-xs transition-shadow hover:shadow-sm">
           <img
-            src={storeImage}
+            src={storeLogo || storeImage}
             alt={storeName}
             className="size-9 rounded-lg object-cover shrink-0 bg-[#F4F2FC]"
           />

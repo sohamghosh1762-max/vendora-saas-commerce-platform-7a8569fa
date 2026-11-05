@@ -1,17 +1,10 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Calendar, ChevronDown, ExternalLink, Lock, Plus, RefreshCw, Store } from "lucide-react";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useState } from "react";
+import { Lock } from "lucide-react";
 import { useVendorAuth } from "@/lib/vendor-context";
 import { VendorSidebar, type SidebarTab } from "@/components/vendor-dashboard/VendorSidebar";
 import { VendorHeader } from "@/components/vendor-dashboard/VendorHeader";
-import { VendorKpiCards } from "@/components/vendor-dashboard/VendorKpiCards";
-import { VendorSalesChart } from "@/components/vendor-dashboard/VendorSalesChart";
-import { VendorStoreCard } from "@/components/vendor-dashboard/VendorStoreCard";
-import { VendorProfileCompletion } from "@/components/vendor-dashboard/VendorProfileCompletion";
-import { VendorQuickActions } from "@/components/vendor-dashboard/VendorQuickActions";
-import { VendorRecentOrders } from "@/components/vendor-dashboard/VendorRecentOrders";
-import { VendorTopProducts } from "@/components/vendor-dashboard/VendorTopProducts";
-import { VendorRecentActivity } from "@/components/vendor-dashboard/VendorRecentActivity";
+import { VendorDashboardOverview } from "@/components/vendor-dashboard/VendorDashboardOverview";
 import {
   AddProductModal,
   OrderDetailModal,
@@ -20,24 +13,51 @@ import {
 import { VendorNonDashboardView } from "@/components/vendor-dashboard/VendorNonDashboardView";
 import {
   REFERENCE_CHECKLIST,
-  REFERENCE_DATE_RANGE,
-  REFERENCE_KPIS,
   REFERENCE_ORDERS,
   REFERENCE_STORE_NAME,
   REFERENCE_STORE_SLUG,
   REFERENCE_STORE_URL,
-  REFERENCE_TOP_PRODUCTS,
   REFERENCE_VENDOR_NAME,
   REFERENCE_VENDOR_ROLE,
   avatarRohan,
   storeUrbanNestCover,
   type DashboardChecklistItem,
   type DashboardOrder,
-  type DashboardProduct,
 } from "@/lib/vendor-dashboard-data";
 import { addVendorProduct, updateVendorStore } from "@/lib/vendor-api";
 
+export const VALID_SIDEBAR_TABS: readonly SidebarTab[] = [
+  "dashboard",
+  "products",
+  "inventory",
+  "orders",
+  "customers",
+  "analytics",
+  "settings",
+  "marketing",
+  "payouts",
+  "messages",
+  "reviews",
+  "appearance",
+  "integrations",
+] as const;
+
+export function isValidSidebarTab(tab: unknown): tab is SidebarTab {
+  return typeof tab === "string" && (VALID_SIDEBAR_TABS as readonly string[]).includes(tab);
+}
+
+export interface VendorDashboardSearch {
+  tab?: SidebarTab;
+}
+
 export const Route = createFileRoute("/vendor-dashboard")({
+  validateSearch: (search: Record<string, unknown>): VendorDashboardSearch => {
+    const tab = search['tab'];
+    if (isValidSidebarTab(tab)) {
+      return { tab };
+    }
+    return {};
+  },
   component: VendorDashboardPage,
   head: () => ({
     meta: [
@@ -55,14 +75,23 @@ export const Route = createFileRoute("/vendor-dashboard")({
 export function VendorDashboardPage() {
   const { isAuthenticated, vendor, store, hydrated, logout, refreshStore } = useVendorAuth();
   const navigate = useNavigate();
+  const search = useSearch({ strict: false }) as VendorDashboardSearch | undefined;
 
-  // Navigation and active views
-  const [activeTab, setActiveTab] = useState<SidebarTab>("dashboard");
+  // Active tab synchronized with URL query parameter (?tab=...)
+  // Defaults to 'dashboard' (Overview) if tab parameter is missing or invalid
+  const rawTab = search?.tab;
+  const activeTab: SidebarTab = isValidSidebarTab(rawTab) ? rawTab : "dashboard";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Date Range filter state
-  const [dateRange, setDateRange] = useState<string>(REFERENCE_DATE_RANGE);
-  const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false);
+  const handleTabChange = (tab: SidebarTab) => {
+    if (activeTab === tab && rawTab === tab) {
+      return;
+    }
+    navigate({
+      to: "/vendor-dashboard",
+      search: { tab },
+    });
+  };
 
   // Modals state
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
@@ -77,10 +106,11 @@ export function VendorDashboardPage() {
 
   const displayName = isRohanOrDemo ? REFERENCE_VENDOR_NAME : vendor.fullName;
   const displayRole = REFERENCE_VENDOR_ROLE;
-  const storeName = isRohanOrDemo ? REFERENCE_STORE_NAME : store?.name || REFERENCE_STORE_NAME;
+  const storeName = store?.name || REFERENCE_STORE_NAME;
   const storeSlug = isRohanOrDemo ? REFERENCE_STORE_SLUG : store?.slug || REFERENCE_STORE_SLUG;
   const storeUrl = isRohanOrDemo ? REFERENCE_STORE_URL : `vendora.com/stores/${storeSlug}`;
-  const storeImage = storeUrbanNestCover;
+  const storeImage = store?.cover || storeUrbanNestCover;
+  const storeLogo = store?.logoUrl;
 
   // Checklist items
   const [checklistItems, setChecklistItems] =
@@ -96,43 +126,43 @@ export function VendorDashboardPage() {
     name: string;
     category: string;
     price: number;
-    originalPrice: number;
-    description: string;
-    badge?: string;
+    originalPrice?: number | undefined;
+    stock?: number | undefined;
+    status?: "active" | "draft" | "out_of_stock" | undefined;
+    description?: string | undefined;
+    badge?: string | undefined;
+    image?: string | undefined;
   }) => {
-    if (store) {
-      addVendorProduct({
-        name: data.name,
-        storeId: store.id,
-        storeName: store.name,
-        category: data.category,
-        price: data.price,
-        originalPrice: data.originalPrice,
-        rating: 5.0,
-        reviews: 0,
-        badge: data.badge,
-        image:
-          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
-        description: data.description,
-        featured: true,
-      });
-      refreshStore();
-    }
+    const targetStoreId = store?.id || storeSlug;
+    const targetStoreName = store?.name || storeName;
+
+    addVendorProduct({
+      name: data.name,
+      storeId: targetStoreId,
+      storeName: targetStoreName,
+      category: data.category,
+      price: data.price,
+      originalPrice: data.originalPrice ?? data.price,
+      stock: data.stock !== undefined ? data.stock : 25,
+      status: data.status || "active",
+      rating: 5.0,
+      reviews: 0,
+      ...(data.badge ? { badge: data.badge } : {}),
+      image:
+        data.image ||
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
+      description: data.description || "Handcrafted artisan product with premium materials.",
+      featured: true,
+    });
+    refreshStore();
   };
 
-  const handleSaveStoreSettings = async (data: {
-    storeName: string;
-    tagline: string;
-    returnPolicy: string;
-  }) => {
-    if (store) {
-      await updateVendorStore(store.id, {
-        name: data.storeName,
-        tagline: data.tagline,
-        returnPolicy: data.returnPolicy,
-      });
-      refreshStore();
-    }
+  const handleSaveStoreSettings = async (data: Partial<NonNullable<typeof store>>) => {
+    if (!store) return false;
+    const updated = await updateVendorStore(store.id, data);
+    if (!updated) return false;
+    refreshStore();
+    return true;
   };
 
   // Checklist action handler
@@ -195,7 +225,7 @@ export function VendorDashboardPage() {
         <div className="sticky top-0 h-screen">
           <VendorSidebar
             activeTab={activeTab}
-            onSelectTab={setActiveTab}
+            onSelectTab={handleTabChange}
             unreadMessagesCount={5}
             storeName={storeName}
             storeSlug={storeSlug}
@@ -214,11 +244,16 @@ export function VendorDashboardPage() {
           <div className="relative z-10 w-[240px] h-full shadow-2xl">
             <VendorSidebar
               activeTab={activeTab}
-              onSelectTab={setActiveTab}
+              onSelectTab={(tab) => {
+                handleTabChange(tab);
+                setIsMobileMenuOpen(false);
+              }}
               unreadMessagesCount={5}
               storeName={storeName}
               storeSlug={storeSlug}
               storeImage={storeImage}
+              storeLogo={storeLogo}
+              storeTagline={store?.tagline}
               onCloseMobile={() => setIsMobileMenuOpen(false)}
             />
           </div>
@@ -250,143 +285,30 @@ export function VendorDashboardPage() {
         {/* Main Content Body */}
         <main className="flex-1 p-4 sm:p-6 lg:p-7 max-w-[1536px] w-full mx-auto">
           {activeTab === "dashboard" ? (
-            <div className="space-y-5">
-              {/* Welcome Section & Date Range Selector */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div>
-                  <h1 className="text-2xl sm:text-[26px] font-black tracking-tight text-[#110D27] leading-tight">
-                    Welcome back, {displayName.split(" ")[0]}! 👋
-                  </h1>
-                  <p className="mt-1 text-xs text-[#7A7F93] font-medium leading-tight">
-                    Here's what's happening with your store today.
-                  </p>
-                </div>
-
-                {/* Date Range Selector Dropdown */}
-                <div className="relative shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setIsDateDropdownOpen((o) => !o)}
-                    className="inline-flex items-center gap-2 rounded-xl border border-[#ECEAF5] bg-white px-3.5 py-2 text-xs font-semibold text-[#4B5264] shadow-xs transition hover:border-[#6538F5]/30 active:scale-98"
-                    aria-label="Filter date range"
-                  >
-                    <Calendar className="size-3.5 text-[#7A7F93]" />
-                    <span>{dateRange}</span>
-                    <ChevronDown className="size-3.5 text-[#7A7F93]" />
-                  </button>
-
-                  {isDateDropdownOpen && (
-                    <div className="absolute right-0 top-11 z-30 w-56 rounded-2xl border border-[#ECEAF5] bg-white p-2 shadow-xl animate-in fade-in-50 zoom-in-95">
-                      <div className="px-2.5 py-1 text-[10px] font-bold uppercase text-[#9AA0B2]">
-                        Reporting Period
-                      </div>
-                      {[
-                        "Oct 1, 2024 - Oct 26, 2024",
-                        "Last 7 Days",
-                        "Last 30 Days",
-                        "This Quarter",
-                        "Year to Date",
-                      ].map((range) => (
-                        <button
-                          key={range}
-                          type="button"
-                          onClick={() => {
-                            setDateRange(range);
-                            setIsDateDropdownOpen(false);
-                          }}
-                          className={`flex w-full items-center justify-between rounded-xl px-2.5 py-1.5 text-xs text-left transition ${
-                            dateRange === range
-                              ? "bg-[#F0EBFE] font-bold text-[#6538F5]"
-                              : "text-[#374151] hover:bg-[#F9F8FD]"
-                          }`}
-                        >
-                          <span>{range}</span>
-                          {dateRange === range && (
-                            <span className="size-1.5 rounded-full bg-[#6538F5]" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Four Summary Metric Cards */}
-              <VendorKpiCards
-                metrics={REFERENCE_KPIS}
-                onSelectMetric={(id) => {
-                  // Can toggle active metric or tab
-                }}
-              />
-
-              {/* Main Content Grid: Left Content (66%) + Right Content (34%) */}
-              <div className="grid grid-cols-1 gap-5 lg:grid-cols-12 items-start">
-                {/* Left Column (8 cols on desktop) */}
-                <div className="space-y-5 lg:col-span-8">
-                  {/* Sales Overview Card */}
-                  <VendorSalesChart />
-
-                  {/* Two-Column Lower Panels: Recent Orders + Top Products */}
-                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                    <VendorRecentOrders
-                      onViewAll={() => setActiveTab("orders")}
-                      onSelectOrder={(ord) => setSelectedOrder(ord)}
-                    />
-                    <VendorTopProducts
-                      onViewAll={() => setActiveTab("products")}
-                      onSelectProduct={() => setIsAddProductOpen(true)}
-                    />
-                  </div>
-                </div>
-
-                {/* Right Column (4 cols on desktop) */}
-                <div className="space-y-5 lg:col-span-4">
-                  {/* Store Profile Card */}
-                  <VendorStoreCard
-                    storeName={storeName}
-                    storeSlug={storeSlug}
-                    storeUrl={storeUrl}
-                    coverImage={storeImage}
-                    onEditStore={() => setIsStoreSettingsOpen(true)}
-                  />
-
-                  {/* Store Profile Completion Card */}
-                  <VendorProfileCompletion
-                    percentage={completionPercentage}
-                    items={checklistItems}
-                    onSelectAction={handleChecklistAction}
-                  />
-
-                  {/* Quick Actions Card */}
-                  <VendorQuickActions
-                    onAddProduct={() => setIsAddProductOpen(true)}
-                    onManageProducts={() => setActiveTab("products")}
-                    onViewStore={() => {
-                      window.open(`/store/${storeSlug}`, "_blank");
-                    }}
-                    onStoreSettings={() => setIsStoreSettingsOpen(true)}
-                  />
-
-                  {/* Recent Activity Card */}
-                  <VendorRecentActivity
-                    onViewAll={() => setActiveTab("orders")}
-                    onSelectActivity={(act) => {
-                      if (act.title.includes("order")) {
-                        setSelectedOrder(REFERENCE_ORDERS[0]);
-                      } else {
-                        setIsStoreSettingsOpen(true);
-                      }
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
+            <VendorDashboardOverview
+              displayName={displayName}
+              storeName={storeName}
+              storeSlug={storeSlug}
+              storeUrl={storeUrl}
+              storeImage={storeImage}
+              completionPercentage={completionPercentage}
+              checklistItems={checklistItems}
+              onSelectChecklistAction={handleChecklistAction}
+              onNavigateTab={handleTabChange}
+              onOpenAddProduct={() => setIsAddProductOpen(true)}
+              onOpenStoreSettings={() => setIsStoreSettingsOpen(true)}
+              onSelectOrder={(ord) => setSelectedOrder(ord)}
+            />
           ) : (
             <VendorNonDashboardView
               activeTab={activeTab}
-              onBackToDashboard={() => setActiveTab("dashboard")}
+              onBackToDashboard={() => handleTabChange("dashboard")}
               onAddProductClick={() => setIsAddProductOpen(true)}
               storeName={storeName}
+              storeId={storeSlug}
+              onProductsChange={() => refreshStore()}
+              store={store}
+              onEditStore={() => setIsStoreSettingsOpen(true)}
             />
           )}
         </main>
@@ -402,8 +324,7 @@ export function VendorDashboardPage() {
       <StoreSettingsModal
         isOpen={isStoreSettingsOpen}
         onClose={() => setIsStoreSettingsOpen(false)}
-        storeName={storeName}
-        tagline="Your Storefront"
+        store={store}
         onSave={handleSaveStoreSettings}
       />
 

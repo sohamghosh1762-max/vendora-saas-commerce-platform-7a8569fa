@@ -1,13 +1,20 @@
 import { ArrowLeft, Check, Plus, Search, Tag } from "lucide-react";
 import type { SidebarTab } from "./VendorSidebar";
-import { REFERENCE_ORDERS, REFERENCE_TOP_PRODUCTS } from "@/lib/vendor-dashboard-data";
+import { REFERENCE_ORDERS } from "@/lib/vendor-dashboard-data";
 import { useState } from "react";
+import { VendorProductsView } from "./VendorProductsView";
+import { VendorInventoryView } from "./VendorInventoryView";
+import type { VendorStore } from "@/lib/vendor-types";
 
-interface VendorNonDashboardViewProps {
+export interface VendorNonDashboardViewProps {
   activeTab: SidebarTab;
   onBackToDashboard: () => void;
   onAddProductClick?: () => void;
   storeName?: string;
+  storeId?: string;
+  onProductsChange?: () => void;
+  store?: VendorStore | null;
+  onEditStore?: () => void;
 }
 
 export function VendorNonDashboardView({
@@ -15,14 +22,20 @@ export function VendorNonDashboardView({
   onBackToDashboard,
   onAddProductClick,
   storeName = "The Urban Nest",
+  storeId = "the-urban-nest",
+  onProductsChange,
+  store,
+  onEditStore,
 }: VendorNonDashboardViewProps) {
-  const [filterQuery, setFilterQuery] = useState("");
-
   const tabTitles: Record<SidebarTab, { title: string; subtitle: string }> = {
     dashboard: { title: "Dashboard", subtitle: "Overview of your storefront" },
     products: {
       title: "Products Catalog",
       subtitle: `Manage and organize products for ${storeName}`,
+    },
+    inventory: {
+      title: "Inventory Management",
+      subtitle: `Track and update stock for ${storeName}`,
     },
     orders: {
       title: "Order Management",
@@ -99,42 +112,16 @@ export function VendorNonDashboardView({
 
       {/* Tab Specific Content */}
       {activeTab === "products" && (
-        <div className="rounded-2xl border border-[#ECEAF5] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-          <div className="flex items-center justify-between pb-4 border-b border-[#ECEAF5]">
-            <span className="text-xs font-bold text-[#110D27]">
-              All Products ({REFERENCE_TOP_PRODUCTS.length})
-            </span>
-          </div>
+        <VendorProductsView
+          storeId={storeId}
+          storeName={storeName}
+          onAddProductClick={onAddProductClick}
+          onProductsChange={onProductsChange}
+        />
+      )}
 
-          <div className="mt-3 divide-y divide-[#F1EFF7]">
-            {REFERENCE_TOP_PRODUCTS.map((p) => (
-              <div
-                key={p.id}
-                className="flex items-center justify-between py-3 rounded-xl px-2 hover:bg-[#F9F8FD]"
-              >
-                <div className="flex items-center gap-3">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="size-11 rounded-xl object-cover shrink-0 bg-[#F4F2FC]"
-                  />
-                  <div>
-                    <h4 className="text-xs font-bold text-[#110D27]">{p.name}</h4>
-                    <span className="text-[11px] text-[#7A7F93]">
-                      {p.unitsSold} units sold • Stock: 48 units available
-                    </span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-[#110D27]">{p.formattedRevenue}</span>
-                  <span className="block text-[10px] font-semibold text-[#10B981]">
-                    Active in catalog
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {activeTab === "inventory" && (
+        <VendorInventoryView storeId={storeId} onInventoryChange={onProductsChange} />
       )}
 
       {activeTab === "orders" && (
@@ -176,25 +163,103 @@ export function VendorNonDashboardView({
         </div>
       )}
 
-      {/* Generic placeholder for other tabs */}
-      {activeTab !== "products" && activeTab !== "orders" && (
-        <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-[#ECEAF5] bg-white p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-          <div className="grid size-12 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5]">
-            <Tag className="size-6" />
-          </div>
-          <h3 className="mt-4 text-base font-bold text-[#110D27]">{current.title}</h3>
-          <p className="mt-1 max-w-md text-xs text-[#7A7F93]">
-            {current.subtitle}. This section is enabled for {storeName}.
-          </p>
-          <button
-            type="button"
-            onClick={onBackToDashboard}
-            className="mt-5 rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9]"
-          >
-            Return to Dashboard
-          </button>
+      {activeTab === "settings" && (
+        <div className="rounded-2xl border border-[#ECEAF5] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+          {!store ? (
+            <div role="status" className="py-10 text-center text-sm text-[#7A7F93]">
+              Store details are unavailable.
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex items-center gap-3">
+                  {store.logoUrl ? (
+                    <img
+                      src={store.logoUrl}
+                      alt={`${store.name} logo`}
+                      className="size-14 rounded-xl object-cover"
+                    />
+                  ) : (
+                    <div className="grid size-14 place-items-center rounded-xl bg-[#F0EBFE] text-[#6538F5]">
+                      <Tag className="size-6" />
+                    </div>
+                  )}
+                  <div>
+                    <h3 className="text-base font-bold text-[#110D27]">{store.name}</h3>
+                    <p className="text-xs text-[#7A7F93]">{store.tagline}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={onEditStore}
+                  className="rounded-xl bg-[#6538F5] px-4 py-2 text-xs font-bold text-white hover:bg-[#5228D9]"
+                >
+                  Edit Store Details
+                </button>
+              </div>
+              {store.cover && (
+                <img
+                  src={store.cover}
+                  alt={`${store.name} banner`}
+                  className="mt-4 h-32 w-full rounded-xl object-cover"
+                />
+              )}
+              <dl className="mt-5 grid gap-4 border-t border-[#ECEAF5] pt-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  ["Description", store.description],
+                  ["Contact phone", store.phone],
+                  ["Contact email", store.ownerEmail],
+                  ["Support email", store.supportEmail],
+                  [
+                    "Address",
+                    `${store.address}, ${store.city}, ${store.state} ${store.postalCode}`,
+                  ],
+                  ["Business type", store.businessType],
+                  ["Tax ID", store.taxId || "Not provided"],
+                  ["Shipping", store.shippingMethod],
+                  ["Processing time", store.processingTime],
+                  ["Return policy", store.returnPolicy],
+                ].map(([label, value]) => (
+                  <div key={label}>
+                    <dt className="text-[10px] font-bold uppercase tracking-wide text-[#7A7F93]">
+                      {label}
+                    </dt>
+                    <dd className="mt-1 text-xs font-semibold text-[#110D27]">
+                      {value || "Not provided"}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="mt-5 text-[11px] text-[#7A7F93]">
+                Store edits are saved in this browser’s local storage.
+              </p>
+            </>
+          )}
         </div>
       )}
+
+      {/* Generic placeholder for other tabs */}
+      {activeTab !== "products" &&
+        activeTab !== "inventory" &&
+        activeTab !== "orders" &&
+        activeTab !== "settings" && (
+          <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-[#ECEAF5] bg-white p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+            <div className="grid size-12 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5]">
+              <Tag className="size-6" />
+            </div>
+            <h3 className="mt-4 text-base font-bold text-[#110D27]">{current.title}</h3>
+            <p className="mt-1 max-w-md text-xs text-[#7A7F93]">
+              {current.subtitle}. This section is enabled for {storeName}.
+            </p>
+            <button
+              type="button"
+              onClick={onBackToDashboard}
+              className="mt-5 rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9]"
+            >
+              Return to Dashboard
+            </button>
+          </div>
+        )}
     </div>
   );
 }
