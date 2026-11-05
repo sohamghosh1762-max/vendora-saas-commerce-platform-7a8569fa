@@ -14,7 +14,9 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
+import { CustomerAuthProvider } from "@/lib/customer-context";
 import { VendorAuthProvider } from "@/lib/vendor-context";
+import { SuperAdminAuthProvider } from "@/lib/super-admin-context";
 import { CinematicProvider } from "@/components/cinematic/cinematic-context";
 import { Navbar } from "@/components/marketplace/Navbar";
 import { Footer } from "@/components/marketplace/Footer";
@@ -139,28 +141,35 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const routerState = useRouterState();
   const pathname = routerState?.location?.pathname || "";
-  const isVendorApp = pathname.startsWith("/vendor-dashboard") || pathname.startsWith("/vendor");
+  const isDedicatedApp =
+    pathname.startsWith("/vendor-dashboard") ||
+    pathname.startsWith("/vendor") ||
+    pathname.startsWith("/super-admin-dashboard");
 
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-        <VendorAuthProvider>
-          <CinematicProvider>
-            {isVendorApp ? (
-              <div className="min-h-screen bg-[#F6F5FC] text-foreground">
-                <Outlet />
-              </div>
-            ) : (
-              <div className="flex min-h-screen flex-col bg-background text-foreground">
-                <Navbar />
-                <main className="flex-1">
-                  <Outlet />
-                </main>
-                <Footer />
-              </div>
-            )}
-          </CinematicProvider>
-        </VendorAuthProvider>
+        <CustomerAuthProvider>
+          <VendorAuthProvider>
+            <SuperAdminAuthProvider>
+              <CinematicProvider>
+                {isDedicatedApp ? (
+                  <div className="min-h-screen bg-[#F6F5FC] text-foreground">
+                    <Outlet />
+                  </div>
+                ) : (
+                  <div className="flex min-h-screen flex-col bg-background text-foreground">
+                    <Navbar />
+                    <main className="flex-1">
+                      <Outlet />
+                    </main>
+                    <Footer />
+                  </div>
+                )}
+              </CinematicProvider>
+            </SuperAdminAuthProvider>
+          </VendorAuthProvider>
+        </CustomerAuthProvider>
       </CartProvider>
     </QueryClientProvider>
   );

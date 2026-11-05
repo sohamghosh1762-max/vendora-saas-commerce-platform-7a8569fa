@@ -10,32 +10,40 @@ import {
   Mail,
   ShieldAlert,
   ShieldCheck,
+  ShoppingBag,
+  Sparkles,
   Store,
 } from "lucide-react";
 import { Logo } from "@/components/marketplace/Logo";
+import { useCustomerAuth } from "@/lib/customer-context";
 import { useVendorAuth } from "@/lib/vendor-context";
+import { useSuperAdminAuth } from "@/lib/super-admin-context";
+import { seedDemoOrdersForCustomer } from "@/lib/order-storage";
 import heroShopper from "@/assets/hero-shopper.png";
 
 export interface SignInSearch {
-  role?: "vendor" | "super-admin";
+  role?: "customer" | "vendor" | "super-admin";
 }
 
 export const Route = createFileRoute("/signin")({
   validateSearch: (search: Record<string, unknown>): SignInSearch => {
-    const role = search.role;
-    if (role === "vendor" || role === "super-admin") {
+    const role = search["role"];
+    if (role === "customer" || role === "vendor" || role === "super-admin") {
       return { role };
     }
     return {};
   },
   component: SignInPage,
-  head: ({ search }) => {
+  head: (ctx) => {
+    const role = (ctx as { search?: SignInSearch })?.search?.role;
     const title =
-      search.role === "vendor"
-        ? "Vendor Sign In — Vendora"
-        : search.role === "super-admin"
-          ? "Super Admin Sign In — Vendora"
-          : "Sign In — Choose Account Type — Vendora";
+      role === "customer"
+        ? "Customer Sign In — Vendora"
+        : role === "vendor"
+          ? "Vendor Sign In — Vendora"
+          : role === "super-admin"
+            ? "Super Admin Sign In — Vendora"
+            : "Sign In — Choose Account Type — Vendora";
     return {
       meta: [
         { title },
@@ -105,6 +113,9 @@ export function SignInPage() {
                 }
               />
             )}
+            {role === "customer" && (
+              <CustomerSignInForm onBack={() => navigate({ to: "/signin", search: {} })} />
+            )}
             {role === "vendor" && (
               <VendorSignInForm onBack={() => navigate({ to: "/signin", search: {} })} />
             )}
@@ -124,7 +135,7 @@ export function SignInPage() {
 export function AccountTypeSelector({
   onSelectRole,
 }: {
-  onSelectRole: (role: "vendor" | "super-admin") => void;
+  onSelectRole: (role: "customer" | "vendor" | "super-admin") => void;
 }) {
   return (
     <div>
@@ -142,15 +153,49 @@ export function AccountTypeSelector({
       <p className="mt-1.5 text-sm text-muted-foreground">Select how you want to access Vendora.</p>
 
       <div className="mt-8 space-y-4">
-        {/* Card 1 — Vendor */}
+        {/* Card 1 — Customer */}
         <button
           type="button"
-          onClick={() => onSelectRole("vendor")}
-          aria-label="Continue as Vendor: Manage your storefront, products, orders, and store activity"
+          onClick={() => onSelectRole("customer")}
+          aria-label="Continue as Customer: Shop, track orders, save addresses, and reorder favorites"
           className="group flex w-full items-center justify-between rounded-2xl border border-primary/25 bg-primary-soft/30 p-6 text-left transition-all duration-200 hover:border-primary hover:bg-primary-soft/60 hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.99]"
         >
           <div className="flex items-start gap-4 sm:gap-5">
             <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform group-hover:scale-105">
+              <ShoppingBag className="size-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-base font-bold text-foreground group-hover:text-primary transition-colors sm:text-lg">
+                  I'm a Customer
+                </span>
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary">
+                  Shopper
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+                Shop 200+ multi-vendor products, save delivery addresses, and track doorstep orders.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:text-primary-dark">
+                Continue as Customer
+                <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+              </span>
+            </div>
+          </div>
+          <div className="hidden sm:grid size-9 shrink-0 place-items-center rounded-full border border-primary/20 bg-card text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+            <ArrowRight className="size-4" />
+          </div>
+        </button>
+
+        {/* Card 2 — Vendor */}
+        <button
+          type="button"
+          onClick={() => onSelectRole("vendor")}
+          aria-label="Continue as Vendor: Manage your storefront, products, orders, and store activity"
+          className="group flex w-full items-center justify-between rounded-2xl border border-border bg-card p-6 text-left transition-all duration-200 hover:border-primary/60 hover:bg-accent/40 hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-[0.99]"
+        >
+          <div className="flex items-start gap-4 sm:gap-5">
+            <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-[#6C5CE7] text-white shadow-sm transition-transform group-hover:scale-105">
               <Store className="size-6" />
             </div>
             <div>
@@ -436,6 +481,9 @@ export function VendorSignInForm({ onBack }: { onBack: () => void }) {
  * Step 2B: Super Admin Sign In Form
  */
 export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
+  const { isConfigured, login, isAuthenticated, admin } = useSuperAdminAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -445,20 +493,27 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!isConfigured) {
+      setError(
+        "Administrative Authorization Required: Dedicated backend IAM authentication service is not connected to this environment. Contact platform operations to provision an administrator session with multi-factor authentication (MFA).",
+      );
+      return;
+    }
+
     setIsSubmitting(true);
-
-    // Administrative Security Verification
-    await new Promise((r) => setTimeout(r, 700));
-
-    // Security requirement:
-    // "Selecting Super Admin is not proof of administrative access.
-    // Do not grant admin privileges based on a frontend role selector, query parameter, editable local storage, or client-side flag.
-    // Validate administrator permissions through the trusted authentication/backend layer.
-    // If separate admin authentication is not configured, provide a clearly labeled development placeholder or explain that admin authentication requires backend configuration."
-    setError(
-      "Administrative Authorization Required: Dedicated backend IAM authentication service is not connected to this environment. Contact platform operations to provision an administrator session with multi-factor authentication (MFA).",
-    );
-    setIsSubmitting(false);
+    try {
+      const res = await login(email, password);
+      if (res.success) {
+        navigate({ to: "/super-admin-dashboard" });
+      } else {
+        setError(res.error || "Invalid administrator credentials.");
+      }
+    } catch {
+      setError("An unexpected error occurred during administrative verification.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -484,6 +539,18 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">Sign in to manage the Vendora platform.</p>
 
+      {isAuthenticated && admin && (
+        <div className="mt-4 rounded-2xl border border-primary/20 bg-primary-soft/40 p-3.5 text-xs text-primary-dark">
+          <p className="font-semibold">Signed in as Administrator ({admin.email})</p>
+          <Link
+            to="/super-admin-dashboard"
+            className="mt-2 inline-block font-bold text-primary underline"
+          >
+            Open Super Admin Dashboard →
+          </Link>
+        </div>
+      )}
+
       {/* Security Governance Notice */}
       <div className="mt-4 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3.5 text-xs text-amber-900 dark:text-amber-200">
         <div className="flex items-start gap-2.5">
@@ -498,6 +565,17 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
           </div>
         </div>
       </div>
+
+      {!isConfigured && !error && (
+        <div
+          role="alert"
+          className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-xs font-semibold text-amber-900 dark:text-amber-200 leading-relaxed"
+        >
+          Administrative Authorization Required: Dedicated backend IAM authentication service is not
+          connected to this environment. Contact platform operations to provision an administrator
+          session with multi-factor authentication (MFA).
+        </div>
+      )}
 
       {error && (
         <div
@@ -568,6 +646,250 @@ export function SuperAdminSignInForm({ onBack }: { onBack: () => void }) {
           )}
         </button>
       </form>
+
+      {/* Demo Administrator Account Box */}
+      <div className="mt-5 rounded-2xl border border-border bg-muted/30 p-3.5 text-xs">
+        <p className="flex items-center gap-1.5 font-semibold text-foreground">
+          <ShieldCheck className="size-3.5 text-primary" />
+          Demo Administrator Account:
+        </p>
+        <div className="mt-2 rounded-xl border border-primary/20 bg-primary-soft/30 p-2.5">
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-foreground">Super Administrator</span>
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+              Full Governance Access
+            </span>
+          </div>
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            Email: <code className="font-mono font-bold text-foreground">admin@vendora.com</code> •
+            Pass: <code className="font-mono font-bold text-foreground">vendora123</code>
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setEmail("admin@vendora.com");
+              setPassword("vendora123");
+              setError(null);
+            }}
+            className="mt-1.5 text-[11px] font-bold text-primary underline hover:text-primary-dark"
+          >
+            Auto-fill Administrator Credentials
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Step 2: Customer Sign In Form
+ */
+export function CustomerSignInForm({ onBack }: { onBack: () => void }) {
+  const navigate = useNavigate();
+  const { signIn } = useCustomerAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!email.trim() || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const result = await signIn({
+        email: email.trim(),
+        password,
+        rememberMe,
+      });
+
+      if (!result.success) {
+        setError(result.error || "Invalid email or password.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Ensure demo orders are seeded for Aarav Sharma or customer if empty
+      if (result.customer) {
+        seedDemoOrdersForCustomer(result.customer);
+      }
+
+      navigate({ to: "/account" });
+    } catch {
+      setError("An unexpected error occurred during sign in.");
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFillDemoCustomer = () => {
+    setEmail("aarav.sharma@example.com");
+    setPassword("Password@123");
+    setError(null);
+  };
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={onBack}
+        className="mb-6 inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="size-3.5" />
+        <span>Change account type</span>
+      </button>
+
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+          Customer Sign In
+        </h2>
+        <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
+          Shopper Portal
+        </span>
+      </div>
+      <p className="mt-1.5 text-sm text-muted-foreground">
+        Access your saved addresses, track current orders, and view order history.
+      </p>
+
+      {/* Quick Demo Helper Banner */}
+      <div className="mt-5 rounded-2xl border border-primary/30 bg-primary-soft/40 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
+            <Sparkles className="size-4" />
+            <span>Pre-seeded Demo Customer</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleFillDemoCustomer}
+            className="rounded-lg bg-primary px-2.5 py-1 text-[11px] font-bold text-primary-foreground shadow-xs hover:bg-primary-dark transition"
+          >
+            Quick Fill Demo
+          </button>
+        </div>
+        <p className="mt-1 text-[11px] text-muted-foreground font-mono">
+          aarav.sharma@example.com • Password@123
+        </p>
+      </div>
+
+      {/* Demo disclaimer notice */}
+      <div className="mt-4 rounded-xl border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-1.5 font-semibold text-foreground">
+          <ShieldCheck className="size-3.5 text-primary" />
+          <span>Demo Authentication Notice:</span>
+        </div>
+        <p className="mt-0.5 text-[11px]">
+          Customer authentication in this demo uses local browser persistence and Web Crypto SHA-256
+          password hashing. It is for frontend demonstration only and is not connected to a backend
+          database.
+        </p>
+      </div>
+
+      {error && (
+        <div
+          role="alert"
+          className="mt-4 flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-xs font-semibold text-destructive"
+        >
+          <ShieldAlert className="size-4 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate>
+        <div>
+          <label htmlFor="customer-email" className="block text-xs font-semibold text-foreground">
+            Email Address <span className="text-destructive">*</span>
+          </label>
+          <div className="mt-1 relative flex items-center">
+            <Mail className="absolute left-3.5 size-4 text-muted-foreground pointer-events-none" />
+            <input
+              id="customer-email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="e.g. aarav.sharma@example.com"
+              className="w-full rounded-xl border bg-background py-2.5 pl-10 pr-4 text-xs outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            htmlFor="customer-password"
+            className="block text-xs font-semibold text-foreground"
+          >
+            Password <span className="text-destructive">*</span>
+          </label>
+          <div className="mt-1 relative flex items-center">
+            <Lock className="absolute left-3.5 size-4 text-muted-foreground pointer-events-none" />
+            <input
+              id="customer-password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="w-full rounded-xl border bg-background py-2.5 pl-10 pr-10 text-xs outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 text-muted-foreground hover:text-foreground"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between text-xs">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="size-3.5 rounded border accent-primary"
+            />
+            <span className="text-muted-foreground">Keep me signed in</span>
+          </label>
+          <Link to="/signup" className="font-semibold text-primary hover:underline">
+            Create an account
+          </Link>
+        </div>
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="mt-6 flex w-full min-h-[44px] items-center justify-center gap-2 rounded-full bg-primary py-3 text-xs font-bold text-primary-foreground shadow-soft transition-all hover:bg-primary-dark active:scale-[0.99] disabled:opacity-50"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              <span>Signing in...</span>
+            </>
+          ) : (
+            <>
+              <span>Sign In to Account</span>
+              <ArrowRight className="size-4" />
+            </>
+          )}
+        </button>
+      </form>
+
+      <div className="mt-6 border-t pt-4 text-center text-xs text-muted-foreground">
+        Don't have a customer account?{" "}
+        <Link to="/signup" className="font-bold text-primary hover:underline">
+          Sign up for free
+        </Link>
+      </div>
     </div>
   );
 }

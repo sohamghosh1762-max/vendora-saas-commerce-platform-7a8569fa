@@ -9,11 +9,8 @@ import {
 } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { VendorAuthProvider } from "@/lib/vendor-context";
-import {
-  AccountTypeSelector,
-  VendorSignInForm,
-  SuperAdminSignInForm,
-} from "@/routes/signin";
+import { SuperAdminAuthProvider } from "@/lib/super-admin-context";
+import { AccountTypeSelector, VendorSignInForm, SuperAdminSignInForm } from "@/routes/signin";
 
 function renderWithRouter(component: () => React.ReactElement) {
   const queryClient = new QueryClient({
@@ -23,7 +20,9 @@ function renderWithRouter(component: () => React.ReactElement) {
   const rootRoute = createRootRoute({
     component: () => (
       <QueryClientProvider client={queryClient}>
-        <VendorAuthProvider>{component()}</VendorAuthProvider>
+        <VendorAuthProvider>
+          <SuperAdminAuthProvider>{component()}</SuperAdminAuthProvider>
+        </VendorAuthProvider>
       </QueryClientProvider>
     ),
   });
@@ -64,7 +63,9 @@ describe("Role-Based Sign-In Selection Page", () => {
     expect(screen.getByRole("button", { name: /continue as super admin/i })).toBeInTheDocument();
     expect(screen.getByText("I'm a Super Admin")).toBeInTheDocument();
     expect(
-      screen.getByText("Access platform administration, oversee stores, and manage platform-wide operations."),
+      screen.getByText(
+        "Access platform administration, oversee stores, and manage platform-wide operations.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -116,7 +117,7 @@ describe("Role-Based Sign-In Selection Page", () => {
     expect(passwordInput.value).toBe("vendora123");
   });
 
-  it("renders SuperAdminSignInForm with restricted access notice and enforces security", async () => {
+  it("renders SuperAdminSignInForm with restricted access notice, auto-fill, and security verification", async () => {
     const onBack = vi.fn();
     renderWithRouter(() => <SuperAdminSignInForm onBack={onBack} />);
 
@@ -124,17 +125,26 @@ describe("Role-Based Sign-In Selection Page", () => {
     expect(screen.getByText("Sign in to manage the Vendora platform.")).toBeInTheDocument();
     expect(screen.getByText("Restricted Administrative Environment")).toBeInTheDocument();
 
-    const emailInput = screen.getByLabelText(/administrator email/i);
-    const passwordInput = screen.getByLabelText(/^password$/i);
-    const submitBtn = screen.getByRole("button", { name: /sign in to platform admin/i });
+    // Auto-fill demo administrator credentials
+    const autofillBtn = screen.getByRole("button", {
+      name: /auto-fill administrator credentials/i,
+    });
+    fireEvent.click(autofillBtn);
 
-    fireEvent.change(emailInput, { target: { value: "admin@vendora.com" } });
-    fireEvent.change(passwordInput, { target: { value: "SecretAdminPass123!" } });
+    const emailInput = screen.getByLabelText(/administrator email/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/^password$/i) as HTMLInputElement;
+
+    expect(emailInput.value).toBe("admin@vendora.com");
+    expect(passwordInput.value).toBe("vendora123");
+
+    // Enter incorrect password to test credential rejection
+    fireEvent.change(passwordInput, { target: { value: "WrongPassword999!" } });
+    const submitBtn = screen.getByRole("button", { name: /sign in to platform admin/i });
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
       expect(screen.getByRole("alert")).toBeInTheDocument();
-      expect(screen.getByRole("alert").textContent).toContain("Administrative Authorization Required");
+      expect(screen.getByRole("alert").textContent).toContain("Invalid administrator credentials");
     });
   });
 });

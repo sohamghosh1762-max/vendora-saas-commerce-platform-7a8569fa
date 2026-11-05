@@ -9,7 +9,10 @@ export const Route = createFileRoute("/stores")({
       { title: "All Stores — Vendora" },
       { name: "description", content: "Meet the independent sellers on the Vendora marketplace." },
       { property: "og:title", content: "All Stores — Vendora" },
-      { property: "og:description", content: "Meet the independent sellers on the Vendora marketplace." },
+      {
+        property: "og:description",
+        content: "Meet the independent sellers on the Vendora marketplace.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
@@ -22,7 +25,7 @@ function StoresPage() {
       <p className="mt-2 text-sm text-muted-foreground">
         Meet the independent sellers behind Vendora.
       </p>
-      <div className="mt-8 grid gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-8 grid grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {stores.map((store) => (
           <StoreCard key={store.id} store={store} />
         ))}

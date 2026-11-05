@@ -116,7 +116,10 @@ function BecomeVendorPage() {
       ...prev,
       storeName: name,
       // only auto-update slug if user hasn't explicitly customized it to something else
-      storeSlug: prev.storeSlug === "" || prev.storeSlug === generateSlug(prev.storeName) ? suggestedSlug : prev.storeSlug,
+      storeSlug:
+        prev.storeSlug === "" || prev.storeSlug === generateSlug(prev.storeName)
+          ? suggestedSlug
+          : prev.storeSlug,
       storeEmail: prev.storeEmail === "" ? prev.email : prev.storeEmail,
       supportEmail: prev.supportEmail === "" ? prev.email : prev.supportEmail,
     }));
@@ -454,9 +457,7 @@ function BecomeVendorPage() {
                         id="fullName"
                         type="text"
                         value={formData.fullName}
-                        onChange={(e) =>
-                          setFormData((p) => ({ ...p, fullName: e.target.value }))
-                        }
+                        onChange={(e) => setFormData((p) => ({ ...p, fullName: e.target.value }))}
                         placeholder="e.g. Neha Sharma"
                         className={`w-full rounded-xl border bg-background py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-primary ${
                           errors.fullName ? "border-destructive" : "border-border"
@@ -478,16 +479,16 @@ function BecomeVendorPage() {
                         id="email"
                         type="email"
                         value={formData.email}
-                        onChange={(e) =>
-                          setFormData((p) => ({ ...p, email: e.target.value }))
-                        }
+                        onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
                         placeholder="merchant@example.com"
                         className={`w-full rounded-xl border bg-background py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-primary ${
                           errors.email ? "border-destructive" : "border-border"
                         }`}
                       />
                     </div>
-                    {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
+                    {errors.email && (
+                      <p className="mt-1 text-xs text-destructive">{errors.email}</p>
+                    )}
                   </div>
 
                   <div className="sm:col-span-2">
@@ -500,16 +501,16 @@ function BecomeVendorPage() {
                         id="phone"
                         type="tel"
                         value={formData.phone}
-                        onChange={(e) =>
-                          setFormData((p) => ({ ...p, phone: e.target.value }))
-                        }
+                        onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
                         placeholder="+91 98765 43210"
                         className={`w-full rounded-xl border bg-background py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-primary ${
                           errors.phone ? "border-destructive" : "border-border"
                         }`}
                       />
                     </div>
-                    {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone}</p>}
+                    {errors.phone && (
+                      <p className="mt-1 text-xs text-destructive">{errors.phone}</p>
+                    )}
                   </div>
 
                   <div>
@@ -525,9 +526,7 @@ function BecomeVendorPage() {
                         id="password"
                         type={showPassword ? "text" : "password"}
                         value={formData.password}
-                        onChange={(e) =>
-                          setFormData((p) => ({ ...p, password: e.target.value }))
-                        }
+                        onChange={(e) => setFormData((p) => ({ ...p, password: e.target.value }))}
                         placeholder="••••••••"
                         className={`w-full rounded-xl border bg-background py-2.5 pl-10 pr-10 text-sm outline-none transition focus:border-primary ${
                           errors.password ? "border-destructive" : "border-border"
@@ -592,9 +591,7 @@ function BecomeVendorPage() {
                     <input
                       type="checkbox"
                       checked={formData.agreeTerms}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, agreeTerms: e.target.checked }))
-                      }
+                      onChange={(e) => setFormData((p) => ({ ...p, agreeTerms: e.target.checked }))}
                       className="mt-1 size-4 rounded text-primary focus:ring-primary"
                     />
                     <span className="text-xs text-muted-foreground">
@@ -711,9 +708,7 @@ function BecomeVendorPage() {
                     <select
                       id="category"
                       value={formData.category}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, category: e.target.value }))
-                      }
+                      onChange={(e) => setFormData((p) => ({ ...p, category: e.target.value }))}
                       className="mt-1 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary"
                     >
                       {categories.map((c) => (
@@ -760,9 +755,7 @@ function BecomeVendorPage() {
                     id="description"
                     rows={3}
                     value={formData.description}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, description: e.target.value }))
-                    }
+                    onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
                     placeholder="Describe the products you offer, your craftsmanship, and what sets your brand apart..."
                     className={`mt-1 w-full rounded-xl border bg-background p-3 text-sm outline-none transition focus:border-primary ${
                       errors.description ? "border-destructive" : "border-border"
@@ -815,7 +808,9 @@ function BecomeVendorPage() {
                           errors.city ? "border-destructive" : "border-border"
                         }`}
                       />
-                      {errors.city && <p className="mt-1 text-xs text-destructive">{errors.city}</p>}
+                      {errors.city && (
+                        <p className="mt-1 text-xs text-destructive">{errors.city}</p>
+                      )}
                     </div>
                     <div>
                       <label
@@ -849,9 +844,7 @@ function BecomeVendorPage() {
                         id="postalCode"
                         type="text"
                         value={formData.postalCode}
-                        onChange={(e) =>
-                          setFormData((p) => ({ ...p, postalCode: e.target.value }))
-                        }
+                        onChange={(e) => setFormData((p) => ({ ...p, postalCode: e.target.value }))}
                         placeholder="560001"
                         className={`mt-1 w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:border-primary ${
                           errors.postalCode ? "border-destructive" : "border-border"
@@ -908,9 +901,7 @@ function BecomeVendorPage() {
                     <select
                       id="businessType"
                       value={formData.businessType}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, businessType: e.target.value }))
-                      }
+                      onChange={(e) => setFormData((p) => ({ ...p, businessType: e.target.value }))}
                       className="mt-1 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary"
                     >
                       <option value="Sole Proprietorship">Sole Proprietorship / Individual</option>
@@ -930,9 +921,7 @@ function BecomeVendorPage() {
                     <select
                       id="returnPolicy"
                       value={formData.returnPolicy}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, returnPolicy: e.target.value }))
-                      }
+                      onChange={(e) => setFormData((p) => ({ ...p, returnPolicy: e.target.value }))}
                       className="mt-1 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary"
                     >
                       <option value="7-Day Easy Returns">7-Day Easy Returns (Recommended)</option>
@@ -996,9 +985,7 @@ function BecomeVendorPage() {
                     id="supportEmail"
                     type="email"
                     value={formData.supportEmail || formData.email}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, supportEmail: e.target.value }))
-                    }
+                    onChange={(e) => setFormData((p) => ({ ...p, supportEmail: e.target.value }))}
                     placeholder="support@yourstore.in"
                     className="mt-1 w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary"
                   />
@@ -1026,8 +1013,8 @@ function BecomeVendorPage() {
                         className="mt-1.5 w-full rounded-xl border border-border bg-background px-4 py-2 text-sm uppercase outline-none focus:border-primary"
                       />
                       <p className="mt-1 text-[11px] text-muted-foreground">
-                        Required only for GST-registered businesses for automated tax invoicing.
-                        You can also add this later in your Vendor Settings.
+                        Required only for GST-registered businesses for automated tax invoicing. You
+                        can also add this later in your Vendor Settings.
                       </p>
                     </div>
                   </div>

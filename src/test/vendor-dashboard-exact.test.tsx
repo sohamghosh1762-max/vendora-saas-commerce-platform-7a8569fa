@@ -186,4 +186,5 @@ describe("Vendor Dashboard Replication & Flow", () => {
     expect(screen.getByText("Store profile updated")).toBeInTheDocument();
 
   }, 30000);
+  }, 15000);
 });

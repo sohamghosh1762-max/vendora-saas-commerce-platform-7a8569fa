@@ -38,9 +38,7 @@ function Index() {
 
   return (
     <>
-      {isIntroActive && (
-        <CinematicIntro onComplete={finishIntro} onSceneChange={setScene} />
-      )}
+      {isIntroActive && <CinematicIntro onComplete={finishIntro} onSceneChange={setScene} />}
       <HeroSection onReplayIntro={startIntro} />
       <CategoryStrip />
       <FeaturedProducts />

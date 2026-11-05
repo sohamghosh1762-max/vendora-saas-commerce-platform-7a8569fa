@@ -81,8 +81,7 @@ function DashboardPreview() {
             <div>
               <h4 className="text-sm font-bold text-foreground">Sales Overview</h4>
               <p className="text-xl font-extrabold text-foreground">
-                ₹1,24,560{" "}
-                <span className="text-xs font-semibold text-success">+10%</span>
+                ₹1,24,560 <span className="text-xs font-semibold text-success">+10%</span>
               </p>
               <p className="text-[10px] text-muted-foreground">Total Sales · This Month</p>
             </div>
@@ -102,7 +101,11 @@ function DashboardPreview() {
                       <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="var(--color-border)"
+                    vertical={false}
+                  />
                   <XAxis
                     dataKey="month"
                     tick={{ fontSize: 9, fill: "var(--color-muted-foreground)" }}
@@ -111,7 +114,10 @@ function DashboardPreview() {
                   />
                   <YAxis hide domain={["dataMin - 5000", "dataMax + 5000"]} />
                   <Tooltip
-                    formatter={(value) => [`₹${(value as number).toLocaleString("en-IN")}`, "Sales"]}
+                    formatter={(value) => [
+                      `₹${(value as number).toLocaleString("en-IN")}`,
+                      "Sales",
+                    ]}
                     contentStyle={{
                       borderRadius: 12,
                       border: "1px solid var(--color-border)",
@@ -179,8 +185,8 @@ export function VendorCTA() {
             </span>
           </h2>
           <p className="mt-4 max-w-md text-sm text-muted-foreground">
-            Join hundreds of independent sellers and reach thousands of customers, with no
-            technical hassle, just pure growth.
+            Join hundreds of independent sellers and reach thousands of customers, with no technical
+            hassle, just pure growth.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
