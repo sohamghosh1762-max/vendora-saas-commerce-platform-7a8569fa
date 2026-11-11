@@ -40,15 +40,30 @@ export type VendorStore = {
   createdAt: string;
 };
 
+export type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
+
+export type OrderItem = {
+  productId?: string | undefined;
+  productName: string;
+  qty: number;
+  price: number;
+  image?: string | undefined;
+};
+
 export type VendorOrder = {
   id: string;
+  orderNumber?: string | undefined;
   storeId: string;
   customerName: string;
   customerEmail: string;
-  items: { productName: string; qty: number; price: number }[];
+  customerPhone?: string | undefined;
+  shippingAddress?: string | undefined;
+  items: OrderItem[];
   total: number;
-  status: "Delivered" | "Shipped" | "Processing" | "Pending";
+  status: OrderStatus;
   date: string;
+  paymentMethod?: string | undefined;
+  trackingNumber?: string | undefined;
 };
 
 export type VendorSession = {

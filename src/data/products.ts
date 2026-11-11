@@ -45,9 +45,6 @@ export type Product = {
   sku?: string | undefined;
   status?: ProductStatus | string | undefined;
   images?: string[] | undefined;
-  imagePosition?: string | undefined;
-  featured?: boolean | undefined;
-  description: string;
   inStock?: boolean | undefined;
   stockCount?: number | undefined;
   brand?: string | undefined;
@@ -98,7 +95,6 @@ export const products: Product[] = [
       "A timeless medium-wash denim jacket with copper buttons and a comfortable regular fit. Pairs with everything, season after season.",
     stock: 18,
     status: "active",
-      "Over-ear wireless headphones with active noise cancellation, deep bass, plush memory-foam ear cushions, and up to 30 hours of continuous battery life.",
   },
   {
     id: "smart-watch-pro",
@@ -121,7 +117,6 @@ export const products: Product[] = [
       "Round AMOLED smart watch with heart-rate tracking, step counting, workout modes and notifications. Water resistant with a 7-day battery.",
     stock: 12,
     status: "active",
-      "Round 1.43-inch AMOLED smart watch with 24/7 SpO2 and heart-rate tracking, 120+ workout modes, Bluetooth calling, and 7-day battery endurance.",
   },
   {
     id: "anc-earbuds-pro",
@@ -267,7 +262,6 @@ export const products: Product[] = [
       "A radiant renewal duo: hydrating serum and nourishing repair cream with rose-gold finishing. Dermatologically tested, suitable for all skin types.",
     stock: 45,
     status: "active",
-      "Incredibly thin and fast MacBook Air supercharged by the Apple M3 chip, featuring an 8-core CPU, 10-core GPU, 13.6-inch Liquid Retina display, and up to 18 hours of battery life.",
   },
   {
     id: "apple-macbook-pro-14-m3-pro",
@@ -392,7 +386,6 @@ export const products: Product[] = [
       "Lightweight running shoes with a breathable mesh upper, responsive foam midsole and grippy outsole. Built for daily runs and long walks.",
     stock: 30,
     status: "active",
-      "CNC aluminum chassis powerhouse engineered with 16-inch 2.5K 240Hz ROG Nebula OLED display, NVIDIA GeForce RTX 4070 8GB GPU, Intel Core Ultra 9 185H, and 32GB LPDDR5X RAM.",
   },
   {
     id: "apple-iphone-16-pro-max-256",
@@ -477,7 +470,6 @@ export const products: Product[] = [
       "A plush fabric lounge chair with solid wood legs and a calm, neutral tone. The perfect corner companion for slow evenings.",
     stock: 8,
     status: "active",
-      "Premium metal frame smartphone boasting 6.6-inch Super AMOLED 120Hz display, 50MP OIS triple camera with Nightography, Samsung Knox Vault security, and 5000mAh battery.",
   },
   {
     id: "google-pixel-9-pro-xl",

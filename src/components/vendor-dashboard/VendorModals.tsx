@@ -1,8 +1,9 @@
+import { formatINR } from "@/lib/format";
 import { useState, useEffect } from "react";
 import { AlertCircle, Check, Loader2, Package, Pencil, Store, Trash2, X } from "lucide-react";
 import type { DashboardOrder } from "@/lib/vendor-dashboard-data";
 import type { Product, ProductStatus } from "@/data/products";
-import type { VendorStore } from "@/lib/vendor-types";
+import type { VendorStore, OrderStatus, VendorOrder } from "@/lib/vendor-types";
 import { cn } from "@/lib/utils";
 
 // --- Categories List ---
@@ -1171,24 +1172,83 @@ export function StoreSettingsModal({
 }
 
 // --- Order Detail Modal ---
+export type DetailedOrder = {
+  id: string;
+  orderNumber?: string | undefined;
+  customerName: string;
+  customerEmail?: string | undefined;
+  customerPhone?: string | undefined;
+  shippingAddress?: string | undefined;
+  date: string;
+  amount?: number | undefined;
+  total?: number | undefined;
+  formattedAmount?: string | undefined;
+  status: OrderStatus | DashboardOrder["status"];
+  image?: string | undefined;
+  items?: { productName: string; qty: number; price: number; image?: string | undefined }[] | undefined;
+  paymentMethod?: string | undefined;
+  trackingNumber?: string | undefined;
+};
+
 export function OrderDetailModal({
   order,
   onClose,
+  onUpdateStatus,
 }: {
-  order: DashboardOrder | null;
+  order: DetailedOrder | null;
   onClose: () => void;
+  onUpdateStatus?: ((orderId: string, newStatus: OrderStatus) => { success: boolean; error?: string }) | undefined;
 }) {
+  const [selectedStatus, setSelectedStatus] = useState<OrderStatus>("Pending");
+  const [statusError, setStatusError] = useState<string | null>(null);
+  const [statusSuccess, setStatusSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (order) {
+      setSelectedStatus((order.status as OrderStatus) || "Pending");
+      setStatusError(null);
+      setStatusSuccess(null);
+    }
+  }, [order?.id, order?.status]);
+
   if (!order) return null;
 
+  const displayOrderNumber =
+    order.orderNumber ||
+    (order.id.toLowerCase().startsWith("ord-")
+      ? `#${order.id.slice(4)}`
+      : order.id.startsWith("#")
+        ? order.id
+        : `#${order.id}`);
+
+  const totalAmount = order.total ?? order.amount ?? 0;
+  const formattedTotal = order.formattedAmount || formatINR(totalAmount);
+  const isTerminal = order.status === "Delivered" || order.status === "Cancelled";
+
+  const handleStatusSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!onUpdateStatus) return;
+    setStatusError(null);
+    setStatusSuccess(null);
+
+    const res = onUpdateStatus(order.id, selectedStatus);
+    if (!res.success) {
+      setStatusError(res.error || "Failed to update order status.");
+    } else {
+      setStatusSuccess(`Order status updated to ${selectedStatus}.`);
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in-50">
-      <div className="w-full max-w-md rounded-3xl border border-[#ECEAF5] bg-white p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in-50 overflow-y-auto">
+      <div className="w-full max-w-lg my-8 rounded-3xl border border-[#ECEAF5] bg-white p-6 shadow-2xl">
+        {/* Header */}
         <div className="flex items-center justify-between border-b border-[#ECEAF5] pb-3">
           <div>
             <h3 className="text-base font-bold text-[#110D27]">
-              Order Details — {order.orderNumber}
+              Order Details — {displayOrderNumber}
             </h3>
-            <span className="text-[11px] text-[#7A7F93] font-medium">{order.date}</span>
+            <span className="text-[11px] text-[#7A7F93] font-medium">Placed on {order.date}</span>
           </div>
           <button
             type="button"
@@ -1200,28 +1260,82 @@ export function OrderDetailModal({
           </button>
         </div>
 
-        <div className="mt-4 space-y-3.5 text-xs">
-          <div className="flex items-center gap-3 rounded-2xl bg-[#F9F8FD] p-3 border border-[#ECEAF5]">
-            <img
-              src={order.image}
-              alt="Item thumbnail"
-              className="size-12 rounded-xl object-cover shrink-0"
-            />
-            <div className="flex-1 min-w-0">
-              <span className="font-bold text-[#110D27] block">Customer: {order.customerName}</span>
-              <span className="text-[11px] text-[#7A7F93] block mt-0.5">
-                Payment Verified • Pre-paid
-              </span>
-              <span className="text-sm font-extrabold text-[#6538F5] block mt-1">
-                {order.formattedAmount}
-              </span>
+        <div className="mt-4 space-y-4 text-xs">
+          {/* Customer & Shipping Summary */}
+          <div className="rounded-2xl bg-[#F9F8FD] p-3.5 border border-[#ECEAF5] space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-[#110D27] text-sm">{order.customerName}</span>
+              <span className="text-sm font-extrabold text-[#6538F5]">{formattedTotal}</span>
             </div>
+            {order.customerEmail && (
+              <div className="text-[11px] text-[#7A7F93]">
+                <span className="font-semibold text-[#110D27]">Email:</span> {order.customerEmail}
+              </div>
+            )}
+            {order.customerPhone && (
+              <div className="text-[11px] text-[#7A7F93]">
+                <span className="font-semibold text-[#110D27]">Phone:</span> {order.customerPhone}
+              </div>
+            )}
+            {order.shippingAddress && (
+              <div className="text-[11px] text-[#7A7F93] pt-0.5">
+                <span className="font-semibold text-[#110D27]">Shipping to:</span> {order.shippingAddress}
+              </div>
+            )}
           </div>
 
+          {/* Products List */}
+          <div className="rounded-2xl border border-[#ECEAF5] p-3.5 space-y-2.5">
+            <span className="font-bold text-[#110D27] block border-b border-[#ECEAF5] pb-1.5">
+              Ordered Products
+            </span>
+            {order.items && order.items.length > 0 ? (
+              <div className="divide-y divide-[#F1EFF7] space-y-2">
+                {order.items.map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between pt-2 first:pt-0">
+                    <div className="flex items-center gap-2.5">
+                      <div className="grid size-8 place-items-center rounded-lg bg-[#F0EBFE] text-[#6538F5] shrink-0 font-bold text-[11px]">
+                        {item.qty}×
+                      </div>
+                      <div>
+                        <span className="font-bold text-[#110D27] block">{item.productName}</span>
+                        <span className="text-[10px] text-[#7A7F93]">
+                          {formatINR(item.price)} each
+                        </span>
+                      </div>
+                    </div>
+                    <span className="font-bold text-[#110D27]">
+                      {formatINR(item.price * item.qty)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                {order.image && (
+                  <img
+                    src={order.image}
+                    alt="Order item"
+                    className="size-10 rounded-lg object-cover bg-[#F4F2FC] shrink-0"
+                  />
+                )}
+                <div>
+                  <span className="font-bold text-[#110D27] block">Standard Order Package</span>
+                  <span className="text-[11px] text-[#7A7F93]">Total: {formattedTotal}</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Fulfillment & Logistics */}
           <div className="space-y-2 rounded-2xl border border-[#ECEAF5] p-3.5">
             <div className="flex justify-between">
               <span className="text-[#7A7F93]">Fulfillment Status:</span>
               <span className="font-bold text-[#110D27]">{order.status}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[#7A7F93]">Payment Method:</span>
+              <span className="font-medium text-[#110D27]">{order.paymentMethod || "Prepaid (Verified)"}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-[#7A7F93]">Delivery Partner:</span>
@@ -1229,11 +1343,62 @@ export function OrderDetailModal({
             </div>
             <div className="flex justify-between">
               <span className="text-[#7A7F93]">Tracking ID:</span>
-              <span className="font-mono font-bold text-[#6538F5]">VND-98432-IN</span>
+              <span className="font-mono font-bold text-[#6538F5]">{order.trackingNumber || "VND-98432-IN"}</span>
             </div>
           </div>
+
+          {/* Update Status Section */}
+          {onUpdateStatus && (
+            <div className="rounded-2xl border border-[#ECEAF5] bg-[#FDFCFE] p-3.5 space-y-2.5">
+              <span className="font-bold text-[#110D27] block">Update Order Status</span>
+              {isTerminal ? (
+                <p className="text-[11px] text-[#7A7F93] italic">
+                  This order is marked as <strong className="text-[#110D27]">{order.status}</strong> and cannot have its status modified.
+                </p>
+              ) : (
+                <form onSubmit={handleStatusSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <select
+                    value={selectedStatus}
+                    onChange={(e) => {
+                      setSelectedStatus(e.target.value as OrderStatus);
+                      setStatusError(null);
+                      setStatusSuccess(null);
+                    }}
+                    aria-label="Select new order status"
+                    className="flex-1 rounded-xl border border-[#ECEAF5] bg-white px-3 py-2 text-xs font-semibold text-[#110D27] outline-none focus:border-[#6538F5]"
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                  <button
+                    type="submit"
+                    className="rounded-xl bg-[#6538F5] px-4 py-2 text-xs font-bold text-white hover:bg-[#5228D9] transition"
+                  >
+                    Update Status
+                  </button>
+                </form>
+              )}
+
+              {statusError && (
+                <div role="alert" className="text-[11px] font-semibold text-red-600 flex items-center gap-1.5">
+                  <AlertCircle className="size-3.5 shrink-0" />
+                  <span>{statusError}</span>
+                </div>
+              )}
+              {statusSuccess && (
+                <div role="status" className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1.5">
+                  <Check className="size-3.5 shrink-0" />
+                  <span>{statusSuccess}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
+        {/* Footer */}
         <div className="mt-5 flex justify-end">
           <button
             type="button"

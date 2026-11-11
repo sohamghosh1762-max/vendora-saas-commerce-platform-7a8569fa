@@ -35,7 +35,7 @@ export interface DashboardOrder {
   date: string;
   amount: number;
   formattedAmount: string;
-  status: "Delivered" | "Shipped" | "Processing" | "Cancelled";
+  status: "Pending" | "Delivered" | "Shipped" | "Processing" | "Cancelled";
   image: string;
 }
 

@@ -13,6 +13,7 @@ export function VendorRecentOrders({
   onSelectOrder,
 }: VendorRecentOrdersProps) {
   const statusStyles = {
+    Pending: "bg-[#FEF3C7] text-[#D97706]",
     Delivered: "bg-[#DCFCE7] text-[#15803D]",
     Shipped: "bg-[#DBEAFE] text-[#1D4ED8]",
     Processing: "bg-[#FEF3C7] text-[#D97706]",

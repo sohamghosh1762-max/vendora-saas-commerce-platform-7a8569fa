@@ -1,5 +1,6 @@
 import type {
   OnboardingData,
+  OrderStatus,
   VendorOrder,
   VendorSession,
   VendorStore,
@@ -427,6 +428,90 @@ export function deleteVendorProduct(productId: string): boolean {
 /** Get orders for a store */
 export function getVendorOrders(storeId: string): VendorOrder[] {
   return getStoredOrders(storeId);
+}
+
+/** Get a single order by ID */
+export function getVendorOrderById(orderId: string, storeId?: string): VendorOrder | null {
+  const orders = getStoredOrders(storeId);
+  const normalized = orderId.toLowerCase();
+  return (
+    orders.find(
+      (o) =>
+        o.id.toLowerCase() === normalized ||
+        (o.orderNumber && o.orderNumber.toLowerCase() === normalized),
+    ) || null
+  );
+}
+
+/** Update order status with validation */
+export function updateVendorOrderStatus(
+  orderId: string,
+  newStatus: OrderStatus,
+  storeId?: string,
+): { success: boolean; order?: VendorOrder; error?: string } {
+  const allOrders = getStoredOrders();
+  const normalized = orderId.toLowerCase();
+  const index = allOrders.findIndex(
+    (o) =>
+      o.id.toLowerCase() === normalized ||
+      (o.orderNumber && o.orderNumber.toLowerCase() === normalized),
+  );
+
+  if (index === -1) {
+    return { success: false, error: "Order not found." };
+  }
+
+  const existing = allOrders[index];
+  if (!existing) {
+    return { success: false, error: "Order not found." };
+  }
+
+  if (storeId && existing.storeId !== storeId) {
+    return { success: false, error: "Unauthorized: Order belongs to another store." };
+  }
+
+  const validStatuses: OrderStatus[] = [
+    "Pending",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+  ];
+  if (!validStatuses.includes(newStatus)) {
+    return { success: false, error: "Invalid order status." };
+  }
+
+  if (existing.status === newStatus) {
+    return { success: false, error: `Order is already marked as ${newStatus}.` };
+  }
+
+  if (existing.status === "Delivered") {
+    return { success: false, error: "Delivered orders cannot have their status modified." };
+  }
+
+  if (existing.status === "Cancelled") {
+    return { success: false, error: "Cancelled orders cannot be modified." };
+  }
+
+  // Prevent reverting Shipped orders to earlier stages
+  if (existing.status === "Shipped" && (newStatus === "Pending" || newStatus === "Processing")) {
+    return { success: false, error: "Shipped orders cannot be reverted to earlier stages." };
+  }
+
+  // Prevent reverting Processing orders to Pending
+  if (existing.status === "Processing" && newStatus === "Pending") {
+    return { success: false, error: "Processing orders cannot be reverted to Pending." };
+  }
+
+  const updated: VendorOrder = {
+    ...existing,
+    status: newStatus,
+  };
+
+  allOrders[index] = updated;
+  saveStoredOrders(allOrders);
+
+  return { success: true, order: updated };
 }
 
 /** Logout current vendor session */
