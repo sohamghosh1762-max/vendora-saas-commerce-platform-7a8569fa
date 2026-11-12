@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { AlertCircle, Check, Loader2, Package, Pencil, Store, Trash2, X } from "lucide-react";
 import type { DashboardOrder } from "@/lib/vendor-dashboard-data";
 import type { Product, ProductStatus } from "@/data/products";
-import type { VendorStore, OrderStatus, VendorOrder } from "@/lib/vendor-types";
+import type { VendorStore, OrderStatus, VendorOrder, VendorCustomer } from "@/lib/vendor-types";
 import { cn } from "@/lib/utils";
 
 // --- Categories List ---
@@ -1406,6 +1406,282 @@ export function OrderDetailModal({
             className="rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9] transition"
           >
             Close Details
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- Customer Detail Modal ---
+export function CustomerDetailModal({
+  customer,
+  onClose,
+  onSaveNote,
+}: {
+  customer: VendorCustomer | null;
+  onClose: () => void;
+  onSaveNote?: ((customerEmail: string, note: string) => void) | undefined;
+}) {
+  const [noteText, setNoteText] = useState("");
+  const [noteSaved, setNoteSaved] = useState(false);
+
+  useEffect(() => {
+    if (customer) {
+      setNoteText(customer.notes || "");
+      setNoteSaved(false);
+    }
+  }, [customer?.id, customer?.email]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  if (!customer) return null;
+
+  const handleSaveNote = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onSaveNote) {
+      onSaveNote(customer.email, noteText);
+      setNoteSaved(true);
+      setTimeout(() => setNoteSaved(false), 3000);
+    }
+  };
+
+  const initials =
+    customer.name
+      .split(" ")
+      .map((n) => n[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "CU";
+
+  const tierColors: Record<string, { bg: string; text: string; border: string }> = {
+    VIP: { bg: "bg-purple-100", text: "text-purple-700", border: "border-purple-200" },
+    Repeat: { bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-200" },
+    New: { bg: "bg-emerald-100", text: "text-emerald-700", border: "border-emerald-200" },
+  };
+
+  const currentTier = tierColors[customer.tier] || tierColors.New;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="customer-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs overflow-y-auto"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[#ECEAF5] bg-white p-6 shadow-2xl space-y-5"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between border-b border-[#ECEAF5] pb-4">
+          <div className="flex items-center gap-4">
+            <div className="grid size-14 place-items-center rounded-2xl bg-gradient-to-tr from-[#6538F5] to-[#8C62FF] text-lg font-bold text-white shadow-xs">
+              {initials}
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 id="customer-modal-title" className="text-xl font-bold text-[#110D27]">
+                  {customer.name}
+                </h2>
+                <span
+                  className={cn(
+                    "rounded-full px-2.5 py-0.5 text-[10px] font-bold border",
+                    currentTier.bg,
+                    currentTier.text,
+                    currentTier.border,
+                  )}
+                >
+                  {customer.tier}
+                </span>
+              </div>
+              <p className="text-xs text-[#7A7F93] mt-0.5">{customer.email}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="rounded-xl p-2 text-[#7A7F93] hover:bg-[#F4F2FC] hover:text-[#110D27] transition"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        {/* Quick KPI stats */}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="rounded-2xl border border-[#ECEAF5] bg-[#FDFCFE] p-3 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A7F93] block">
+              Total Spent
+            </span>
+            <span className="mt-1 text-sm font-extrabold text-[#6538F5] block">
+              {formatINR(customer.totalSpent)}
+            </span>
+          </div>
+          <div className="rounded-2xl border border-[#ECEAF5] bg-[#FDFCFE] p-3 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A7F93] block">
+              Total Orders
+            </span>
+            <span className="mt-1 text-sm font-extrabold text-[#110D27] block">
+              {customer.totalOrders}
+            </span>
+          </div>
+          <div className="rounded-2xl border border-[#ECEAF5] bg-[#FDFCFE] p-3 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A7F93] block">
+              Avg Order Value
+            </span>
+            <span className="mt-1 text-sm font-extrabold text-[#110D27] block">
+              {formatINR(customer.averageOrderValue)}
+            </span>
+          </div>
+          <div className="rounded-2xl border border-[#ECEAF5] bg-[#FDFCFE] p-3 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A7F93] block">
+              Latest Order
+            </span>
+            <span className="mt-1 text-xs font-bold text-[#110D27] block truncate">
+              {customer.lastOrderDate}
+            </span>
+          </div>
+        </div>
+
+        {/* Contact & Shipping Info */}
+        <div className="rounded-2xl border border-[#ECEAF5] bg-[#FDFCFE] p-4 text-xs space-y-2">
+          <h3 className="font-bold text-[#110D27]">Contact & Delivery Details</h3>
+          <div className="grid gap-2 sm:grid-cols-2 text-[#7A7F93]">
+            <div>
+              <span className="font-semibold text-[#110D27]">Phone:</span>{" "}
+              {customer.phone || "Not provided"}
+            </div>
+            <div>
+              <span className="font-semibold text-[#110D27]">First Purchase:</span>{" "}
+              {customer.firstOrderDate}
+            </div>
+            <div className="sm:col-span-2">
+              <span className="font-semibold text-[#110D27]">Shipping Address:</span>{" "}
+              {customer.shippingAddress || "No shipping address on record"}
+            </div>
+          </div>
+        </div>
+
+        {/* Order History */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-[#110D27]">
+              Order History with this Store ({customer.orders.length})
+            </h3>
+          </div>
+
+          <div className="rounded-2xl border border-[#ECEAF5] overflow-hidden">
+            <div className="overflow-x-auto max-h-56">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#FAF9FE] text-[10px] font-bold uppercase tracking-wider text-[#7A7F93] border-b border-[#ECEAF5]">
+                  <tr>
+                    <th className="px-3.5 py-2.5">Order</th>
+                    <th className="px-3.5 py-2.5">Date</th>
+                    <th className="px-3.5 py-2.5">Items</th>
+                    <th className="px-3.5 py-2.5">Status</th>
+                    <th className="px-3.5 py-2.5 text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#ECEAF5]">
+                  {customer.orders.map((order) => {
+                    const displayId =
+                      order.orderNumber ||
+                      (order.id.toLowerCase().startsWith("ord-")
+                        ? `#${order.id.slice(4)}`
+                        : order.id.startsWith("#")
+                          ? order.id
+                          : `#${order.id}`);
+
+                    const statusStyle =
+                      {
+                        Pending: "bg-amber-100 text-amber-800",
+                        Processing: "bg-blue-100 text-blue-800",
+                        Shipped: "bg-purple-100 text-purple-800",
+                        Delivered: "bg-emerald-100 text-emerald-800",
+                        Cancelled: "bg-rose-100 text-rose-800",
+                      }[order.status] || "bg-gray-100 text-gray-800";
+
+                    return (
+                      <tr key={order.id} className="hover:bg-[#FDFCFE]">
+                        <td className="px-3.5 py-2.5 font-bold text-[#110D27]">{displayId}</td>
+                        <td className="px-3.5 py-2.5 text-[#7A7F93]">{order.date}</td>
+                        <td className="px-3.5 py-2.5 text-[#110D27]">
+                          {order.items && order.items.length > 0
+                            ? `${order.items[0]?.productName || "Item"}${
+                                order.items.length > 1 ? ` +${order.items.length - 1} more` : ""
+                              }`
+                            : "Standard Order"}
+                        </td>
+                        <td className="px-3.5 py-2.5">
+                          <span
+                            className={cn(
+                              "rounded-full px-2 py-0.5 text-[10px] font-bold",
+                              statusStyle,
+                            )}
+                          >
+                            {order.status}
+                          </span>
+                        </td>
+                        <td className="px-3.5 py-2.5 text-right font-bold text-[#110D27]">
+                          {formatINR(order.total)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Notes Section */}
+        <div className="rounded-2xl border border-[#ECEAF5] bg-[#FDFCFE] p-3.5 space-y-2">
+          <span className="font-bold text-xs text-[#110D27] block">Vendor Notes</span>
+          <form onSubmit={handleSaveNote} className="space-y-2">
+            <textarea
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+              placeholder="Add internal notes about this customer (e.g. VIP client, preferred courier, packaging preferences)..."
+              rows={2}
+              aria-label="Customer notes"
+              className="w-full rounded-xl border border-[#ECEAF5] bg-white p-2.5 text-xs text-[#110D27] outline-none focus:border-[#6538F5]"
+            />
+            <div className="flex items-center justify-between">
+              {noteSaved ? (
+                <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+                  <Check className="size-3.5" />
+                  <span>Note saved successfully</span>
+                </span>
+              ) : (
+                <span className="text-[10px] text-[#7A7F93]">Saved in browser storage</span>
+              )}
+              <button
+                type="submit"
+                className="rounded-xl bg-[#6538F5] px-3.5 py-1.5 text-xs font-bold text-white hover:bg-[#5228D9] transition"
+              >
+                Save Note
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end pt-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-xl bg-[#6538F5] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#5228D9] transition"
+          >
+            Close
           </button>
         </div>
       </div>

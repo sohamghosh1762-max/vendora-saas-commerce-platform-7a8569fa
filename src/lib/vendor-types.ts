@@ -66,6 +66,24 @@ export type VendorOrder = {
   trackingNumber?: string | undefined;
 };
 
+export type CustomerTier = "VIP" | "Repeat" | "New";
+
+export type VendorCustomer = {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | undefined;
+  shippingAddress?: string | undefined;
+  totalOrders: number;
+  totalSpent: number;
+  averageOrderValue: number;
+  firstOrderDate: string;
+  lastOrderDate: string;
+  tier: CustomerTier;
+  orders: VendorOrder[];
+  notes?: string | undefined;
+};
+
 export type VendorSession = {
   token: string;
   vendor: VendorUser;

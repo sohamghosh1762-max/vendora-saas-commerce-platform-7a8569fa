@@ -6,6 +6,7 @@ const VENDORS_KEY = "vendora_vendors_v1";
 const STORES_KEY = "vendora_custom_stores_v1";
 const ORDERS_KEY = "vendora_orders_v1";
 const SESSION_KEY = "vendora_session_v1";
+const CUSTOMER_NOTES_KEY = "vendora_vendor_customer_notes_v1";
 
 const DEFAULT_SALT = "vendora_salt_demo";
 
@@ -130,6 +131,21 @@ export const initialDemoOrders: VendorOrder[] = [
     trackingNumber: "VND-CANC-55102",
   },
   {
+    id: "ord-1018",
+    orderNumber: "#1018",
+    storeId: "the-urban-nest",
+    customerName: "Priya Sharma",
+    customerEmail: "priya.sharma@example.com",
+    customerPhone: "+91 98450 12345",
+    shippingAddress: "12 Palm Grove Road, Koramangala 4th Block, Bengaluru - 560034",
+    items: [{ productName: "Ceramic Coffee Mug", qty: 2, price: 899 }],
+    total: 1798,
+    status: "Delivered",
+    date: "Oct 12, 2024",
+    paymentMethod: "UPI (Prepaid)",
+    trackingNumber: "VND-98311-IN",
+  },
+  {
     id: "ORD-1024",
     orderNumber: "#1024",
     storeId: "stylenest",
@@ -211,6 +227,15 @@ export async function ensureSeeded(): Promise<void> {
           const urbanNestOrders = initialDemoOrders.filter((o) => o.storeId === "the-urban-nest");
           parsed.push(...urbanNestOrders);
           window.localStorage.setItem(ORDERS_KEY, JSON.stringify(parsed));
+        } else {
+          const has1018 = parsed.some((o) => o.id === "ord-1018");
+          if (!has1018) {
+            const ord1018 = initialDemoOrders.find((o) => o.id === "ord-1018");
+            if (ord1018) {
+              parsed.push(ord1018);
+              window.localStorage.setItem(ORDERS_KEY, JSON.stringify(parsed));
+            }
+          }
         }
       } catch {
         window.localStorage.setItem(ORDERS_KEY, JSON.stringify(initialDemoOrders));
@@ -317,6 +342,37 @@ export function saveActiveSession(session: VendorSession | null): void {
     } else {
       window.localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     }
+  } catch {
+    // Storage unavailable
+  }
+}
+
+export function getStoredCustomerNotes(storeId: string): Record<string, string> {
+  if (!isBrowser()) return {};
+  try {
+    const raw = window.localStorage.getItem(CUSTOMER_NOTES_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return parsed[storeId] || {};
+    }
+  } catch {
+    return {};
+  }
+  return {};
+}
+
+export function saveStoredCustomerNote(
+  storeId: string,
+  customerEmail: string,
+  note: string,
+): void {
+  if (!isBrowser()) return;
+  try {
+    const raw = window.localStorage.getItem(CUSTOMER_NOTES_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    if (!all[storeId]) all[storeId] = {};
+    all[storeId][customerEmail.toLowerCase().trim()] = note;
+    window.localStorage.setItem(CUSTOMER_NOTES_KEY, JSON.stringify(all));
   } catch {
     // Storage unavailable
   }

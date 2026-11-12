@@ -5,6 +5,7 @@ import { useState } from "react";
 import { VendorProductsView } from "./VendorProductsView";
 import { VendorInventoryView } from "./VendorInventoryView";
 import { VendorOrdersView } from "./VendorOrdersView";
+import { VendorCustomersView } from "./VendorCustomersView";
 import type { VendorStore } from "@/lib/vendor-types";
 
 export interface VendorNonDashboardViewProps {
@@ -132,6 +133,13 @@ export function VendorNonDashboardView({
         />
       )}
 
+      {activeTab === "customers" && (
+        <VendorCustomersView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
       {activeTab === "settings" && (
         <div className="rounded-2xl border border-[#ECEAF5] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
           {!store ? (
@@ -211,6 +219,7 @@ export function VendorNonDashboardView({
       {activeTab !== "products" &&
         activeTab !== "inventory" &&
         activeTab !== "orders" &&
+        activeTab !== "customers" &&
         activeTab !== "settings" && (
           <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-[#ECEAF5] bg-white p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
             <div className="grid size-12 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5]">

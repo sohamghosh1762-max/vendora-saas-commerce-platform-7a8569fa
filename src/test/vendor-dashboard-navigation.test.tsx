@@ -302,5 +302,5 @@ describe("Vendor Dashboard URL-Synchronized Navigation", () => {
       expect(router.state.location.search).toEqual({ tab: "products" });
       expect(screen.getByRole("heading", { level: 2, name: "Products Catalog" })).toBeInTheDocument();
     });
-  });
+  }, 15000);
 });

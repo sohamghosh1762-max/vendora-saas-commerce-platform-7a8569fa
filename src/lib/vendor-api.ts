@@ -1,5 +1,7 @@
 import type {
+  CustomerTier,
   OnboardingData,
+  VendorCustomer,
   OrderStatus,
   VendorOrder,
   VendorSession,
@@ -10,11 +12,13 @@ import {
   ensureSeeded,
   getActiveSession,
   getCustomStores,
+  getStoredCustomerNotes,
   getStoredOrders,
   getStoredVendors,
   saveActiveSession,
   saveCustomStores,
   saveCustomStoresStrict,
+  saveStoredCustomerNote,
   saveStoredOrders,
   saveVendors,
 } from "./vendor-storage";
@@ -517,4 +521,111 @@ export function updateVendorOrderStatus(
 /** Logout current vendor session */
 export function logoutVendor(): void {
   saveActiveSession(null);
+}
+
+/** Get aggregated customer directory scoped to a vendor store */
+export function getVendorCustomers(storeId: string): VendorCustomer[] {
+  const orders = getStoredOrders(storeId);
+  const notes = getStoredCustomerNotes(storeId);
+
+  const map = new Map<
+    string,
+    {
+      name: string;
+      email: string;
+      phone?: string;
+      shippingAddress?: string;
+      orders: VendorOrder[];
+    }
+  >();
+
+  for (const order of orders) {
+    const emailKey = (order.customerEmail || "").trim().toLowerCase();
+    if (!emailKey) continue;
+
+    const existing = map.get(emailKey);
+    if (!existing) {
+      map.set(emailKey, {
+        name: order.customerName || "Customer",
+        email: order.customerEmail,
+        phone: order.customerPhone,
+        shippingAddress: order.shippingAddress,
+        orders: [order],
+      });
+    } else {
+      existing.orders.push(order);
+      if (!existing.phone && order.customerPhone) existing.phone = order.customerPhone;
+      if (!existing.shippingAddress && order.shippingAddress) {
+        existing.shippingAddress = order.shippingAddress;
+      }
+      if (order.customerName && existing.name === "Customer") {
+        existing.name = order.customerName;
+      }
+    }
+  }
+
+  const customers: VendorCustomer[] = [];
+  for (const [emailKey, data] of map.entries()) {
+    // Sort customer's orders newest first
+    const sortedOrders = [...data.orders].sort((a, b) => {
+      const timeA = new Date(a.date).getTime() || 0;
+      const timeB = new Date(b.date).getTime() || 0;
+      return timeB - timeA;
+    });
+
+    const totalOrders = sortedOrders.length;
+    const totalSpent = sortedOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+    const averageOrderValue = totalOrders > 0 ? Math.round(totalSpent / totalOrders) : 0;
+    const lastOrderDate = sortedOrders[0]?.date || "Unknown";
+    const firstOrderDate = sortedOrders[sortedOrders.length - 1]?.date || lastOrderDate;
+
+    let tier: CustomerTier = "New";
+    if (totalOrders > 1 && totalSpent >= 2500) {
+      tier = "VIP";
+    } else if (totalOrders > 1) {
+      tier = "Repeat";
+    } else if (totalSpent >= 2500) {
+      tier = "VIP";
+    } else {
+      tier = "New";
+    }
+
+    customers.push({
+      id: `cust-${emailKey.replace(/[^a-z0-9]/g, "-")}`,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      shippingAddress: data.shippingAddress,
+      totalOrders,
+      totalSpent,
+      averageOrderValue,
+      firstOrderDate,
+      lastOrderDate,
+      tier,
+      orders: sortedOrders,
+      notes: notes[emailKey] || undefined,
+    });
+  }
+
+  return customers.sort((a, b) => b.totalSpent - a.totalSpent);
+}
+
+/** Get a single customer by email scoped to a vendor store */
+export function getVendorCustomerByEmail(
+  email: string,
+  storeId: string,
+): VendorCustomer | null {
+  const customers = getVendorCustomers(storeId);
+  const normalized = email.trim().toLowerCase();
+  return customers.find((c) => c.email.toLowerCase() === normalized) || null;
+}
+
+/** Save a private note on a customer for a store */
+export function saveVendorCustomerNote(
+  storeId: string,
+  customerEmail: string,
+  note: string,
+): { success: boolean; note: string } {
+  saveStoredCustomerNote(storeId, customerEmail, note);
+  return { success: true, note };
 }
