@@ -68,6 +68,32 @@ export type VendorOrder = {
 
 export type CustomerTier = "VIP" | "Repeat" | "New";
 
+export type MessageSenderRole = "customer" | "vendor";
+
+export interface VendorChatMessage {
+  id: string;
+  senderRole: MessageSenderRole;
+  senderName: string;
+  text: string;
+  timestamp: string;
+  isRead?: boolean;
+}
+
+export interface VendorConversation {
+  id: string;
+  storeId: string;
+  customerId?: string | undefined;
+  customerName: string;
+  customerEmail: string;
+  customerPhone?: string | undefined;
+  unreadCount: number;
+  lastMessage: string;
+  lastMessageTimestamp: string;
+  messages: VendorChatMessage[];
+  createdAt: string;
+  orderNumber?: string | undefined;
+}
+
 export type VendorCustomer = {
   id: string;
   name: string;

@@ -2,6 +2,8 @@ import type {
   CustomerTier,
   OnboardingData,
   VendorCustomer,
+  VendorConversation,
+  VendorChatMessage,
   OrderStatus,
   VendorOrder,
   VendorSession,
@@ -13,6 +15,8 @@ import {
   getActiveSession,
   getCustomStores,
   getStoredCustomerNotes,
+  getStoredConversations,
+  saveStoredConversations,
   getStoredOrders,
   getStoredVendors,
   saveActiveSession,
@@ -628,4 +632,129 @@ export function saveVendorCustomerNote(
 ): { success: boolean; note: string } {
   saveStoredCustomerNote(storeId, customerEmail, note);
   return { success: true, note };
+}
+
+/** Get customer conversations scoped to a vendor store */
+export function getVendorConversations(storeId: string): VendorConversation[] {
+  const all = getStoredConversations(storeId);
+  return [...all].sort((a, b) => {
+    const timeA = new Date(a.lastMessageTimestamp).getTime() || 0;
+    const timeB = new Date(b.lastMessageTimestamp).getTime() || 0;
+    return timeB - timeA;
+  });
+}
+
+/** Get a single conversation by ID */
+export function getVendorConversationById(
+  conversationId: string,
+  storeId?: string,
+): VendorConversation | null {
+  const conversations = getStoredConversations(storeId);
+  const normalized = conversationId.toLowerCase();
+  return (
+    conversations.find((c) => c.id.toLowerCase() === normalized) || null
+  );
+}
+
+/** Send a message in a conversation as vendor */
+export function sendVendorMessage(
+  conversationId: string,
+  text: string,
+  storeId?: string,
+): {
+  success: boolean;
+  conversation?: VendorConversation;
+  message?: VendorChatMessage;
+  error?: string;
+} {
+  const trimmed = text.trim();
+  if (!trimmed) {
+    return { success: false, error: "Message cannot be empty." };
+  }
+
+  const all = getStoredConversations();
+  const normalized = conversationId.toLowerCase();
+  const index = all.findIndex((c) => c.id.toLowerCase() === normalized);
+
+  if (index === -1) {
+    return { success: false, error: "Conversation not found." };
+  }
+
+  const existing = all[index];
+  if (!existing) {
+    return { success: false, error: "Conversation not found." };
+  }
+
+  if (storeId && existing.storeId !== storeId) {
+    return {
+      success: false,
+      error: "Unauthorized: Conversation belongs to another store.",
+    };
+  }
+
+  const newMessage: VendorChatMessage = {
+    id: `msg-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    senderRole: "vendor",
+    senderName: "Store Support",
+    text: trimmed,
+    timestamp: new Date().toISOString(),
+    isRead: true,
+  };
+
+  const updated: VendorConversation = {
+    ...existing,
+    messages: [...existing.messages, newMessage],
+    lastMessage: trimmed,
+    lastMessageTimestamp: newMessage.timestamp,
+  };
+
+  all[index] = updated;
+  saveStoredConversations(all);
+
+  return { success: true, conversation: updated, message: newMessage };
+}
+
+/** Mark all messages in a conversation as read */
+export function markConversationAsRead(
+  conversationId: string,
+  storeId?: string,
+): { success: boolean; conversation?: VendorConversation } {
+  const all = getStoredConversations();
+  const normalized = conversationId.toLowerCase();
+  const index = all.findIndex((c) => c.id.toLowerCase() === normalized);
+
+  if (index === -1) {
+    return { success: false };
+  }
+
+  const existing = all[index];
+  if (!existing) {
+    return { success: false };
+  }
+
+  if (storeId && existing.storeId !== storeId) {
+    return { success: false };
+  }
+
+  const updatedMessages = existing.messages.map((m) => ({
+    ...m,
+    isRead: true,
+  }));
+
+  const updated: VendorConversation = {
+    ...existing,
+    unreadCount: 0,
+    messages: updatedMessages,
+  };
+
+  all[index] = updated;
+  saveStoredConversations(all);
+
+  return { success: true, conversation: updated };
+}
+
+/** Get total unread messages count for a store */
+export function getVendorUnreadMessagesCount(storeId: string): number {
+  const conversations = getVendorConversations(storeId);
+  return conversations.reduce((sum, c) => sum + (c.unreadCount || 0), 0);
 }

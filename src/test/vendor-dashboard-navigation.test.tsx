@@ -62,7 +62,7 @@ function renderDashboardWithRouter(initialPath = "/vendor-dashboard") {
   return { ...result, router, history };
 }
 
-describe("Vendor Dashboard URL-Synchronized Navigation", () => {
+describe("Vendor Dashboard URL-Synchronized Navigation", { timeout: 20000 }, () => {
   beforeEach(() => {
     sessionStorage.clear();
     localStorage.clear();

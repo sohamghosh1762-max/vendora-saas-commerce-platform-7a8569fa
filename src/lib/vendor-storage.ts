@@ -1,4 +1,11 @@
-import type { VendorUser, VendorStore, VendorOrder, VendorSession } from "./vendor-types";
+import type {
+  VendorUser,
+  VendorStore,
+  VendorOrder,
+  VendorSession,
+  VendorConversation,
+  VendorChatMessage,
+} from "./vendor-types";
 import { stores as initialStores, type Store } from "@/data/stores";
 import { hashPassword } from "./vendor-crypto";
 
@@ -7,6 +14,7 @@ const STORES_KEY = "vendora_custom_stores_v1";
 const ORDERS_KEY = "vendora_orders_v1";
 const SESSION_KEY = "vendora_session_v1";
 const CUSTOMER_NOTES_KEY = "vendora_vendor_customer_notes_v1";
+const MESSAGES_KEY = "vendora_vendor_conversations_v1";
 
 const DEFAULT_SALT = "vendora_salt_demo";
 
@@ -192,6 +200,151 @@ export const initialDemoOrders: VendorOrder[] = [
   },
 ];
 
+export const initialDemoConversations: VendorConversation[] = [
+  {
+    id: "conv-urban-001",
+    storeId: "the-urban-nest",
+    customerName: "Priya Sharma",
+    customerEmail: "priya.sharma@example.com",
+    customerPhone: "+91 98450 12345",
+    unreadCount: 0,
+    lastMessage: "Thank you so much! Looking forward to receiving my package.",
+    lastMessageTimestamp: "2026-11-13T10:15:00.000Z",
+    createdAt: "2026-11-12T14:20:00.000Z",
+    orderNumber: "#1024",
+    messages: [
+      {
+        id: "msg-001-1",
+        senderRole: "customer",
+        senderName: "Priya Sharma",
+        text: "Hi! Can you tell me if the Ceramic Mug is microwave safe?",
+        timestamp: "2026-11-12T14:20:00.000Z",
+        isRead: true,
+      },
+      {
+        id: "msg-001-2",
+        senderRole: "vendor",
+        senderName: "The Urban Nest Support",
+        text: "Hello Priya! Yes, our handcrafted ceramic mugs are 100% microwave and dishwasher safe.",
+        timestamp: "2026-11-12T14:25:00.000Z",
+        isRead: true,
+      },
+      {
+        id: "msg-001-3",
+        senderRole: "customer",
+        senderName: "Priya Sharma",
+        text: "Thank you so much! Looking forward to receiving my package.",
+        timestamp: "2026-11-13T10:15:00.000Z",
+        isRead: true,
+      },
+    ],
+  },
+  {
+    id: "conv-urban-002",
+    storeId: "the-urban-nest",
+    customerName: "Vikram Malhotra",
+    customerEmail: "vikram.m@example.com",
+    customerPhone: "+91 98765 11223",
+    unreadCount: 1,
+    lastMessage: "Hi, could you please confirm when order #1025 will be dispatched?",
+    lastMessageTimestamp: "2026-11-13T11:45:00.000Z",
+    createdAt: "2026-11-13T11:45:00.000Z",
+    orderNumber: "#1025",
+    messages: [
+      {
+        id: "msg-002-1",
+        senderRole: "customer",
+        senderName: "Vikram Malhotra",
+        text: "Hi, could you please confirm when order #1025 will be dispatched?",
+        timestamp: "2026-11-13T11:45:00.000Z",
+        isRead: false,
+      },
+    ],
+  },
+  {
+    id: "conv-urban-003",
+    storeId: "the-urban-nest",
+    customerName: "Sneha Gupta",
+    customerEmail: "sneha.gupta@example.com",
+    customerPhone: "+91 98210 98765",
+    unreadCount: 0,
+    lastMessage: "Thanks for checking! I will place the order once restocked.",
+    lastMessageTimestamp: "2026-11-12T16:50:00.000Z",
+    createdAt: "2026-11-12T16:30:00.000Z",
+    orderNumber: "#1022",
+    messages: [
+      {
+        id: "msg-003-1",
+        senderRole: "customer",
+        senderName: "Sneha Gupta",
+        text: "Do you have the leather handbag in a deep chestnut brown color?",
+        timestamp: "2026-11-12T16:30:00.000Z",
+        isRead: true,
+      },
+      {
+        id: "msg-003-2",
+        senderRole: "vendor",
+        senderName: "The Urban Nest Support",
+        text: "Hi Sneha, chestnut brown is currently undergoing restocking and will be live early next week!",
+        timestamp: "2026-11-12T16:40:00.000Z",
+        isRead: true,
+      },
+      {
+        id: "msg-003-3",
+        senderRole: "customer",
+        senderName: "Sneha Gupta",
+        text: "Thanks for checking! I will place the order once restocked.",
+        timestamp: "2026-11-12T16:50:00.000Z",
+        isRead: true,
+      },
+    ],
+  },
+  {
+    id: "conv-urban-004",
+    storeId: "the-urban-nest",
+    customerName: "Arjun Patel",
+    customerEmail: "arjun.patel@example.com",
+    customerPhone: "+91 97123 45678",
+    unreadCount: 1,
+    lastMessage: "Received order #1023 in pristine condition! Outstanding quality.",
+    lastMessageTimestamp: "2026-11-13T12:05:00.000Z",
+    createdAt: "2026-11-13T12:05:00.000Z",
+    orderNumber: "#1023",
+    messages: [
+      {
+        id: "msg-004-1",
+        senderRole: "customer",
+        senderName: "Arjun Patel",
+        text: "Received order #1023 in pristine condition! Outstanding quality.",
+        timestamp: "2026-11-13T12:05:00.000Z",
+        isRead: false,
+      },
+    ],
+  },
+  {
+    id: "conv-style-001",
+    storeId: "stylenest",
+    customerName: "Priya Patel",
+    customerEmail: "priya@example.com",
+    customerPhone: "+91 98765 43210",
+    unreadCount: 1,
+    lastMessage: "Hello, do you offer customized gift packaging for the denim jacket?",
+    lastMessageTimestamp: "2026-11-13T09:30:00.000Z",
+    createdAt: "2026-11-13T09:30:00.000Z",
+    orderNumber: "#1024",
+    messages: [
+      {
+        id: "msg-sn-001",
+        senderRole: "customer",
+        senderName: "Priya Patel",
+        text: "Hello, do you offer customized gift packaging for the denim jacket?",
+        timestamp: "2026-11-13T09:30:00.000Z",
+        isRead: false,
+      },
+    ],
+  },
+];
+
 let seeded = false;
 
 export async function ensureSeeded(): Promise<void> {
@@ -241,6 +394,26 @@ export async function ensureSeeded(): Promise<void> {
         window.localStorage.setItem(ORDERS_KEY, JSON.stringify(initialDemoOrders));
       }
     }
+
+    const existingConversations = window.localStorage.getItem(MESSAGES_KEY);
+    if (!existingConversations) {
+      window.localStorage.setItem(MESSAGES_KEY, JSON.stringify(initialDemoConversations));
+    } else {
+      try {
+        const parsed = JSON.parse(existingConversations) as VendorConversation[];
+        const hasUrbanNest = parsed.some((c) => c.storeId === "the-urban-nest");
+        if (!hasUrbanNest) {
+          const urbanNestConvs = initialDemoConversations.filter(
+            (c) => c.storeId === "the-urban-nest",
+          );
+          parsed.push(...urbanNestConvs);
+          window.localStorage.setItem(MESSAGES_KEY, JSON.stringify(parsed));
+        }
+      } catch {
+        window.localStorage.setItem(MESSAGES_KEY, JSON.stringify(initialDemoConversations));
+      }
+    }
+
     seeded = true;
   } catch {
     // Ignore storage errors
@@ -373,6 +546,35 @@ export function saveStoredCustomerNote(
     if (!all[storeId]) all[storeId] = {};
     all[storeId][customerEmail.toLowerCase().trim()] = note;
     window.localStorage.setItem(CUSTOMER_NOTES_KEY, JSON.stringify(all));
+  } catch {
+    // Storage unavailable
+  }
+}
+
+export function getStoredConversations(storeId?: string): VendorConversation[] {
+  if (!isBrowser()) {
+    return storeId
+      ? initialDemoConversations.filter((c) => c.storeId === storeId)
+      : initialDemoConversations;
+  }
+  try {
+    const raw = window.localStorage.getItem(MESSAGES_KEY);
+    if (raw) {
+      const all = JSON.parse(raw) as VendorConversation[];
+      return storeId ? all.filter((c) => c.storeId === storeId) : all;
+    }
+  } catch {
+    // Return initial on error
+  }
+  return storeId
+    ? initialDemoConversations.filter((c) => c.storeId === storeId)
+    : initialDemoConversations;
+}
+
+export function saveStoredConversations(conversations: VendorConversation[]): void {
+  if (!isBrowser()) return;
+  try {
+    window.localStorage.setItem(MESSAGES_KEY, JSON.stringify(conversations));
   } catch {
     // Storage unavailable
   }
