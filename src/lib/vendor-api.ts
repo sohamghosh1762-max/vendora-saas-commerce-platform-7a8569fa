@@ -4,6 +4,9 @@ import type {
   VendorCustomer,
   VendorConversation,
   VendorChatMessage,
+  VendorReview,
+  VendorReviewReply,
+  VendorReviewStats,
   OrderStatus,
   VendorOrder,
   VendorSession,
@@ -17,6 +20,8 @@ import {
   getStoredCustomerNotes,
   getStoredConversations,
   saveStoredConversations,
+  getStoredReviews,
+  saveStoredReviews,
   getStoredOrders,
   getStoredVendors,
   saveActiveSession,
@@ -757,4 +762,122 @@ export function markConversationAsRead(
 export function getVendorUnreadMessagesCount(storeId: string): number {
   const conversations = getVendorConversations(storeId);
   return conversations.reduce((sum, c) => sum + (c.unreadCount || 0), 0);
+}
+
+/** Get customer reviews scoped to a vendor store */
+export function getVendorReviews(storeId: string): VendorReview[] {
+  const all = getStoredReviews(storeId);
+  return [...all].sort((a, b) => {
+    const timeA = new Date(a.date).getTime() || 0;
+    const timeB = new Date(b.date).getTime() || 0;
+    return timeB - timeA;
+  });
+}
+
+/** Get a single review by ID */
+export function getVendorReviewById(
+  reviewId: string,
+  storeId?: string,
+): VendorReview | null {
+  const reviews = getStoredReviews(storeId);
+  const normalized = reviewId.toLowerCase();
+  return reviews.find((r) => r.id.toLowerCase() === normalized) || null;
+}
+
+/** Compute review statistics and rating distribution */
+export function getVendorReviewStats(storeId: string): VendorReviewStats {
+  const reviews = getVendorReviews(storeId);
+  const total = reviews.length;
+
+  const distribution = {
+    5: 0,
+    4: 0,
+    3: 0,
+    2: 0,
+    1: 0,
+  };
+
+  let ratingSum = 0;
+  let repliedCount = 0;
+
+  for (const r of reviews) {
+    const roundedRating = Math.max(1, Math.min(5, Math.round(r.rating))) as 1 | 2 | 3 | 4 | 5;
+    distribution[roundedRating] = (distribution[roundedRating] || 0) + 1;
+    ratingSum += r.rating;
+    if (r.vendorReply && r.vendorReply.replyText.trim().length > 0) {
+      repliedCount += 1;
+    }
+  }
+
+  const averageRating = total > 0 ? Number((ratingSum / total).toFixed(1)) : 0;
+
+  const distributionPercentages = {
+    5: total > 0 ? Math.round((distribution[5] / total) * 100) : 0,
+    4: total > 0 ? Math.round((distribution[4] / total) * 100) : 0,
+    3: total > 0 ? Math.round((distribution[3] / total) * 100) : 0,
+    2: total > 0 ? Math.round((distribution[2] / total) * 100) : 0,
+    1: total > 0 ? Math.round((distribution[1] / total) * 100) : 0,
+  };
+
+  return {
+    averageRating,
+    totalReviews: total,
+    distribution,
+    distributionPercentages,
+    repliedCount,
+    unrepliedCount: total - repliedCount,
+  };
+}
+
+/** Reply to a customer review as a vendor */
+export function replyToVendorReview(
+  reviewId: string,
+  replyText: string,
+  storeId?: string,
+  repliedBy?: string,
+): {
+  success: boolean;
+  review?: VendorReview;
+  error?: string;
+} {
+  const trimmed = replyText.trim();
+  if (!trimmed) {
+    return { success: false, error: "Reply text cannot be empty." };
+  }
+
+  const all = getStoredReviews();
+  const normalized = reviewId.toLowerCase();
+  const index = all.findIndex((r) => r.id.toLowerCase() === normalized);
+
+  if (index === -1) {
+    return { success: false, error: "Review not found." };
+  }
+
+  const existing = all[index];
+  if (!existing) {
+    return { success: false, error: "Review not found." };
+  }
+
+  if (storeId && existing.storeId !== storeId) {
+    return {
+      success: false,
+      error: "Unauthorized: Review belongs to another store.",
+    };
+  }
+
+  const updatedReply: VendorReviewReply = {
+    replyText: trimmed,
+    repliedAt: new Date().toISOString(),
+    repliedBy: repliedBy || "Store Owner",
+  };
+
+  const updatedReview: VendorReview = {
+    ...existing,
+    vendorReply: updatedReply,
+  };
+
+  all[index] = updatedReview;
+  saveStoredReviews(all);
+
+  return { success: true, review: updatedReview };
 }

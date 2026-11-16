@@ -5,6 +5,7 @@ import type {
   VendorSession,
   VendorConversation,
   VendorChatMessage,
+  VendorReview,
 } from "./vendor-types";
 import { stores as initialStores, type Store } from "@/data/stores";
 import { hashPassword } from "./vendor-crypto";
@@ -15,6 +16,7 @@ const ORDERS_KEY = "vendora_orders_v1";
 const SESSION_KEY = "vendora_session_v1";
 const CUSTOMER_NOTES_KEY = "vendora_vendor_customer_notes_v1";
 const MESSAGES_KEY = "vendora_vendor_conversations_v1";
+const REVIEWS_KEY = "vendora_vendor_reviews_v1";
 
 const DEFAULT_SALT = "vendora_salt_demo";
 
@@ -345,6 +347,145 @@ export const initialDemoConversations: VendorConversation[] = [
   },
 ];
 
+export const initialDemoReviews: VendorReview[] = [
+  {
+    id: "rev-urban-001",
+    storeId: "the-urban-nest",
+    productId: "prod_skincare_01",
+    productName: "Minimalist Skincare Set",
+    customerName: "Vikram Malhotra",
+    customerEmail: "vikram.m@example.com",
+    rating: 5,
+    comment:
+      "The minimalist skincare set exceeded all my expectations. The packaging was eco-friendly and the texture is so lightweight. Will definitely be a regular customer!",
+    date: "2024-10-25",
+    verifiedPurchase: true,
+    vendorReply: {
+      replyText:
+        "Thank you Vikram! We are delighted to hear you love the eco-friendly packaging and lightweight formula. - The Urban Nest Support",
+      repliedAt: "2024-10-26T10:30:00.000Z",
+      repliedBy: "The Urban Nest Support",
+    },
+  },
+  {
+    id: "rev-urban-002",
+    storeId: "the-urban-nest",
+    productId: "prod_ceramic_01",
+    productName: "Handcrafted Ceramic Mug",
+    customerName: "Priya Sharma",
+    customerEmail: "priya.sharma@example.com",
+    rating: 5,
+    comment:
+      "Incredible craftsmanship! The glaze on this mug is gorgeous and feels great in hand for my morning brew.",
+    date: "2024-10-22",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-urban-003",
+    storeId: "the-urban-nest",
+    productId: "prod_handbag_01",
+    productName: "Leather Handbag",
+    customerName: "Arjun Patel",
+    customerEmail: "arjun.patel@example.com",
+    rating: 4,
+    comment:
+      "Great stitching and premium leather quality. The inner zipper pocket could be a tiny bit larger, but overall very pleased.",
+    date: "2024-10-18",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-urban-004",
+    storeId: "the-urban-nest",
+    productId: "prod_shoes_01",
+    productName: "Running Shoes",
+    customerName: "Sneha Gupta",
+    customerEmail: "sneha.gupta@example.com",
+    rating: 5,
+    comment:
+      "Very comfortable for daily runs, breathable mesh, and the color is exactly as pictured. Super fast shipping too!",
+    date: "2024-10-14",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-urban-005",
+    storeId: "the-urban-nest",
+    productId: "prod_ceramic_01",
+    productName: "Handcrafted Ceramic Mug",
+    customerName: "Ananya Iyer",
+    customerEmail: "ananya.iyer@example.com",
+    rating: 4,
+    comment:
+      "Bought two for our new apartment. Beautiful earthy tone. One minor smudge on the handle, but very charming handmade quality.",
+    date: "2024-10-10",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-urban-006",
+    storeId: "the-urban-nest",
+    productId: "prod_skincare_01",
+    productName: "Minimalist Skincare Set",
+    customerName: "Kabir Mehta",
+    customerEmail: "kabir.m@example.com",
+    rating: 3,
+    comment:
+      "Decent product, gentle on skin, but the scent was a bit milder than I anticipated based on the description.",
+    date: "2024-10-05",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-urban-007",
+    storeId: "the-urban-nest",
+    productId: "prod_skincare_01",
+    productName: "Minimalist Skincare Set",
+    customerName: "Meera Desai",
+    customerEmail: "meera.desai@example.com",
+    rating: 2,
+    comment:
+      "Delivery took longer than expected and the outer box was slightly dented. Product inside was fine though.",
+    date: "2024-09-28",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-urban-008",
+    storeId: "the-urban-nest",
+    productId: "prod_watch_01",
+    productName: "Smart Watch",
+    customerName: "Rohan Joshi",
+    customerEmail: "rohan.j@example.com",
+    rating: 5,
+    comment:
+      "Battery life easily lasts 4 days with all fitness tracking sensors enabled. Highly recommend!",
+    date: "2024-09-15",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-style-001",
+    storeId: "stylenest",
+    productId: "prod_jacket_01",
+    productName: "Classic Denim Jacket",
+    customerName: "Priya Patel",
+    customerEmail: "priya@example.com",
+    rating: 5,
+    comment:
+      "Fits like a dream! Premium denim wash and sturdy buttons. Truly worth the price.",
+    date: "2024-10-20",
+    verifiedPurchase: true,
+  },
+  {
+    id: "rev-style-002",
+    storeId: "stylenest",
+    productId: "prod_tshirt_01",
+    productName: "Cotton Oversized T-Shirt",
+    customerName: "Rahul Verma",
+    customerEmail: "rahul.v@example.com",
+    rating: 4,
+    comment:
+      "Very soft breathable cotton. Great oversized silhouette.",
+    date: "2024-10-12",
+    verifiedPurchase: true,
+  },
+];
+
 let seeded = false;
 
 export async function ensureSeeded(): Promise<void> {
@@ -411,6 +552,25 @@ export async function ensureSeeded(): Promise<void> {
         }
       } catch {
         window.localStorage.setItem(MESSAGES_KEY, JSON.stringify(initialDemoConversations));
+      }
+    }
+
+    const existingReviews = window.localStorage.getItem(REVIEWS_KEY);
+    if (!existingReviews) {
+      window.localStorage.setItem(REVIEWS_KEY, JSON.stringify(initialDemoReviews));
+    } else {
+      try {
+        const parsed = JSON.parse(existingReviews) as VendorReview[];
+        const hasUrbanNest = parsed.some((r) => r.storeId === "the-urban-nest");
+        if (!hasUrbanNest) {
+          const urbanNestReviews = initialDemoReviews.filter(
+            (r) => r.storeId === "the-urban-nest",
+          );
+          parsed.push(...urbanNestReviews);
+          window.localStorage.setItem(REVIEWS_KEY, JSON.stringify(parsed));
+        }
+      } catch {
+        window.localStorage.setItem(REVIEWS_KEY, JSON.stringify(initialDemoReviews));
       }
     }
 
@@ -575,6 +735,35 @@ export function saveStoredConversations(conversations: VendorConversation[]): vo
   if (!isBrowser()) return;
   try {
     window.localStorage.setItem(MESSAGES_KEY, JSON.stringify(conversations));
+  } catch {
+    // Storage unavailable
+  }
+}
+
+export function getStoredReviews(storeId?: string): VendorReview[] {
+  if (!isBrowser()) {
+    return storeId
+      ? initialDemoReviews.filter((r) => r.storeId === storeId)
+      : initialDemoReviews;
+  }
+  try {
+    const raw = window.localStorage.getItem(REVIEWS_KEY);
+    if (raw) {
+      const all = JSON.parse(raw) as VendorReview[];
+      return storeId ? all.filter((r) => r.storeId === storeId) : all;
+    }
+  } catch {
+    // Return initial on error
+  }
+  return storeId
+    ? initialDemoReviews.filter((r) => r.storeId === storeId)
+    : initialDemoReviews;
+}
+
+export function saveStoredReviews(reviews: VendorReview[]): void {
+  if (!isBrowser()) return;
+  try {
+    window.localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
   } catch {
     // Storage unavailable
   }

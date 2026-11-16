@@ -110,6 +110,49 @@ export type VendorCustomer = {
   notes?: string | undefined;
 };
 
+export interface VendorReviewReply {
+  replyText: string;
+  repliedAt: string;
+  repliedBy?: string | undefined;
+}
+
+export interface VendorReview {
+  id: string;
+  storeId: string;
+  productId?: string | undefined;
+  productName: string;
+  productImage?: string | undefined;
+  customerName: string;
+  customerEmail?: string | undefined;
+  customerAvatar?: string | undefined;
+  rating: number; // 1 to 5
+  comment: string;
+  date: string;
+  verifiedPurchase?: boolean | undefined;
+  vendorReply?: VendorReviewReply | undefined;
+}
+
+export interface VendorReviewStats {
+  averageRating: number;
+  totalReviews: number;
+  distribution: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
+  distributionPercentages: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
+  repliedCount: number;
+  unrepliedCount: number;
+}
+
 export type VendorSession = {
   token: string;
   vendor: VendorUser;
