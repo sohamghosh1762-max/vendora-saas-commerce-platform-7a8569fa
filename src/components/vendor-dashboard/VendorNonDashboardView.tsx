@@ -4,6 +4,15 @@ import { REFERENCE_ORDERS } from "@/lib/vendor-dashboard-data";
 import { useState } from "react";
 import { VendorProductsView } from "./VendorProductsView";
 import { VendorInventoryView } from "./VendorInventoryView";
+import { VendorOrdersView } from "./VendorOrdersView";
+import { VendorCustomersView } from "./VendorCustomersView";
+import { VendorMessagesView } from "./VendorMessagesView";
+import { VendorReviewsView } from "./VendorReviewsView";
+import { VendorAnalyticsView } from "./VendorAnalyticsView";
+import { VendorPayoutsView } from "./VendorPayoutsView";
+import { VendorIntegrationsView } from "./VendorIntegrationsView";
+import { VendorMarketingView } from "./VendorMarketingView";
+import { VendorAppearanceView } from "./VendorAppearanceView";
 import type { VendorStore } from "@/lib/vendor-types";
 
 export interface VendorNonDashboardViewProps {
@@ -125,42 +134,68 @@ export function VendorNonDashboardView({
       )}
 
       {activeTab === "orders" && (
-        <div className="rounded-2xl border border-[#ECEAF5] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-          <div className="flex items-center justify-between pb-4 border-b border-[#ECEAF5]">
-            <span className="text-xs font-bold text-[#110D27]">
-              Fulfilled & In-Transit Orders ({REFERENCE_ORDERS.length})
-            </span>
-          </div>
+        <VendorOrdersView
+          storeId={storeId}
+          onOrdersChange={onProductsChange}
+        />
+      )}
 
-          <div className="mt-3 divide-y divide-[#F1EFF7]">
-            {REFERENCE_ORDERS.map((o) => (
-              <div
-                key={o.id}
-                className="flex items-center justify-between py-3 rounded-xl px-2 hover:bg-[#F9F8FD]"
-              >
-                <div className="flex items-center gap-3">
-                  <img
-                    src={o.image}
-                    alt={o.customerName}
-                    className="size-11 rounded-xl object-cover shrink-0 bg-[#F4F2FC]"
-                  />
-                  <div>
-                    <h4 className="text-xs font-bold text-[#110D27]">
-                      {o.orderNumber} — {o.customerName}
-                    </h4>
-                    <span className="text-[11px] text-[#7A7F93]">Placed on {o.date}</span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-[#110D27]">{o.formattedAmount}</span>
-                  <span className="block text-[10px] font-semibold text-[#6538F5]">
-                    Status: {o.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {activeTab === "customers" && (
+        <VendorCustomersView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "messages" && (
+        <VendorMessagesView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "reviews" && (
+        <VendorReviewsView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "analytics" && (
+        <VendorAnalyticsView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "payouts" && (
+        <VendorPayoutsView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "integrations" && (
+        <VendorIntegrationsView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "marketing" && (
+        <VendorMarketingView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "appearance" && (
+        <VendorAppearanceView
+          storeId={storeId}
+          storeName={storeName}
+          store={store}
+          onStoreUpdated={onProductsChange}
+        />
       )}
 
       {activeTab === "settings" && (
@@ -238,10 +273,18 @@ export function VendorNonDashboardView({
         </div>
       )}
 
-      {/* Generic placeholder for other tabs */}
+      {/* Generic placeholder for any undefined tabs */}
       {activeTab !== "products" &&
         activeTab !== "inventory" &&
         activeTab !== "orders" &&
+        activeTab !== "customers" &&
+        activeTab !== "messages" &&
+        activeTab !== "reviews" &&
+        activeTab !== "analytics" &&
+        activeTab !== "payouts" &&
+        activeTab !== "integrations" &&
+        activeTab !== "marketing" &&
+        activeTab !== "appearance" &&
         activeTab !== "settings" && (
           <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-[#ECEAF5] bg-white p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
             <div className="grid size-12 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5]">

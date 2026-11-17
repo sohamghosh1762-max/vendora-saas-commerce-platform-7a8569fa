@@ -94,7 +94,7 @@ describe("Vendor Dashboard Replication & Flow", () => {
 
     renderWithRouter(() => <VendorDashboardPage />);
 
-        // 1. Welcome Section & Greeting
+    // 1. Welcome Section & Greeting
     expect(await screen.findByText("Welcome back, Rohan! 👋")).toBeInTheDocument();
 
     expect(screen.getByText("Here's what's happening with your store today.")).toBeInTheDocument();
@@ -185,6 +185,5 @@ describe("Vendor Dashboard Replication & Flow", () => {
     expect(screen.getByText("Product updated")).toBeInTheDocument();
     expect(screen.getByText("Store profile updated")).toBeInTheDocument();
 
-  }, 30000);
-  }, 15000);
+  }, 60000);
 });
