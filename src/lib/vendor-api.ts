@@ -7,6 +7,11 @@ import type {
   VendorReview,
   VendorReviewReply,
   VendorReviewStats,
+  VendorPayout,
+  VendorPayoutSummary,
+  VendorIntegration,
+  VendorCoupon,
+  VendorAnalyticsSummary,
   OrderStatus,
   VendorOrder,
   VendorSession,
@@ -22,6 +27,12 @@ import {
   saveStoredConversations,
   getStoredReviews,
   saveStoredReviews,
+  getStoredPayouts,
+  saveStoredPayouts,
+  getStoredIntegrations,
+  saveStoredIntegrations,
+  getStoredCoupons,
+  saveStoredCoupons,
   getStoredOrders,
   getStoredVendors,
   saveActiveSession,
@@ -880,4 +891,353 @@ export function replyToVendorReview(
   saveStoredReviews(all);
 
   return { success: true, review: updatedReview };
+}
+
+// -------------------------------------------------------------
+// Payouts APIs
+// -------------------------------------------------------------
+
+/** Get vendor payouts history */
+export function getVendorPayouts(storeId: string): VendorPayout[] {
+  const all = getStoredPayouts(storeId);
+  return [...all].sort((a, b) => {
+    const timeA = new Date(a.initiatedDate).getTime() || 0;
+    const timeB = new Date(b.initiatedDate).getTime() || 0;
+    return timeB - timeA;
+  });
+}
+
+/** Get payout summary (earnings, available, pending) */
+export function getVendorPayoutSummary(storeId: string): VendorPayoutSummary {
+  const payouts = getVendorPayouts(storeId);
+  const orders = getStoredOrders(storeId);
+
+  // Compute total sales from completed/delivered/shipped orders
+  const validOrders = orders.filter((o) => o.status !== "Cancelled");
+  const grossSales = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+  const baselineEarnings = Math.max(124560, grossSales);
+
+  // Completed payouts
+  const completedTotal = payouts
+    .filter((p) => p.status === "Completed")
+    .reduce((sum, p) => sum + p.amount, 0);
+
+  // Pending payouts
+  const pendingPayouts = payouts
+    .filter((p) => p.status === "Pending" || p.status === "Processing")
+    .reduce((sum, p) => sum + p.amount, 0);
+
+  // Available balance
+  const availableBalance = Math.max(0, baselineEarnings - completedTotal - pendingPayouts);
+
+  return {
+    totalEarnings: baselineEarnings,
+    availableBalance,
+    pendingPayouts,
+    nextPayoutDate: "Nov 22, 2026",
+  };
+}
+
+/** Request a new withdrawal payout */
+export function requestVendorPayout(
+  storeId: string,
+  amount: number,
+  payoutMethod = "Bank Transfer (NEFT)",
+): {
+  success: boolean;
+  payout?: VendorPayout;
+  error?: string;
+} {
+  if (amount <= 0 || isNaN(amount)) {
+    return { success: false, error: "Please enter a valid payout withdrawal amount." };
+  }
+
+  const summary = getVendorPayoutSummary(storeId);
+  if (amount > summary.availableBalance) {
+    return {
+      success: false,
+      error: `Requested amount exceeds available balance of ₹${summary.availableBalance.toLocaleString("en-IN")}.`,
+    };
+  }
+
+  const fee = Math.round(amount * 0.02); // 2% gateway processing fee
+  const netAmount = amount - fee;
+
+  const newPayout: VendorPayout = {
+    id: `PO-${Math.floor(1000 + Math.random() * 9000)}`,
+    storeId,
+    amount,
+    fee,
+    netAmount,
+    status: "Processing",
+    initiatedDate: new Date().toISOString().split("T")[0] || "2026-11-17",
+    payoutMethod,
+    bankAccountMasked: "HDFC Bank •••• 4892",
+  };
+
+  const all = getStoredPayouts();
+  all.unshift(newPayout);
+  saveStoredPayouts(all);
+
+  return { success: true, payout: newPayout };
+}
+
+// -------------------------------------------------------------
+// Integrations APIs
+// -------------------------------------------------------------
+
+/** Get all integrations for a store */
+export function getVendorIntegrations(storeId: string): VendorIntegration[] {
+  return getStoredIntegrations(storeId);
+}
+
+/** Connect or disconnect an integration */
+export function toggleVendorIntegration(
+  storeId: string,
+  integrationId: string,
+  connect: boolean,
+  config?: Record<string, string>,
+): {
+  success: boolean;
+  integration?: VendorIntegration;
+  error?: string;
+} {
+  const all = getStoredIntegrations();
+  const index = all.findIndex(
+    (i) => i.storeId === storeId && i.id.toLowerCase() === integrationId.toLowerCase(),
+  );
+
+  if (index === -1) {
+    return { success: false, error: "Integration not found." };
+  }
+
+  const existing = all[index]!;
+  const updated: VendorIntegration = {
+    ...existing,
+    status: connect ? "connected" : "disconnected",
+    connectedAt: connect ? new Date().toISOString().split("T")[0] : undefined,
+    config: config ? { ...(existing.config || {}), ...config } : existing.config,
+  };
+
+  all[index] = updated;
+  saveStoredIntegrations(all);
+
+  return { success: true, integration: updated };
+}
+
+// -------------------------------------------------------------
+// Marketing & Coupons APIs
+// -------------------------------------------------------------
+
+/** Get all discount coupons for a store */
+export function getVendorCoupons(storeId: string): VendorCoupon[] {
+  return getStoredCoupons(storeId);
+}
+
+/** Create a new discount coupon */
+export function createVendorCoupon(
+  storeId: string,
+  couponData: Omit<VendorCoupon, "id" | "storeId" | "usedCount">,
+): {
+  success: boolean;
+  coupon?: VendorCoupon;
+  error?: string;
+} {
+  const code = couponData.code.trim().toUpperCase();
+  if (!code) {
+    return { success: false, error: "Coupon code is required." };
+  }
+  if (couponData.discountValue <= 0) {
+    return { success: false, error: "Discount value must be greater than zero." };
+  }
+
+  const all = getStoredCoupons();
+  const duplicate = all.some(
+    (c) => c.storeId === storeId && c.code.toUpperCase() === code,
+  );
+  if (duplicate) {
+    return { success: false, error: `Coupon code '${code}' already exists for this store.` };
+  }
+
+  const newCoupon: VendorCoupon = {
+    ...couponData,
+    id: `cpn-${Date.now()}`,
+    storeId,
+    code,
+    usedCount: 0,
+  };
+
+  all.unshift(newCoupon);
+  saveStoredCoupons(all);
+
+  return { success: true, coupon: newCoupon };
+}
+
+/** Toggle coupon active / paused status */
+export function toggleCouponStatus(
+  storeId: string,
+  couponId: string,
+): { success: boolean; coupon?: VendorCoupon; error?: string } {
+  const all = getStoredCoupons();
+  const index = all.findIndex((c) => c.storeId === storeId && c.id === couponId);
+  if (index === -1) {
+    return { success: false, error: "Coupon not found." };
+  }
+
+  const existing = all[index]!;
+  const nextStatus = existing.status === "active" ? "paused" : "active";
+  const updated: VendorCoupon = { ...existing, status: nextStatus };
+  all[index] = updated;
+  saveStoredCoupons(all);
+
+  return { success: true, coupon: updated };
+}
+
+// -------------------------------------------------------------
+// Analytics APIs
+// -------------------------------------------------------------
+
+export interface VendorAnalyticsData {
+  summary: VendorAnalyticsSummary;
+  chartData: Array<{
+    date: string;
+    sales: number;
+    orders: number;
+    views: number;
+    conversionRate: number;
+    formattedSales: string;
+    formattedOrders: string;
+  }>;
+  categoryBreakdown: Array<{ name: string; value: number; count: number }>;
+  bestSellers: Array<{
+    id: string;
+    name: string;
+    category: string;
+    unitsSold: number;
+    revenue: number;
+    price: number;
+  }>;
+}
+
+/** Compute comprehensive analytics for a vendor store based on date range */
+export function getVendorAnalytics(
+  storeId: string,
+  range: "7d" | "30d" | "this_month" | "90d" | "all_time" = "30d",
+): VendorAnalyticsData {
+  const orders = getStoredOrders(storeId);
+  const products = getVendorProducts(storeId);
+
+  // Filter valid non-cancelled orders
+  const validOrders = orders.filter((o) => o.status !== "Cancelled");
+  const totalRevenue =
+    validOrders.reduce((sum, o) => sum + (o.total || 0), 0) || 124560;
+  const totalOrdersCount = validOrders.length || 320;
+  const productsSold =
+    validOrders.reduce(
+      (sum, o) => sum + o.items.reduce((iSum, item) => iSum + (item.qty || 1), 0),
+      0,
+    ) || 414;
+  const averageOrderValue =
+    totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
+
+  // Chart multiplier based on range
+  const multiplier =
+    range === "7d"
+      ? 0.35
+      : range === "this_month"
+        ? 0.85
+        : range === "90d"
+          ? 2.6
+          : range === "all_time"
+            ? 3.8
+            : 1.0;
+
+  const chartData = [
+    {
+      date: range === "7d" ? "Mon" : range === "90d" ? "Sep" : "Oct 1",
+      sales: Math.round(12000 * multiplier),
+      orders: Math.max(5, Math.round(28 * multiplier)),
+      views: Math.round(1100 * multiplier),
+      conversionRate: 2.5,
+      formattedSales: `₹${Math.round(12000 * multiplier).toLocaleString("en-IN")}`,
+      formattedOrders: `${Math.max(5, Math.round(28 * multiplier))} orders`,
+    },
+    {
+      date: range === "7d" ? "Tue" : range === "90d" ? "Oct" : "Oct 5",
+      sales: Math.round(18500 * multiplier),
+      orders: Math.max(8, Math.round(45 * multiplier)),
+      views: Math.round(1850 * multiplier),
+      conversionRate: 2.8,
+      formattedSales: `₹${Math.round(18500 * multiplier).toLocaleString("en-IN")}`,
+      formattedOrders: `${Math.max(8, Math.round(45 * multiplier))} orders`,
+    },
+    {
+      date: range === "7d" ? "Wed" : range === "90d" ? "Nov" : "Oct 10",
+      sales: Math.round(16200 * multiplier),
+      orders: Math.max(7, Math.round(38 * multiplier)),
+      views: Math.round(1600 * multiplier),
+      conversionRate: 2.4,
+      formattedSales: `₹${Math.round(16200 * multiplier).toLocaleString("en-IN")}`,
+      formattedOrders: `${Math.max(7, Math.round(38 * multiplier))} orders`,
+    },
+    {
+      date: range === "7d" ? "Thu" : range === "90d" ? "Dec" : "Oct 15",
+      sales: Math.round(28450 * multiplier),
+      orders: Math.max(12, Math.round(68 * multiplier)),
+      views: Math.round(2950 * multiplier),
+      conversionRate: 3.2,
+      formattedSales: `₹${Math.round(28450 * multiplier).toLocaleString("en-IN")}`,
+      formattedOrders: `${Math.max(12, Math.round(68 * multiplier))} orders`,
+    },
+    {
+      date: range === "7d" ? "Fri" : range === "90d" ? "Jan" : "Oct 20",
+      sales: Math.round(21800 * multiplier),
+      orders: Math.max(9, Math.round(52 * multiplier)),
+      views: Math.round(2200 * multiplier),
+      conversionRate: 2.9,
+      formattedSales: `₹${Math.round(21800 * multiplier).toLocaleString("en-IN")}`,
+      formattedOrders: `${Math.max(9, Math.round(52 * multiplier))} orders`,
+    },
+    {
+      date: range === "7d" ? "Sun" : range === "90d" ? "Feb" : "Oct 26",
+      sales: Math.round(31500 * multiplier),
+      orders: Math.max(14, Math.round(78 * multiplier)),
+      views: Math.round(3400 * multiplier),
+      conversionRate: 3.5,
+      formattedSales: `₹${Math.round(31500 * multiplier).toLocaleString("en-IN")}`,
+      formattedOrders: `${Math.max(14, Math.round(78 * multiplier))} orders`,
+    },
+  ];
+
+  // Best sellers
+  const bestSellers = (products.length > 0 ? products : REFERENCE_VENDOR_PRODUCTS)
+    .slice(0, 5)
+    .map((p, idx) => ({
+      id: p.id,
+      name: p.name,
+      category: p.category,
+      unitsSold: Math.max(15, 120 - idx * 22),
+      revenue: Math.max(15, 120 - idx * 22) * p.price,
+      price: p.price,
+    }));
+
+  const categoryBreakdown = [
+    { name: "Home & Living", value: 45, count: 18 },
+    { name: "Kitchen & Dining", value: 30, count: 12 },
+    { name: "Fashion & Apparel", value: 15, count: 6 },
+    { name: "Accessories", value: 10, count: 4 },
+  ];
+
+  return {
+    summary: {
+      totalRevenue: Math.round(totalRevenue * multiplier),
+      totalOrders: Math.round(totalOrdersCount * multiplier),
+      productsSold: Math.round(productsSold * multiplier),
+      averageOrderValue,
+      growthRate: 14.8,
+    },
+    chartData,
+    categoryBreakdown,
+    bestSellers,
+  };
 }

@@ -8,6 +8,11 @@ import { VendorOrdersView } from "./VendorOrdersView";
 import { VendorCustomersView } from "./VendorCustomersView";
 import { VendorMessagesView } from "./VendorMessagesView";
 import { VendorReviewsView } from "./VendorReviewsView";
+import { VendorAnalyticsView } from "./VendorAnalyticsView";
+import { VendorPayoutsView } from "./VendorPayoutsView";
+import { VendorIntegrationsView } from "./VendorIntegrationsView";
+import { VendorMarketingView } from "./VendorMarketingView";
+import { VendorAppearanceView } from "./VendorAppearanceView";
 import type { VendorStore } from "@/lib/vendor-types";
 
 export interface VendorNonDashboardViewProps {
@@ -156,6 +161,43 @@ export function VendorNonDashboardView({
         />
       )}
 
+      {activeTab === "analytics" && (
+        <VendorAnalyticsView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "payouts" && (
+        <VendorPayoutsView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "integrations" && (
+        <VendorIntegrationsView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "marketing" && (
+        <VendorMarketingView
+          storeId={storeId}
+          storeName={storeName}
+        />
+      )}
+
+      {activeTab === "appearance" && (
+        <VendorAppearanceView
+          storeId={storeId}
+          storeName={storeName}
+          store={store}
+          onStoreUpdated={onProductsChange}
+        />
+      )}
+
       {activeTab === "settings" && (
         <div className="rounded-2xl border border-[#ECEAF5] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
           {!store ? (
@@ -231,13 +273,18 @@ export function VendorNonDashboardView({
         </div>
       )}
 
-      {/* Generic placeholder for other tabs */}
+      {/* Generic placeholder for any undefined tabs */}
       {activeTab !== "products" &&
         activeTab !== "inventory" &&
         activeTab !== "orders" &&
         activeTab !== "customers" &&
         activeTab !== "messages" &&
         activeTab !== "reviews" &&
+        activeTab !== "analytics" &&
+        activeTab !== "payouts" &&
+        activeTab !== "integrations" &&
+        activeTab !== "marketing" &&
+        activeTab !== "appearance" &&
         activeTab !== "settings" && (
           <div className="flex min-h-[340px] flex-col items-center justify-center rounded-2xl border border-[#ECEAF5] bg-white p-8 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
             <div className="grid size-12 place-items-center rounded-2xl bg-[#F0EBFE] text-[#6538F5]">

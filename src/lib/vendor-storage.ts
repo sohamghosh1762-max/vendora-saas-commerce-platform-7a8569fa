@@ -6,6 +6,9 @@ import type {
   VendorConversation,
   VendorChatMessage,
   VendorReview,
+  VendorPayout,
+  VendorIntegration,
+  VendorCoupon,
 } from "./vendor-types";
 import { stores as initialStores, type Store } from "@/data/stores";
 import { hashPassword } from "./vendor-crypto";
@@ -17,6 +20,9 @@ const SESSION_KEY = "vendora_session_v1";
 const CUSTOMER_NOTES_KEY = "vendora_vendor_customer_notes_v1";
 const MESSAGES_KEY = "vendora_vendor_conversations_v1";
 const REVIEWS_KEY = "vendora_vendor_reviews_v1";
+const PAYOUTS_KEY = "vendora_vendor_payouts_v1";
+const INTEGRATIONS_KEY = "vendora_vendor_integrations_v1";
+const COUPONS_KEY = "vendora_vendor_coupons_v1";
 
 const DEFAULT_SALT = "vendora_salt_demo";
 
@@ -486,6 +492,194 @@ export const initialDemoReviews: VendorReview[] = [
   },
 ];
 
+export const initialDemoPayouts: VendorPayout[] = [
+  {
+    id: "PO-8941",
+    storeId: "the-urban-nest",
+    amount: 42800,
+    fee: 856,
+    netAmount: 41944,
+    status: "Completed",
+    initiatedDate: "2026-11-08",
+    completedDate: "2026-11-09",
+    payoutMethod: "Bank Transfer (NEFT)",
+    bankAccountMasked: "HDFC Bank •••• 4892",
+    utrNumber: "HDFCN26312489123",
+  },
+  {
+    id: "PO-8940",
+    storeId: "the-urban-nest",
+    amount: 38500,
+    fee: 770,
+    netAmount: 37730,
+    status: "Completed",
+    initiatedDate: "2026-11-01",
+    completedDate: "2026-11-02",
+    payoutMethod: "Bank Transfer (NEFT)",
+    bankAccountMasked: "HDFC Bank •••• 4892",
+    utrNumber: "HDFCN26305190412",
+  },
+  {
+    id: "PO-8942",
+    storeId: "the-urban-nest",
+    amount: 14200,
+    fee: 284,
+    netAmount: 13916,
+    status: "Processing",
+    initiatedDate: "2026-11-15",
+    payoutMethod: "Bank Transfer (NEFT)",
+    bankAccountMasked: "HDFC Bank •••• 4892",
+  },
+  {
+    id: "PO-7712",
+    storeId: "stylenest",
+    amount: 22400,
+    fee: 448,
+    netAmount: 21952,
+    status: "Completed",
+    initiatedDate: "2026-11-05",
+    completedDate: "2026-11-06",
+    payoutMethod: "UPI Auto-Payout",
+    bankAccountMasked: "ICICI Bank •••• 9102",
+    utrNumber: "UPI26309812401",
+  },
+];
+
+export const initialDemoIntegrations: VendorIntegration[] = [
+  {
+    id: "razorpay",
+    storeId: "the-urban-nest",
+    name: "Razorpay Payments",
+    description: "Accept UPI, debit/credit cards, and net banking with instant webhooks.",
+    category: "payments",
+    status: "connected",
+    isFunctional: true,
+    connectedAt: "2024-01-15",
+    apiKeyMasked: "rzp_live_••••••••••••39A1",
+    config: { keyId: "rzp_live_demo39A1", autoCapture: "true" },
+  },
+  {
+    id: "shiprocket",
+    storeId: "the-urban-nest",
+    name: "Shiprocket Logistics",
+    description: "Multi-carrier automated dispatch, label printing, and live customer tracking.",
+    category: "shipping",
+    status: "connected",
+    isFunctional: true,
+    connectedAt: "2024-02-01",
+    apiKeyMasked: "sr_tok_••••••••••••77F2",
+    config: { pickupPincode: "560038", autoManifest: "true" },
+  },
+  {
+    id: "whatsapp",
+    storeId: "the-urban-nest",
+    name: "WhatsApp Business API",
+    description: "Send automated dispatch updates, tracking links, and customer inquiries.",
+    category: "communication",
+    status: "connected",
+    isFunctional: true,
+    connectedAt: "2024-03-10",
+    apiKeyMasked: "wa_biz_••••••••••••9941",
+    config: { phoneNumber: "+91 98200 12345", notifyOnDispatch: "true" },
+  },
+  {
+    id: "delhivery",
+    storeId: "the-urban-nest",
+    name: "Delhivery Direct",
+    description: "Dedicated courier pickup, surface freight, and express air delivery across India.",
+    category: "shipping",
+    status: "disconnected",
+    isFunctional: false,
+  },
+  {
+    id: "tally",
+    storeId: "the-urban-nest",
+    name: "Tally Prime ERP",
+    description: "Sync invoices, GST tax compliance, and automated accounting entries.",
+    category: "accounting",
+    status: "disconnected",
+    isFunctional: false,
+  },
+  {
+    id: "google_analytics",
+    storeId: "the-urban-nest",
+    name: "Google Analytics 4",
+    description: "Measure storefront visits, conversion funnels, and customer acquisition channels.",
+    category: "marketing",
+    status: "action_required",
+    isFunctional: true,
+    apiKeyMasked: "G-••••••••42",
+    config: { measurementId: "G-DEMO123442" },
+  },
+  {
+    id: "razorpay",
+    storeId: "stylenest",
+    name: "Razorpay Payments",
+    description: "Accept UPI, debit/credit cards, and net banking.",
+    category: "payments",
+    status: "connected",
+    isFunctional: true,
+    connectedAt: "2026-01-20",
+    apiKeyMasked: "rzp_live_••••••••••••109B",
+  },
+  {
+    id: "shiprocket",
+    storeId: "stylenest",
+    name: "Shiprocket Logistics",
+    description: "Multi-carrier automated dispatch and live customer tracking.",
+    category: "shipping",
+    status: "disconnected",
+    isFunctional: true,
+  },
+];
+
+export const initialDemoCoupons: VendorCoupon[] = [
+  {
+    id: "cpn-1",
+    storeId: "the-urban-nest",
+    code: "WELCOME10",
+    discountType: "percentage",
+    discountValue: 10,
+    minOrderValue: 999,
+    expiryDate: "2026-12-31",
+    status: "active",
+    usedCount: 48,
+  },
+  {
+    id: "cpn-2",
+    storeId: "the-urban-nest",
+    code: "FESTIVE500",
+    discountType: "flat",
+    discountValue: 500,
+    minOrderValue: 2999,
+    expiryDate: "2026-11-30",
+    status: "active",
+    usedCount: 22,
+  },
+  {
+    id: "cpn-3",
+    storeId: "the-urban-nest",
+    code: "DIWALI20",
+    discountType: "percentage",
+    discountValue: 20,
+    minOrderValue: 1999,
+    expiryDate: "2026-10-31",
+    status: "expired",
+    usedCount: 115,
+  },
+  {
+    id: "cpn-sn-1",
+    storeId: "stylenest",
+    code: "STYLE15",
+    discountType: "percentage",
+    discountValue: 15,
+    minOrderValue: 1499,
+    expiryDate: "2026-12-31",
+    status: "active",
+    usedCount: 19,
+  },
+];
+
 let seeded = false;
 
 export async function ensureSeeded(): Promise<void> {
@@ -571,6 +765,63 @@ export async function ensureSeeded(): Promise<void> {
         }
       } catch {
         window.localStorage.setItem(REVIEWS_KEY, JSON.stringify(initialDemoReviews));
+      }
+    }
+
+    const existingPayouts = window.localStorage.getItem(PAYOUTS_KEY);
+    if (!existingPayouts) {
+      window.localStorage.setItem(PAYOUTS_KEY, JSON.stringify(initialDemoPayouts));
+    } else {
+      try {
+        const parsed = JSON.parse(existingPayouts) as VendorPayout[];
+        const hasUrbanNest = parsed.some((p) => p.storeId === "the-urban-nest");
+        if (!hasUrbanNest) {
+          const urbanNestPayouts = initialDemoPayouts.filter(
+            (p) => p.storeId === "the-urban-nest",
+          );
+          parsed.push(...urbanNestPayouts);
+          window.localStorage.setItem(PAYOUTS_KEY, JSON.stringify(parsed));
+        }
+      } catch {
+        window.localStorage.setItem(PAYOUTS_KEY, JSON.stringify(initialDemoPayouts));
+      }
+    }
+
+    const existingIntegrations = window.localStorage.getItem(INTEGRATIONS_KEY);
+    if (!existingIntegrations) {
+      window.localStorage.setItem(INTEGRATIONS_KEY, JSON.stringify(initialDemoIntegrations));
+    } else {
+      try {
+        const parsed = JSON.parse(existingIntegrations) as VendorIntegration[];
+        const hasUrbanNest = parsed.some((i) => i.storeId === "the-urban-nest");
+        if (!hasUrbanNest) {
+          const urbanNestIntegrations = initialDemoIntegrations.filter(
+            (i) => i.storeId === "the-urban-nest",
+          );
+          parsed.push(...urbanNestIntegrations);
+          window.localStorage.setItem(INTEGRATIONS_KEY, JSON.stringify(parsed));
+        }
+      } catch {
+        window.localStorage.setItem(INTEGRATIONS_KEY, JSON.stringify(initialDemoIntegrations));
+      }
+    }
+
+    const existingCoupons = window.localStorage.getItem(COUPONS_KEY);
+    if (!existingCoupons) {
+      window.localStorage.setItem(COUPONS_KEY, JSON.stringify(initialDemoCoupons));
+    } else {
+      try {
+        const parsed = JSON.parse(existingCoupons) as VendorCoupon[];
+        const hasUrbanNest = parsed.some((c) => c.storeId === "the-urban-nest");
+        if (!hasUrbanNest) {
+          const urbanNestCoupons = initialDemoCoupons.filter(
+            (c) => c.storeId === "the-urban-nest",
+          );
+          parsed.push(...urbanNestCoupons);
+          window.localStorage.setItem(COUPONS_KEY, JSON.stringify(parsed));
+        }
+      } catch {
+        window.localStorage.setItem(COUPONS_KEY, JSON.stringify(initialDemoCoupons));
       }
     }
 
@@ -764,6 +1015,93 @@ export function saveStoredReviews(reviews: VendorReview[]): void {
   if (!isBrowser()) return;
   try {
     window.localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+  } catch {
+    // Storage unavailable
+  }
+}
+
+export function getStoredPayouts(storeId?: string): VendorPayout[] {
+  if (!isBrowser()) {
+    return storeId
+      ? initialDemoPayouts.filter((p) => p.storeId === storeId)
+      : initialDemoPayouts;
+  }
+  try {
+    const raw = window.localStorage.getItem(PAYOUTS_KEY);
+    if (raw) {
+      const all = JSON.parse(raw) as VendorPayout[];
+      return storeId ? all.filter((p) => p.storeId === storeId) : all;
+    }
+  } catch {
+    // Return initial on error
+  }
+  return storeId
+    ? initialDemoPayouts.filter((p) => p.storeId === storeId)
+    : initialDemoPayouts;
+}
+
+export function saveStoredPayouts(payouts: VendorPayout[]): void {
+  if (!isBrowser()) return;
+  try {
+    window.localStorage.setItem(PAYOUTS_KEY, JSON.stringify(payouts));
+  } catch {
+    // Storage unavailable
+  }
+}
+
+export function getStoredIntegrations(storeId?: string): VendorIntegration[] {
+  if (!isBrowser()) {
+    return storeId
+      ? initialDemoIntegrations.filter((i) => i.storeId === storeId)
+      : initialDemoIntegrations;
+  }
+  try {
+    const raw = window.localStorage.getItem(INTEGRATIONS_KEY);
+    if (raw) {
+      const all = JSON.parse(raw) as VendorIntegration[];
+      return storeId ? all.filter((i) => i.storeId === storeId) : all;
+    }
+  } catch {
+    // Return initial on error
+  }
+  return storeId
+    ? initialDemoIntegrations.filter((i) => i.storeId === storeId)
+    : initialDemoIntegrations;
+}
+
+export function saveStoredIntegrations(integrations: VendorIntegration[]): void {
+  if (!isBrowser()) return;
+  try {
+    window.localStorage.setItem(INTEGRATIONS_KEY, JSON.stringify(integrations));
+  } catch {
+    // Storage unavailable
+  }
+}
+
+export function getStoredCoupons(storeId?: string): VendorCoupon[] {
+  if (!isBrowser()) {
+    return storeId
+      ? initialDemoCoupons.filter((c) => c.storeId === storeId)
+      : initialDemoCoupons;
+  }
+  try {
+    const raw = window.localStorage.getItem(COUPONS_KEY);
+    if (raw) {
+      const all = JSON.parse(raw) as VendorCoupon[];
+      return storeId ? all.filter((c) => c.storeId === storeId) : all;
+    }
+  } catch {
+    // Return initial on error
+  }
+  return storeId
+    ? initialDemoCoupons.filter((c) => c.storeId === storeId)
+    : initialDemoCoupons;
+}
+
+export function saveStoredCoupons(coupons: VendorCoupon[]): void {
+  if (!isBrowser()) return;
+  try {
+    window.localStorage.setItem(COUPONS_KEY, JSON.stringify(coupons));
   } catch {
     // Storage unavailable
   }

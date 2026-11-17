@@ -153,6 +153,71 @@ export interface VendorReviewStats {
   unrepliedCount: number;
 }
 
+export type PayoutStatus = "Completed" | "Processing" | "Pending" | "Failed";
+
+export interface VendorPayout {
+  id: string;
+  storeId: string;
+  amount: number;
+  fee: number;
+  netAmount: number;
+  status: PayoutStatus;
+  initiatedDate: string;
+  completedDate?: string | undefined;
+  payoutMethod: string;
+  bankAccountMasked: string;
+  utrNumber?: string | undefined;
+}
+
+export interface VendorPayoutSummary {
+  totalEarnings: number;
+  availableBalance: number;
+  pendingPayouts: number;
+  nextPayoutDate: string;
+}
+
+export type IntegrationCategory =
+  | "payments"
+  | "shipping"
+  | "accounting"
+  | "marketing"
+  | "communication";
+
+export type IntegrationStatus = "connected" | "disconnected" | "action_required";
+
+export interface VendorIntegration {
+  id: string;
+  storeId: string;
+  name: string;
+  description: string;
+  category: IntegrationCategory;
+  status: IntegrationStatus;
+  isFunctional: boolean;
+  connectedAt?: string | undefined;
+  apiKeyMasked?: string | undefined;
+  config?: Record<string, string> | undefined;
+}
+
+export interface VendorCoupon {
+  id: string;
+  storeId: string;
+  code: string;
+  discountType: "percentage" | "flat";
+  discountValue: number;
+  minOrderValue: number;
+  expiryDate: string;
+  status: "active" | "expired" | "paused";
+  usedCount: number;
+}
+
+export interface VendorAnalyticsSummary {
+  totalRevenue: number;
+  totalOrders: number;
+  productsSold: number;
+  averageOrderValue: number;
+  growthRate: number;
+}
+
 export type VendorSession = {
   token: string;
   vendor: VendorUser;
